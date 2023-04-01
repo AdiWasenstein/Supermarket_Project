@@ -1,3 +1,5 @@
+package Stock.src;
+
 import java.time.LocalDate;
 
 public class Discount {

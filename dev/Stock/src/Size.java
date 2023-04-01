@@ -1,3 +1,5 @@
+package Stock.src;
+
 public class Size {
     double amount;
     MeasureUnit type;

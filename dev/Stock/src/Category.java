@@ -1,3 +1,5 @@
+package Stock.src;
+
 public class Category {
     String prime_category;
     String sub_category;
