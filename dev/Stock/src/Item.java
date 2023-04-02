@@ -23,8 +23,11 @@ public class Item {
         this.discount = null;
         counter++;
     }
+    public boolean is_expired(){ return date_difference() > 0;}
+    public int get_place(){ return this.place;}
+    public int get_barcode(){return this.barcode;}
     public long date_difference(){
-        return ChronoUnit.DAYS.between(LocalDate.now(), this.expiration_date);
+        return ChronoUnit.DAYS.between( this.expiration_date, LocalDate.now());
     }
     public void set_damaged(DamagedType type){
         this.damaged = type;
@@ -32,8 +35,8 @@ public class Item {
     public void set_place(int place){
         this.place = place;
     }
-    public void add_discount(int day, int month, int year, double value, boolean is_percentage, int min_capacity) {
-        this.discount = new Discount(day, month, year, value, is_percentage, min_capacity);
+    public void add_discount(LocalDate date, double value, boolean is_percentage, int min_capacity) {
+        this.discount = new Discount(date, value, is_percentage, min_capacity);
     }
     public String get_category(){
         return this.catalog_item.getCategory().toString();

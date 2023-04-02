@@ -2,7 +2,7 @@ package Stock.src;
 
 public enum MeasureUnit {
     UNIT,
-    MILLILITTER,
-    GRAM,
-    CENTIMETER
+    ML,
+    GM,
+    CM
 }
