@@ -8,8 +8,8 @@ public class Discount {
     boolean is_percentage;
     int min_capacity;
 
-    public Discount(int day, int month, int year, double value, boolean is_percentage, int min_capacity){
-        this.expiration_date = LocalDate.of(year, month, day);
+    public Discount(LocalDate expiration_date, double value, boolean is_percentage, int min_capacity){
+        this.expiration_date = expiration_date;
         this.value = value;
         this.is_percentage = is_percentage;
         this.min_capacity = min_capacity;

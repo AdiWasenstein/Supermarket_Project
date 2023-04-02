@@ -1,5 +1,7 @@
 package Stock.src;
 
+import java.time.LocalDate;
+
 public class Category {
     String prime_category;
     String sub_category;
@@ -13,12 +15,12 @@ public class Category {
         discount = null;
     }
 
-    public void add_discount(int day, int month, int year, double value, boolean is_percentage, int min_capacity) {
-        this.discount = new Discount(day, month, year, value, is_percentage, min_capacity);
+    public void add_discount(LocalDate expiration_date, double value, boolean is_percentage, int min_capacity) {
+        this.discount = new Discount(expiration_date, value, is_percentage, min_capacity);
     }
 
-    public String ToString(){
-        return String.format("Category: %s, Sub Category: %s, Size: %s %ss", this.prime_category, this.sub_category, this.size.get_amount(), this.size.get_measureunit().name());
+    public String toString(){
+        return String.format("%s, %s, %s %ss", this.prime_category, this.sub_category, this.size.get_amount(), this.size.get_measureunit().name());
     }
     public String get_prime_category(){
         return this.prime_category;

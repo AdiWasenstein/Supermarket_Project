@@ -4,13 +4,16 @@ import java.util.*;
 public class Report {
     ArrayList<Item> items;
 
+    public Report(){
+        this.items = new ArrayList<>();
+    }
     public void add_item(Item item){
         items.add(item);
     }
     public void generate_report(){
         Map<Integer, CatalogItem> catalog_items = aggregate_items();
         for(Integer id : catalog_items.keySet()){
-            System.out.println(catalog_items.get(id)); //need to do catalog_item ToString
+            System.out.println(catalog_items.get(id) + "\n"); //need to do catalog_item ToString
         }
     }
 
