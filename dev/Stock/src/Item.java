@@ -10,7 +10,7 @@ public class Item {
     DamageType damage_type;
     int location;
     Discount discount;
-    static int counter = 0;
+    static int counter = 1;
 
 
     public Item(CatalogItem catalog_item, double cost_price, LocalDate expiration_date, DamageType damaged_type, int location){

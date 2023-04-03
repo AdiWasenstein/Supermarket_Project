@@ -17,7 +17,13 @@ public abstract class StorageUnit {
         for(Integer item_id: items.keySet())
             if(items.get(item_id).get_catalog_item().get_id() == id)
                 items.remove(id);
-
+    }
+    public ArrayList<Item> damaged_items(){
+        ArrayList<Item> damaged_report = new ArrayList<>();
+        for(Item item : items.values())
+            if (item.get_damaged() != DamageType.NONE || item.is_expired())
+                damaged_report.add(item);
+        return damaged_report;
     }
     public boolean contain(int barcode){return this.items.containsKey(barcode);}
     public int barcode_to_id(int barcode){
