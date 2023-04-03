@@ -19,4 +19,11 @@ public abstract class StorageUnit {
                 items.remove(id);
 
     }
+    public boolean contain(int barcode){return this.items.containsKey(barcode);}
+    public int barcode_to_id(int barcode){
+        Item item = this.items.get(barcode);
+        if(item == null)
+            return -1;
+        return item.get_catalog_item().get_id();
+    }
 }

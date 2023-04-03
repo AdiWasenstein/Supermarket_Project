@@ -7,55 +7,53 @@ public class Item {
     int barcode;
     double cost_price;
     LocalDate expiration_date;
-    DamagedType damaged;
-    int place;
+    DamageType damage_type;
+    int location;
     Discount discount;
     static int counter = 0;
 
 
-    public Item(CatalogItem catalog_item, double cost_price, LocalDate date, DamagedType damaged, int item_place){
+    public Item(CatalogItem catalog_item, double cost_price, LocalDate expiration_date, DamageType damaged_type, int location){
         this.catalog_item = catalog_item;
         this.barcode = counter;
         this.cost_price = cost_price;
-        this.expiration_date = date;
-        this.damaged = damaged;
-        this.place = item_place;
+        this.expiration_date = expiration_date;
+        this.damage_type = damaged_type;
+        this.location = location;
         this.discount = null;
         counter++;
     }
-    public boolean is_expired(){ return date_difference() > 0;}
-    public int get_place(){ return this.place;}
+    public CatalogItem get_catalog_item(){
+        return this.catalog_item;
+    }
     public int get_barcode(){return this.barcode;}
     public long date_difference(){
         return ChronoUnit.DAYS.between( this.expiration_date, LocalDate.now());
     }
-    public void set_damaged(DamagedType type){
-        this.damaged = type;
+    public boolean is_expired(){ return date_difference() > 0;}
+    public DamageType get_damaged(){
+        return this.damage_type;
     }
-    public void set_place(int place){
-        this.place = place;
+    public void set_damaged(DamageType type){
+        this.damage_type = type;
     }
-    public void add_discount(LocalDate date, double value, boolean is_percentage, int min_capacity) {
-        this.discount = new Discount(date, value, is_percentage, min_capacity);
-    }
-    public String get_category(){
-        return this.catalog_item.getCategory().toString();
-    }
-    public DamagedType get_damaged(){
-        return this.damaged;
-    }
+    public int get_location(){ return this.location;}
+    public void set_location(int location){this.location = location;}
+    public Discount get_discount() {return discount;}
+    public void set_discount(Discount discount) {this.discount = discount;}
     public boolean is_from_category(String prime_category){
-        return this.catalog_item.getCategory().get_prime_category().equals(prime_category);
+        Category category = this.catalog_item.get_category();
+        return prime_category.equals(category.get_prime_category());
     }
     public boolean is_from_category(String prime_category, String sub_category){
-        return this.catalog_item.getCategory().get_prime_category().equals(prime_category) && this.catalog_item.getCategory().get_sub_category().equals(sub_category);
+        Category category = this.catalog_item.get_category();
+        return prime_category.equals(category.get_prime_category()) &&
+                sub_category.equals(category.get_sub_category());
     }
     public boolean is_from_category(String prime_category, String sub_category, MeasureUnit measureunit, double amount){
-        return this.catalog_item.getCategory().get_prime_category().equals(prime_category) &&
-                this.catalog_item.getCategory().get_sub_category().equals(sub_category) &&
-                this.catalog_item.getCategory().get_measureunit() == measureunit && this.catalog_item.getCategory().get_size_amount() == amount;
-    }
-    public CatalogItem get_catalog_item(){
-        return this.catalog_item;
+        Category category = this.catalog_item.get_category();
+        return prime_category.equals(category.get_prime_category()) &&
+                sub_category.equals(category.get_sub_category()) &&
+                category.get_measureunit() == measureunit && category.get_size_amount() == amount;
     }
 }
