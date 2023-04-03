@@ -56,4 +56,9 @@ public class Item {
                 sub_category.equals(category.get_sub_category()) &&
                 category.get_measureunit() == measureunit && category.get_size_amount() == amount;
     }
+    public String toString(){
+        return String.format("ID: %d; Barcode: %d; Location: %d; Manufacturer: %s; Amount: %d; Shelves Amount: %d; Back Amount: %d",
+                get_catalog_item().get_id(), get_barcode(), get_location(), get_catalog_item().get_manufacturer(),
+                get_catalog_item().get_total_amount(), get_catalog_item().get_shelves_amount(), get_catalog_item().get_back_amount());
+    }
 }

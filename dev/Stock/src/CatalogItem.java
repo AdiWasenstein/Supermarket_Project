@@ -27,6 +27,7 @@ public class CatalogItem {
     }
     public int get_id(){ return this.id;}
     public String get_name(){return this.name;}
+    public String get_manufacturer(){return this.manufacturer;}
     public Category get_category(){return this.category;}
     public double get_price(){return this.sell_price;}
     public void set_price(double price){this.sell_price = price;}
@@ -44,7 +45,7 @@ public class CatalogItem {
     public int get_shelves_location(){return this.shelves_location;}
     public int get_back_location(){return this.back_location;}
     public String toString(){
-        return String.format("ID: %d, %s; %s; Manufacturer: %s; %f ₪; Amount: %d; Min Capacity: %d",
+        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; Amount: %d; Min Capacity: %d",
                 id, category, name, manufacturer, sell_price, shelves_amount + back_amount, min_capacity);
     }
     public void set_discount(Discount discount){this.discount = discount;}

@@ -153,6 +153,15 @@ public class Branch {
             damaged_report.add_to_report(item);
         damaged_report.generate_report();
     }
+
+    public void generate_all_items_report(){
+        CurrentItemsReport rep = new CurrentItemsReport();
+        for (Item item : shelves.all_items_report())
+            rep.add_to_report(item);
+        for (Item item : back.all_items_report())
+            rep.add_to_report(item);
+        rep.generate_report();
+    }
     public boolean set_item_discount(int id, Discount discount){
         CatalogItem catalog_item = this.catalog.get(id);
         if(catalog_item == null)

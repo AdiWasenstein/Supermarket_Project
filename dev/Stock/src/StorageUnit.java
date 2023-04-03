@@ -25,6 +25,12 @@ public abstract class StorageUnit {
                 damaged_report.add(item);
         return damaged_report;
     }
+    public ArrayList<Item> all_items_report(){
+        ArrayList<Item> report = new ArrayList<>();
+        report.addAll(items.values());
+        return report;
+    }
+
     public boolean contain(int barcode){return this.items.containsKey(barcode);}
     public int barcode_to_id(int barcode){
         Item item = this.items.get(barcode);

@@ -2,15 +2,8 @@ package Stock.src;
 
 import java.util.ArrayList;
 
-public class DamagedReport implements IReport {
-    ArrayList<Item> items;
-
-    public DamagedReport(){
-        this.items = new ArrayList<>();
-    }
-    public void add_to_report(Item item){items.add(item);}
-    public void generate_report(){
-        for(Item current : items){
+public class DamagedReport extends AItemReport {
+    public void print_item(Item current){
             String damage_type;
             if(current.get_damaged() != DamageType.NONE){
                 damage_type = current.get_damaged().name();
@@ -21,6 +14,5 @@ public class DamagedReport implements IReport {
                 damage_type = String.format("Expired %d days ago", current.date_difference());
             System.out.format("Barcode: %d; %s; Item's category: %s; Location: %d; DamagedType: %s\n",current.get_barcode(), current.get_catalog_item().get_name()
                     , current.get_catalog_item().get_category(), current.get_location(), damage_type);
-        }
     }
 }
