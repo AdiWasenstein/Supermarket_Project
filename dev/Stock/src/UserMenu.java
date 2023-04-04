@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class UserMenu {
     static Scanner input = new Scanner(System.in);
-    Branch branch;
+    public Branch branch;
 
     public int input_number(){
         int num;

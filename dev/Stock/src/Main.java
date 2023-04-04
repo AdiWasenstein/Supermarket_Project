@@ -9,9 +9,9 @@ public class Main {
     }
 
     public static void initialize_Categories(UserMenu us){
-
+//    us.branch.add_catalog_item();
     }
     public static void initialize_Items(UserMenu us){
-
+//        us.branch.add_item();
     }
 }
