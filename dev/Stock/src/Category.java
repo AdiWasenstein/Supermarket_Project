@@ -2,7 +2,7 @@ package Stock.src;
 
 import java.time.LocalDate;
 
-public class Category {
+public class Category implements Comparable<Category>{
     String prime_category;
     String sub_category;
     Size size;
@@ -26,5 +26,19 @@ public class Category {
     }
     public double get_size_amount(){
         return this.size.get_amount();
+    }
+
+    @Override public int compareTo(Category other){
+        String other_prime = other.get_prime_category();
+        String other_sub = other.get_sub_category();
+        MeasureUnit other_unit = other.get_measureunit();
+        double other_size = other.get_size_amount();
+        if(prime_category.equals(other_prime) && sub_category.equals(other_sub) && size.get_measureunit() == other_unit
+                && size.get_amount() == other_size)
+            return 0;
+        return -1;
+    }
+    @Override public boolean equals(Object category){
+        return compareTo((Category)category) == 0;
     }
 }

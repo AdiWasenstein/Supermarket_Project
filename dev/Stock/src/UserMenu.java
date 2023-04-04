@@ -13,8 +13,8 @@ public class UserMenu {
         try{
             num = input.nextInt();
         }
-        catch(Exception e){
-            return -1;
+        catch(Exception e) {
+            num = -1;
         }
         input.nextLine();
         return num;
@@ -135,10 +135,11 @@ public class UserMenu {
             System.out.println("Invalid Item Location choice. Returning to main menu...");
             return;
         }
+        int barcode = -1;
         switch (item_locate) {
-            case (1) -> branch.add_item(id, cost_price, date, type, false);
-            case (2) -> branch.add_item(id, cost_price, date, type, true);
-            case (3) -> branch.add_item(id, cost_price, date, type);
+            case (1) -> barcode = branch.add_item(id, cost_price, date, type, false);
+            case (2) -> barcode = branch.add_item(id, cost_price, date, type, true);
+            case (3) -> barcode = branch.add_item(id, cost_price, date, type);
         }
         System.out.println("Adding to the stock completed successfully. Returning to main menu...");
     }
@@ -312,7 +313,7 @@ public class UserMenu {
         while(run){
             print_menu();
             System.out.print("Please enter your option: ");
-            int user_digit = input.nextInt();
+            int user_digit = input_number();
             switch (user_digit){
                 case(0) -> run = false;
                 case(1) -> add_to_catalog();
@@ -324,6 +325,7 @@ public class UserMenu {
                 case(7) -> set_capacity();
                 case(8) -> set_discount();
                 case(9) -> change_location();
+                case(-1) -> System.out.println("Invalid option");
             }
         }
         System.out.format("Thank you for using %s's system", branch.get_address());

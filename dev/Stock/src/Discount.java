@@ -35,4 +35,9 @@ public class Discount {
     public boolean discount_valid(int current_capacity){
         return is_date_valid() && amount_to_add(current_capacity) == 0;
     }
+    public String toString(){
+        return String.format("%.1f%s discount for %d+ capacity until %s", value, (is_percentage ? "%" : "₪"), min_capacity,
+                expiration_date.toString());
+
+    }
 }

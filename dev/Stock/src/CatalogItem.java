@@ -49,14 +49,12 @@ public class CatalogItem {
                 id, category, name, manufacturer, sell_price, shelves_amount + back_amount, min_capacity);
     }
     public void set_discount(Discount discount){this.discount = discount;}
-    public double get_discounted_price() {return this.discount.generate_discount(this.sell_price, 0);}
+    public double get_discounted_price() {
+        if(this.discount == null)
+            return this.sell_price;
+        return this.discount.generate_discount(this.sell_price, 0);}
     public double get_discounted_price(int amount) {return this.discount.generate_discount(this.sell_price, amount);}
     public boolean is_from_category(Category category){
-        Category item_category = this.category;
-        String item_prime = item_category.get_prime_category(); String other_prime = category.get_prime_category();
-        String item_sub = item_category.get_prime_category(); String other_sub = category.get_sub_category();
-        MeasureUnit item_unit = item_category.get_measureunit(); MeasureUnit other_unit = category.get_measureunit();
-        double item_size = item_category.get_size_amount(); double other_size = category.get_size_amount();
-        return item_prime.equals(other_prime) && item_sub.equals(other_sub) && item_unit == other_unit && item_size == other_size;
+        return category.compareTo(this.get_category()) == 0;
     }
 }

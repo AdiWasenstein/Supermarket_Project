@@ -55,10 +55,10 @@ public class Branch {
         this.catalog.remove(id);
         return true;
     }
-    public boolean add_item(int id, double cost_price, LocalDate expiration_date, DamageType damage, boolean for_front){
+    public int add_item(int id, double cost_price, LocalDate expiration_date, DamageType damage, boolean for_front){
         CatalogItem catalog_item = catalog.get(id);
         if(catalog_item == null)
-            return false;
+            return -1;
         Item item = new Item(catalog_item, cost_price, expiration_date, damage, catalog_item.get_back_location());
         if(for_front) {
             item.set_location(catalog_item.get_shelves_location());
@@ -70,12 +70,12 @@ public class Branch {
         if(!this.back.add_item(item))
             return false;
         catalog_item.inc_back();
-        return true;
+        return item.get_barcode();
     }
-    public boolean add_item(int id, double cost_price, LocalDate expiration_date, DamageType damage){
+    public int add_item(int id, double cost_price, LocalDate expiration_date, DamageType damage){
         CatalogItem catalog_item = catalog.get(id);
         if(catalog_item == null)
-            return false;
+            return -1;
         boolean for_front = catalog_item.get_shelves_amount() < catalog_item.get_min_capacity();
         return add_item(id, cost_price, expiration_date, damage, for_front);
     }
@@ -129,18 +129,18 @@ public class Branch {
             Category item_category = catalog_item.get_category();
             String prime = item_category.get_prime_category();
             String sub = item_category.get_sub_category();
-            if(primes.contains(prime)){
-                category_report.add_to_report(catalog_item);
-                continue;
+            boolean to_add = primes.contains(prime);
+            if(!to_add) {
+                for (String[] prime_sub : prime_subs)
+                    if (prime_sub[0].equals(prime) && prime_sub[1].equals(sub)) {
+                        to_add = true;
+                        break;
+                    }
             }
-            String[] prime_sub = {prime, sub};
-            if(prime_subs.contains(prime_sub)){
+
+            to_add = to_add || full.contains(item_category);
+            if(to_add)
                 category_report.add_to_report(catalog_item);
-                continue;
-            }
-            if(full.contains(catalog_item.get_category())){
-                category_report.add_to_report(catalog_item);
-            }
         }
         category_report.generate_report();
     }
