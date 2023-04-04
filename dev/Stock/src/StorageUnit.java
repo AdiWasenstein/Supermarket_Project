@@ -4,9 +4,15 @@ import java.util.*;
 public abstract class StorageUnit {
     Map<Integer, Item> items;
 
-    public boolean add_item(Item item){
+    public boolean add_item(Item item, boolean backstorage){
         if(items.containsKey(item.get_barcode()))
             return false;
+        if (backstorage) {
+            item.set_location(item.get_catalog_item().get_back_location());
+            items.put(item.get_barcode(), item);
+            return true;
+        }
+        item.set_location(item.get_catalog_item().get_shelves_location());
         items.put(item.get_barcode(), item);
         return true;
     }

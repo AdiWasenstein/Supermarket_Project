@@ -18,7 +18,7 @@ public class Discount {
     public double generate_discount(double origin_price, int amount){
         if(discount_valid(amount)) {
             if (is_percentage)
-                return origin_price * value;
+                return (origin_price * value) / 100;
             return Math.max(origin_price - value, 0); // Positive validation
         }
         return origin_price;

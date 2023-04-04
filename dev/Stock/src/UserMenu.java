@@ -33,7 +33,7 @@ public class UserMenu {
     public LocalDate input_date(){
         String date = input.nextLine();
         try{
-            return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("d/M/yy"));
         }
         catch(Exception e){
             return null;
@@ -112,7 +112,7 @@ public class UserMenu {
             System.out.println("Invalid price. Returning to main menu...");
             return;
         }
-        System.out.println("Expiration date (Format: dd/MM/yyyy:) "); LocalDate date = input_date();
+        System.out.println("Expiration date (Format: d/M/yy:) "); LocalDate date = input_date();
         if(date == null){
             System.out.println("Invalid date. Returning to main menu...");
             return;
@@ -141,7 +141,9 @@ public class UserMenu {
             case (2) -> barcode = branch.add_item(id, cost_price, date, type, true);
             case (3) -> barcode = branch.add_item(id, cost_price, date, type);
         }
-        System.out.println("Adding to the stock completed successfully. Returning to main menu...");
+        if(barcode < 1)
+            System.out.println("Error at adding to stock");
+        System.out.format("Adding to the stock completed successfully. Item's barcode is %d. Returning to main menu...", barcode);
     }
     public void remove_from_stock(){
         System.out.print("Enter the barcode: "); int barcode = input_number();
@@ -244,7 +246,7 @@ public class UserMenu {
     }
     public void set_discount(){
         System.out.println("Please enter discount details:");
-        System.out.println("Expiration date (Format: dd/MM/yyyy:) "); LocalDate date = input_date();
+        System.out.println("Expiration date (Format: d/M/yy): "); LocalDate date = input_date();
         if(date == null || date.isBefore(LocalDate.now())){
             System.out.println("Invalid date. Returning to main menu...");
             return;
@@ -298,10 +300,12 @@ public class UserMenu {
         }
     }
     public void change_location(){
-        System.out.print("Enter the item barcode"); int barcode = input.nextInt(); input.nextInt();
+        System.out.print("Enter the item barcode"); int barcode = input_number();
         if (!this.branch.transfer(barcode)){
             System.out.print("Invalid item barcode. Returning to main menu...");
         }
+        else
+            System.out.println("Changing the item location completed successfully. Returning to main menu...");
     }
     public UserMenu(){
         System.out.print("Welcome to the system, please enter your branch's address: ");

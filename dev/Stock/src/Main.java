@@ -7,4 +7,11 @@ public class Main {
         initialize_Items(us);
         us.communicate();// Labohen
     }
+
+    public static void initialize_Categories(UserMenu us){
+
+    }
+    public static void initialize_Items(UserMenu us){
+
+    }
 }

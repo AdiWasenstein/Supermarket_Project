@@ -62,13 +62,13 @@ public class Branch {
         Item item = new Item(catalog_item, cost_price, expiration_date, damage, catalog_item.get_back_location());
         if(for_front) {
             item.set_location(catalog_item.get_shelves_location());
-            if(!this.shelves.add_item(item))
-                return false;
+            if(!this.shelves.add_item(item, false))
+                return -1;
             catalog_item.inc_shelves();
-            return true;
+            return item.get_barcode();
         }
-        if(!this.back.add_item(item))
-            return false;
+        if(!this.back.add_item(item, for_front))
+            return -1;
         catalog_item.inc_back();
         return item.get_barcode();
     }
@@ -100,13 +100,17 @@ public class Branch {
         Item item = this.back.remove_item(barcode);
         if (item == null)
             return false;
-        return this.shelves.add_item(item);
+        this.catalog.get(item.get_catalog_item().get_id()).dec_back();
+        this.catalog.get(item.get_catalog_item().get_id()).inc_shelves();
+        return this.shelves.add_item(item, false);
     }
     public boolean transfer_front_to_back(int barcode){
         Item item = this.shelves.remove_item(barcode);
         if (item == null)
             return false;
-        return this.back.add_item(item);
+        this.catalog.get(item.get_catalog_item().get_id()).dec_shelves();
+        this.catalog.get(item.get_catalog_item().get_id()).inc_back();
+        return this.back.add_item(item, true);
     }
     public boolean transfer(int barcode){
         if (this.shelves.contain(barcode))
