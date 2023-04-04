@@ -33,7 +33,7 @@ public class UserMenu {
     public LocalDate input_date(){
         String date = input.nextLine();
         try{
-            return LocalDate.parse(date, DateTimeFormatter.ofPattern("d/MM/yyyy"));
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
         catch(Exception e){
             return null;
@@ -76,7 +76,7 @@ public class UserMenu {
             System.out.println("Invalid Measure unit choice. Returning to main menu...");
             return;
         }
-        MeasureUnit measure_unit = MeasureUnit.values()[measure_num];
+        MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
         System.out.print("Manufacturer: "); String manufacturer = input.nextLine();
         System.out.print("Costumer Price: "); double price = input_double();
         if(price < 0){
@@ -203,7 +203,7 @@ public class UserMenu {
                         System.out.println("Invalid Measure unit choice. Please enter choice again.");
                         break;
                     }
-                    MeasureUnit measure_unit = MeasureUnit.values()[measure_num];
+                    MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
                     fulls.add(new Category(prime, sub, new Size(size, measure_unit)));
                 }
             }
@@ -291,7 +291,7 @@ public class UserMenu {
                     System.out.println("Invalid Measure unit choice. Returning to main menu...");
                     return;
                 }
-                MeasureUnit measure_unit = MeasureUnit.values()[measure_num];
+                MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
                 this.branch.set_category_discount(new Category(prime, sub, new Size(size, measure_unit)), discount);
             }
         }
