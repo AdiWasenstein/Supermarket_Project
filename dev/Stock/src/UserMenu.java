@@ -146,7 +146,7 @@ public class UserMenu {
         System.out.print("Enter the barcode: "); int barcode = input_number();
         int id = branch.barcode_to_id(barcode);
         if(!branch.remove_item(barcode)) {
-            System.out.println("Invalid barcode. Returing to main menu...");
+            System.out.println("Invalid barcode. Returning to main menu...");
             return;
         }
         CatalogItem catalog_item = branch.get_catalog_from_barcode(id);

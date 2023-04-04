@@ -11,7 +11,9 @@ public abstract class StorageUnit {
         return true;
     }
     public Item remove_item(int barcode){
-        return items.get(barcode);
+        Item item = items.get(barcode);
+        items.remove(barcode);
+        return item;
     }
     public void remove_catalog_item(int id){
         for(Integer item_id: items.keySet())
@@ -26,8 +28,7 @@ public abstract class StorageUnit {
         return damaged_report;
     }
     public ArrayList<Item> all_items_report(){
-        ArrayList<Item> report = new ArrayList<>();
-        report.addAll(items.values());
+        ArrayList<Item> report = new ArrayList<>(items.values());
         return report;
     }
 
