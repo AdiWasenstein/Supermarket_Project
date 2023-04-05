@@ -48,11 +48,12 @@ public class CatalogItem {
         return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪,%s; Amount: %d; Min Capacity: %d",
                 id, category, name, manufacturer, sell_price, (discount == null ? "" : discount.toString()), shelves_amount + back_amount, min_capacity);
     }
+    public Discount get_discount(){return this.discount;}
     public void set_discount(Discount discount){this.discount = discount;}
     public double get_discounted_price() {
         if(this.discount == null)
             return this.sell_price;
-        return this.discount.generate_discount(this.sell_price, 0);}
+        return this.discount.generate_discount(this.sell_price, this.discount.get_min_capacity());}
     public double get_discounted_price(int amount) {return this.discount.generate_discount(this.sell_price, amount);}
     public boolean is_from_category(Category category){
         return category.compareTo(this.get_category()) == 0;

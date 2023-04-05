@@ -1,7 +1,10 @@
 package Stock.src;
 
 public class CurrentItemsReport extends AItemReport {
-    public void print_item(Item item){
-        System.out.println(item);
+    public String[] get_data(Item item){
+        return new String[]{"TO DO"};
+    }
+    public String[] get_header(){
+        return new String[]{"TO DO"};
     }
 }

@@ -1,8 +1,7 @@
 package Stock.src;
 
-import java.util.ArrayList;
-
 public class DamagedReport extends AItemReport {
+    public void print_header(){}
     public void print_item(Item current){
             String damage_type;
             if(current.get_damaged() != DamageType.NONE){
@@ -14,5 +13,12 @@ public class DamagedReport extends AItemReport {
                 damage_type = String.format("Expired %d days ago", current.date_difference());
             System.out.format("Barcode: %d; %s; Item's category: %s; Location: %d; DamagedType: %s\n",current.get_barcode(), current.get_catalog_item().get_name()
                     , current.get_catalog_item().get_category(), current.get_location(), damage_type);
+    }
+
+    public String[] get_data(Item item){
+        return new String[]{"TO DO"};
+    }
+    public String[] get_header(){
+        return new String[]{"TO DO"};
     }
 }

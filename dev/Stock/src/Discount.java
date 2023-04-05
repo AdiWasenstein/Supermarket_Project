@@ -15,6 +15,8 @@ public class Discount {
         this.min_capacity = min_capacity;
     }
 
+    public int get_min_capacity(){return this.min_capacity;}
+
     public double generate_discount(double origin_price, int amount){
         if(discount_valid(amount)) {
             if (is_percentage)

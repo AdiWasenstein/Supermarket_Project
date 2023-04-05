@@ -8,4 +8,8 @@ public class CategoryReport extends ACatalogReport{
                 catalog_item.get_shelves_amount());
         System.out.println(output);
     }
+    public String[] get_header(){
+        return new String[]{"ID", "Name", "Prime Category", "Sub Category",
+                "Size", "Manufacturer", "Sell Price", "Current Amount", "Min Capacity", "Discount"};
+    }
 }
