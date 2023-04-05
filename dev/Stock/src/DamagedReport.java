@@ -1,24 +1,18 @@
 package Stock.src;
 
 public class DamagedReport extends AItemReport {
-    public void print_header(){}
-    public void print_item(Item current){
-            String damage_type;
-            if(current.get_damaged() != DamageType.NONE){
-                damage_type = current.get_damaged().name();
-                if(current.is_expired())
-                    damage_type = damage_type + String.format(" and Expired %d days ago", current.date_difference());
-            }
-            else
-                damage_type = String.format("Expired %d days ago", current.date_difference());
-            System.out.format("Barcode: %d; %s; Item's category: %s; Location: %d; DamagedType: %s\n",current.get_barcode(), current.get_catalog_item().get_name()
-                    , current.get_catalog_item().get_category(), current.get_location(), damage_type);
-    }
-
     public String[] get_data(Item item){
-        return new String[]{"TO DO"};
+        String barcode = String.valueOf(item.get_barcode());
+        String category = item.catalog_item.get_category().toString();
+        String location = String.valueOf(item.get_location());
+        String manufacturer = item.get_catalog_item().get_manufacturer();
+        DamageType damage = item.get_damaged();
+        String expiration = item.is_expired() ? String.format("%d days expired", item.date_difference()) : "";
+        String damage_type = damage == DamageType.NONE ? "" : damage.name();
+        String damage_description = damage_type + (item.is_expired() && damage != DamageType.NONE ? " and " : "") + expiration;
+        return new String[]{barcode, category, location, manufacturer, damage_description};
     }
     public String[] get_header(){
-        return new String[]{"TO DO"};
+        return new String[]{"Barcode", "Category", "Location", " Manufacturer", "Damage Type"};
     }
 }

@@ -82,7 +82,7 @@ public class Main {
     us.branch.add_item(28, 25, LocalDate.of(2025,12,31), DamageType.NONE);
     us.branch.add_item(29, 1.9, LocalDate.of(2050,8,27), DamageType.NONE);
     us.branch.add_item(30, 6.5, LocalDate.of(2028,6,1), DamageType.NONE);
-    us.branch.add_item(31, 90, LocalDate.of(3000,1,1), DamageType.PHYSICAL);
+    us.branch.add_item(31, 90, LocalDate.of(2000,1,1), DamageType.PHYSICAL);
     us.branch.add_item(32, 4.2, LocalDate.of(2030,1,1), DamageType.NONE);
     us.branch.add_item(33, 2, LocalDate.of(2050,8,29), DamageType.NONE);
     us.branch.add_item(34, 3.4, LocalDate.of(2025,1,1), DamageType.NONE);
