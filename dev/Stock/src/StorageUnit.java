@@ -29,13 +29,12 @@ public abstract class StorageUnit {
     public ArrayList<Item> damaged_items(){
         ArrayList<Item> damaged_report = new ArrayList<>();
         for(Item item : items.values())
-            if (item.get_damaged() != DamageType.NONE || item.is_expired())
+            if (item.get_damage() != DamageType.NONE || item.is_expired())
                 damaged_report.add(item);
         return damaged_report;
     }
     public ArrayList<Item> all_items_report(){
-        ArrayList<Item> report = new ArrayList<>(items.values());
-        return report;
+        return new ArrayList<>(items.values());
     }
 
     public boolean contain(int barcode){return this.items.containsKey(barcode);}

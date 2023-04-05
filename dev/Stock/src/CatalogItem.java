@@ -55,7 +55,12 @@ public class CatalogItem {
             return this.sell_price;
         return this.discount.generate_discount(this.sell_price, this.discount.get_min_capacity());}
     public double get_discounted_price(int amount) {return this.discount.generate_discount(this.sell_price, amount);}
-    public boolean is_from_category(Category category){
-        return category.compareTo(this.get_category()) == 0;
+    public boolean is_from_category(Category category){return category.equals(this.get_category());}
+    public boolean is_from_category(String prime_category){
+        return prime_category.equals(get_category().get_prime_category());
+    }
+    public boolean is_from_category(String prime_category, String sub_category){
+        return is_from_category(prime_category) &&
+                sub_category.equals(category.get_sub_category());
     }
 }

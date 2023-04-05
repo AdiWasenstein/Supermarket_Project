@@ -88,8 +88,10 @@ public class UserMenu {
             System.out.println("Invalid price. Returning to main menu...");
             return;
         }
-        branch.add_catalog_item(id, name, new Category(prime, sub, new Size(size, measure_unit)), manufacturer, price, min_capacity);
-        System.out.println("Adding to the catalog completed successfully");
+        if(!branch.add_catalog_item(id, name, new Category(prime, sub, new Size(size, measure_unit)), manufacturer, price, min_capacity))
+            System.out.println("Failed to add item to catalog. Returning to main menu...");
+        else
+            System.out.println("Adding to the catalog completed successfully");
     }
 
     public void remove_from_catalog(){
@@ -128,7 +130,6 @@ public class UserMenu {
             case (2) -> type = DamageType.PHYSICAL;
             case (3) -> type = DamageType.ELECTRICAL;
             case (4) -> type = DamageType.ROTTEN;
-            case (5) -> type = DamageType.NONE;
         }
         System.out.print("Choose where to put the item:\n1. Back storage\n2. Shelves\n3. Dont mind\nChoice: "); int item_locate = input_number();
         if (!(item_locate >= 1 && item_locate <= 3)){
@@ -158,12 +159,13 @@ public class UserMenu {
         System.out.println("Removing from the stock completed successfully. Returning to main menu...");
     }
     public void generate_report(){
-        System.out.print("Choose what type of report would you want?\n1. Category\n2. Stock\n3. Damage\n4. Current Items\n Report type: "); int report_type = input_number();
+        System.out.print("Choose what type of report would you want?\n1. Per Category\n2. Required Stock\n3. Damaged Items\n4. Stock items\n5. All Catalog\nReport type: "); int report_type = input_number();
         switch (report_type){
             case (1) -> category_report();
             case (2) -> branch.generate_stock_report();
             case (3) -> branch.generate_damaged_report();
             case (4) -> branch.generate_all_items_report();
+            case (5) -> branch.generate_catalog_report();
             default -> System.out.println("Invalid choice. Returning to main menu...");
         }
     }
@@ -203,12 +205,13 @@ public class UserMenu {
                     System.out.print("Choose measure units:\n1. Units\n2. MLs\n3. Grams\n4. CMs\nMeasure unit: ");
                     int measure_num = input_number();
                     if (!(1 <= measure_num && measure_num <= 4)) {
-                        System.out.println("Invalid Measure unit choice. Please enter choice again.");
+                        System.out.println("Invalid Measure unit choice. Please enter a choice again.");
                         break;
                     }
                     MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
                     fulls.add(new Category(prime, sub, new Size(size, measure_unit)));
                 }
+                default -> System.out.println("PLEASE OPTION. PLEASE ENTER VALID DIGIT");
             }
         }
         branch.generate_category_report(primes, prime_subs, fulls);
@@ -227,6 +230,7 @@ public class UserMenu {
         if (!this.branch.set_item_price(id, price)){
             System.out.print("Invalid item ID. Returning to main menu...");
         }
+        System.out.format("Catalog item ID %d's price changed to %.1f successfully. Returning to main menu...\n", id, price);
     }
 
     public void set_capacity(){
@@ -243,6 +247,7 @@ public class UserMenu {
         if (!this.branch.set_item_capacity(id, amount)){
             System.out.print("Invalid item ID");
         }
+        System.out.format("Catalog ID %d's minimum capacity changed to %d successfully. Returning to main menu...\n", id, amount);
     }
     public void set_discount(){
         System.out.println("Please enter discount details:");
@@ -271,10 +276,9 @@ public class UserMenu {
         switch(discount_type){
             case(1) -> {
                 System.out.print("Enter item's ID: "); int id = input_number();
-                if(!branch.contains_id(id)){
-                    System.out.println("Invalid ID. Returning to main menu..."); return;
+                if(!branch.set_item_discount(id, discount)){
+                    System.out.println("Invalid ID. Returning to main menu...");
                 }
-                branch.set_item_discount(id, discount);
             }
             case (2) -> {
                 System.out.println("Please enter category details:");
@@ -297,6 +301,7 @@ public class UserMenu {
                 MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
                 this.branch.set_category_discount(new Category(prime, sub, new Size(size, measure_unit)), discount);
             }
+            default -> System.out.println("Invalid option. Returning to main menu...");
         }
     }
     public void change_location(){
@@ -305,14 +310,16 @@ public class UserMenu {
             System.out.print("Invalid item barcode. Returning to main menu...");
         }
         else
-            System.out.println("Changing the item location completed successfully. Returning to main menu...");
+            System.out.format("Changing the item location to location %d completed successfully. Returning to main menu...", this.branch.get_item_location(barcode));
     }
     public UserMenu(){
         System.out.print("Welcome to the system, please enter your branch's address: ");
         this.branch = new Branch(input.nextLine());
+        System.out.println("System initialized successfully.");
     }
 
     public void communicate(){
+        System.out.format("Welcome back to %s's supermarket system.\n", branch.get_address());
         boolean run = true;
         while(run){
             print_menu();
@@ -329,9 +336,9 @@ public class UserMenu {
                 case(7) -> set_capacity();
                 case(8) -> set_discount();
                 case(9) -> change_location();
-                case(-1) -> System.out.println("Invalid option");
+                case(-1) -> System.out.println("INVALID OPTION, PLEASE ENTER A DIGIT");
             }
         }
-        System.out.format("Thank you for using %s's system", branch.get_address());
+        System.out.format("Thank you for using %s's supermarket system.", branch.get_address());
     }
 }

@@ -20,7 +20,7 @@ public class Discount {
     public double generate_discount(double origin_price, int amount){
         if(discount_valid(amount)) {
             if (is_percentage)
-                return (origin_price * value) / 100;
+                return origin_price * (1 - value / 100);
             return Math.max(origin_price - value, 0); // Positive validation
         }
         return origin_price;
@@ -38,8 +38,7 @@ public class Discount {
         return is_date_valid() && amount_to_add(current_capacity) == 0;
     }
     public String toString(){
-        return String.format("%.1f%s discount for %d+ capacity until %s", value, (is_percentage ? "%" : "₪"), min_capacity,
+        return String.format("%.1f%s discount for amount ≥ %d until %s", value, (is_percentage ? "%" : "₪"), min_capacity,
                 expiration_date.toString());
-
     }
 }

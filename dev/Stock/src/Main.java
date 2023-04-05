@@ -1,6 +1,7 @@
 package Stock.src;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Main {
     static Category milk1000 = new Category("Dairy", "Milk", new Size(1000, MeasureUnit.ML));
@@ -8,14 +9,14 @@ public class Main {
     static Category cottage250 = new Category("Dairy", "Cheese", new Size(250, MeasureUnit.GM));
     static Category gouda100 = new Category("Dairy", "Cheese", new Size(100, MeasureUnit.GM));
     static Category pudding250 = new Category("Dairy", "Puddings", new Size(250, MeasureUnit.GM));
-    static Category shampoo750 = new Category("Dairy", "Milk", new Size(750, MeasureUnit.ML));
-    static Category soap500 = new Category("Dairy", "Milk", new Size(500, MeasureUnit.ML));
+    static Category shampoo750 = new Category("Toiletries", "Shampoo", new Size(750, MeasureUnit.ML));
+    static Category hand_soap500 = new Category("Toiletries", "Hand Soap", new Size(500, MeasureUnit.ML));
     static Category pan50 = new Category("Kitchen", "Kitchen Tools", new Size(50, MeasureUnit.CM));
     static Category fork100 = new Category("Kitchen", "Cutlery", new Size(100, MeasureUnit.UNIT));
     static Category cap100 = new Category("Food Accessories", "Caps", new Size(100, MeasureUnit.UNIT));
     static Category plate50 = new Category("Food Accessories", "Plates", new Size(50, MeasureUnit.UNIT));
     static Category rice1000 = new Category("Legumes", "Rice", new Size(1000, MeasureUnit.GM));
-    static Category pasta1000 = new Category("Legumes", "Milk", new Size(1000, MeasureUnit.GM));
+    static Category pasta1000 = new Category("Legumes", "Pasta", new Size(1000, MeasureUnit.GM));
     static Category pita10 = new Category("Breads", "Pitas", new Size(10, MeasureUnit.UNIT));
     static Category rice_cake500 = new Category("Breads", "Rice Cakes", new Size(500, MeasureUnit.GM));
     static Category white_bread500 = new Category("Breads", "White Bread", new Size(500, MeasureUnit.GM));
@@ -26,7 +27,7 @@ public class Main {
     public static void main(String[] args) {
         UserMenu us = new UserMenu();
         initialize_Catalog(us);
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 100; i++)
             initialize_Items(us);
         initialize_discount(us);
         us.communicate();// Labohen
@@ -53,7 +54,7 @@ public class Main {
     us.branch.add_catalog_item(27, "Cottage 12%", cottage250, "Tnuva", 6.4, 500);
     us.branch.add_catalog_item(28, "Persian rice", rice1000, "Sugat", 11.5, 80);
     us.branch.add_catalog_item(29, "Penne pasta", pasta1000, "Rummo", 5.9, 120);
-    us.branch.add_catalog_item(30, "Pnina Hand Soap", soap500, "Pnina Rosenblum", 12, 80);
+    us.branch.add_catalog_item(30, "Pnina Hand Soap", hand_soap500, "Pnina Rosenblum", 12, 80);
     us.branch.add_catalog_item(31, "Pan 21cm", pan50, "Teffal", 200, 30);
     us.branch.add_catalog_item(32, "Fork 100 units", fork100, "Namal", 11, 100);
     us.branch.add_catalog_item(33, "Hot cups 100 units", cap100, "Namal", 21.3, 176);
@@ -61,35 +62,56 @@ public class Main {
     us.branch.add_catalog_item(35, "Oval Plates", plate50, "Naaman", 80, 20);
     }
     public static void initialize_Items(UserMenu us){
-    us.branch.add_item(10, 3, LocalDate.of(2023,4,11), DamageType.NONE);
-    us.branch.add_item(11, 5.8, LocalDate.of(2024,4,29), DamageType.NONE);
-    us.branch.add_item(12, 3.7, LocalDate.of(2023,4,18), DamageType.NONE);
-    us.branch.add_item(13, 3, LocalDate.of(2023,4,3), DamageType.NONE);
-    us.branch.add_item(14, 4.8, LocalDate.of(2023,4,20), DamageType.NONE);
-    us.branch.add_item(15, 9, LocalDate.of(2024,2,19), DamageType.NONE);
-    us.branch.add_item(16, 3, LocalDate.of(2023,4,17), DamageType.NONE);
-    us.branch.add_item(17, 2.15, LocalDate.of(2023,4,19), DamageType.NONE);
-    us.branch.add_item(18, 4, LocalDate.of(2023,4,8), DamageType.NONE);
-    us.branch.add_item(19, 9.66, LocalDate.of(2024,6,4), DamageType.ROTTEN);
-    us.branch.add_item(20, 4.6, LocalDate.of(2025,12,31), DamageType.NONE);
-    us.branch.add_item(21, 7, LocalDate.of(2030,1,1), DamageType.NONE);
-    us.branch.add_item(22, 3.8, LocalDate.of(2023,4,25), DamageType.ROTTEN);
-    us.branch.add_item(23, 9, LocalDate.of(2030,12,31), DamageType.NONE);
-    us.branch.add_item(24, 25, LocalDate.of(2023,12,17), DamageType.NONE);
-    us.branch.add_item(25, 6, LocalDate.of(2090,1,1), DamageType.COVER);
-    us.branch.add_item(26, 3, LocalDate.of(2023,4,13), DamageType.NONE);
-    us.branch.add_item(27, 4.6, LocalDate.of(2025,1,30), DamageType.NONE);
-    us.branch.add_item(28, 25, LocalDate.of(2025,12,31), DamageType.NONE);
-    us.branch.add_item(29, 1.9, LocalDate.of(2050,8,27), DamageType.NONE);
-    us.branch.add_item(30, 6.5, LocalDate.of(2028,6,1), DamageType.NONE);
-    us.branch.add_item(31, 90, LocalDate.of(2000,1,1), DamageType.PHYSICAL);
-    us.branch.add_item(32, 4.2, LocalDate.of(2030,1,1), DamageType.NONE);
-    us.branch.add_item(33, 2, LocalDate.of(2050,8,29), DamageType.NONE);
-    us.branch.add_item(34, 3.4, LocalDate.of(2025,1,1), DamageType.NONE);
-    us.branch.add_item(35, 20, LocalDate.of(2050,1,1), DamageType.NONE);
+        Random rnd = new Random();
+        switch (rnd.nextInt(3)){
+            case(0) -> {
+                us.branch.add_item(10, 3, LocalDate.of(2023,4,11), DamageType.NONE);
+                us.branch.add_item(11, 5.8, LocalDate.of(2024,4,29), DamageType.NONE);
+                us.branch.add_item(12, 3.7, LocalDate.of(2023,4,18), DamageType.NONE);
+                us.branch.add_item(13, 3, LocalDate.of(2023,4,3), DamageType.NONE);
+                us.branch.add_item(14, 4.8, LocalDate.of(2023,4,20), DamageType.NONE);
+                us.branch.add_item(15, 9, LocalDate.of(2024,2,19), DamageType.NONE);
+                us.branch.add_item(16, 3, LocalDate.of(2023,4,17), DamageType.NONE);
+                us.branch.add_item(17, 2.15, LocalDate.of(2023,4,19), DamageType.NONE);
+                us.branch.add_item(18, 4, LocalDate.of(2023,4,8), DamageType.NONE);
+                us.branch.add_item(19, 9.66, LocalDate.of(2024,6,4), DamageType.ROTTEN);
+                us.branch.add_item(20, 4.6, LocalDate.of(2025,12,31), DamageType.NONE);
+                us.branch.add_item(21, 7, LocalDate.of(2030,1,1), DamageType.NONE);
+                us.branch.add_item(22, 3.8, LocalDate.of(2023,4,25), DamageType.ROTTEN);
+            }
+            case(1) -> {
+                us.branch.add_item(23, 9, LocalDate.of(2030,12,31), DamageType.NONE);
+                us.branch.add_item(24, 25, LocalDate.of(2023,12,17), DamageType.NONE);
+                us.branch.add_item(25, 6, LocalDate.of(2090,1,1), DamageType.COVER);
+                us.branch.add_item(26, 3, LocalDate.of(2023,4,13), DamageType.NONE);
+                us.branch.add_item(27, 4.6, LocalDate.of(2025,1,30), DamageType.NONE);
+                us.branch.add_item(28, 25, LocalDate.of(2025,12,31), DamageType.NONE);
+                us.branch.add_item(29, 1.9, LocalDate.of(2050,8,27), DamageType.NONE);
+            }
+            case(2) -> {
+                us.branch.add_item(30, 6.5, LocalDate.of(2028,6,1), DamageType.NONE);
+                us.branch.add_item(31, 90, LocalDate.of(2000,1,1), DamageType.PHYSICAL);
+                us.branch.add_item(32, 4.2, LocalDate.of(2030,1,1), DamageType.NONE);
+                us.branch.add_item(33, 2, LocalDate.of(2050,8,29), DamageType.NONE);
+                us.branch.add_item(34, 3.4, LocalDate.of(2025,1,1), DamageType.NONE);
+                us.branch.add_item(35, 20, LocalDate.of(2050,1,1), DamageType.NONE);
+            }
+        }
     }
     public static void initialize_discount(UserMenu us){
-        us.branch.set_category_discount(new Category("Baking", "Bread", new Size(500, MeasureUnit.GM)), new Discount(LocalDate.of(2023,10,1), 50, true, 2));
-        us.branch.set_item_discount(19, new Discount(LocalDate.of(2023,10,1), 1.5, false, 0));
+        us.branch.set_category_discount(white_bread500, new Discount(LocalDate.of(2023,10,1), 50, true, 2));
+        Random rnd = new Random();
+        for(int i = 0; i < 4; i++){
+            int id1 = rnd.nextInt(10, 36);
+            int id2 = rnd.nextInt(10, 36);
+            double value_disc = rnd.nextDouble(3);
+            double perc_disc = rnd.nextInt(10) * 5;
+            int month1 = rnd.nextInt(1, 13);
+            int month2 = rnd.nextInt(1, 13);
+            int min1 = rnd.nextInt(7);
+            int min2 = rnd.nextInt(7);
+            us.branch.set_item_discount(id1, new Discount(LocalDate.of(2023,month1,1), value_disc, false, min1));
+            us.branch.set_item_discount(id2, new Discount(LocalDate.of(2023,month2,1), perc_disc, true, min2));
+        }
     }
 }

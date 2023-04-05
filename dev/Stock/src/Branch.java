@@ -131,17 +131,14 @@ public class Branch {
         CategoryReport category_report = new CategoryReport();
         for(CatalogItem catalog_item :  this.catalog.values()){
             Category item_category = catalog_item.get_category();
-            String prime = item_category.get_prime_category();
-            String sub = item_category.get_sub_category();
-            boolean to_add = primes.contains(prime);
+            boolean to_add = primes.contains(item_category.get_prime_category());
             if(!to_add) {
                 for (String[] prime_sub : prime_subs)
-                    if (prime_sub[0].equals(prime) && prime_sub[1].equals(sub)) {
+                    if (catalog_item.is_from_category(prime_sub[0], prime_sub[1])) {
                         to_add = true;
                         break;
                     }
             }
-
             to_add = to_add || full.contains(item_category);
             if(to_add)
                 category_report.add_to_report(catalog_item);
@@ -166,6 +163,12 @@ public class Branch {
             rep.add_to_report(item);
         rep.generate_report();
     }
+    public void generate_catalog_report(){
+        CurrentCatalogReport rep = new CurrentCatalogReport();
+        for(CatalogItem catalog_item : catalog.values())
+            rep.add_to_report(catalog_item);
+        rep.generate_report();
+    }
     public boolean set_item_discount(int id, Discount discount){
         CatalogItem catalog_item = this.catalog.get(id);
         if(catalog_item == null)
@@ -177,5 +180,14 @@ public class Branch {
         for(CatalogItem catalog_item : this.catalog.values())
             if(catalog_item.is_from_category(category))
                 catalog_item.set_discount(discount);
+    }
+    public int get_item_location(int barcode){
+        int id = shelves.barcode_to_id(barcode);
+        if(id >= 0)
+            return catalog.get(id).get_shelves_location();
+        id = back.barcode_to_id(barcode);
+        if(id < 0)
+            return -1;
+        return catalog.get(id).get_back_location();
     }
 }
