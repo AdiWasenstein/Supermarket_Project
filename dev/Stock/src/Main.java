@@ -61,21 +61,35 @@ public class Main {
     us.branch.add_catalog_item(35, "Oval Plates", plate50, "Naaman", 80, 20);
     }
     public static void initialize_Items(UserMenu us){
-        us.branch.add_item(10, 3, LocalDate.of(2023,4,11), DamageType.NONE);
-        us.branch.add_item(11, 9, LocalDate.of(2024,2,19), DamageType.NONE);
-        us.branch.add_item(12, 3.7, LocalDate.of(2023,4,18), DamageType.NONE);
-        us.branch.add_item(13, 3, LocalDate.of(2023,4,3), DamageType.NONE);
-        us.branch.add_item(14, 3.8, LocalDate.of(2023,4,20), DamageType.ROTTEN);
-        us.branch.add_item(15, 10, LocalDate.of(2023,5,10), DamageType.NONE);
-        us.branch.add_item(16, 6, LocalDate.of(2023,4,17), DamageType.NONE);
-        us.branch.add_item(17, 8, LocalDate.of(2023,10,1), DamageType.NONE);
-        us.branch.add_item(18, 4, LocalDate.of(2023,4,8), DamageType.NONE);
-        us.branch.add_item(19, 9.66, LocalDate.of(2024,6,4), DamageType.COVER);
-        us.branch.add_item(20, 25, LocalDate.of(2025,12,31), DamageType.NONE);
-        us.branch.add_item(21, 2, LocalDate.of(2030,1,1), DamageType.NONE);
+    us.branch.add_item(10, 3, LocalDate.of(2023,4,11), DamageType.NONE);
+    us.branch.add_item(11, 5.8, LocalDate.of(2024,4,29), DamageType.NONE);
+    us.branch.add_item(12, 3.7, LocalDate.of(2023,4,18), DamageType.NONE);
+    us.branch.add_item(13, 3, LocalDate.of(2023,4,3), DamageType.NONE);
+    us.branch.add_item(14, 4.8, LocalDate.of(2023,4,20), DamageType.NONE);
+    us.branch.add_item(15, 9, LocalDate.of(2024,2,19), DamageType.NONE);
+    us.branch.add_item(16, 3, LocalDate.of(2023,4,17), DamageType.NONE);
+    us.branch.add_item(17, 2.15, LocalDate.of(2023,4,19), DamageType.NONE);
+    us.branch.add_item(18, 4, LocalDate.of(2023,4,8), DamageType.NONE);
+    us.branch.add_item(19, 9.66, LocalDate.of(2024,6,4), DamageType.ROTTEN);
+    us.branch.add_item(20, 4.6, LocalDate.of(2025,12,31), DamageType.NONE);
+    us.branch.add_item(21, 7, LocalDate.of(2030,1,1), DamageType.NONE);
+    us.branch.add_item(22, 3.8, LocalDate.of(2023,4,25), DamageType.ROTTEN);
+    us.branch.add_item(23, 9, LocalDate.of(2030,12,31), DamageType.NONE);
+    us.branch.add_item(24, 25, LocalDate.of(2023,12,17), DamageType.NONE);
+    us.branch.add_item(25, 6, LocalDate.of(2090,1,1), DamageType.COVER);
+    us.branch.add_item(26, 3, LocalDate.of(2023,4,13), DamageType.NONE);
+    us.branch.add_item(27, 4.6, LocalDate.of(2025,1,30), DamageType.NONE);
+    us.branch.add_item(28, 25, LocalDate.of(2025,12,31), DamageType.NONE);
+    us.branch.add_item(29, 1.9, LocalDate.of(2050,8,27), DamageType.NONE);
+    us.branch.add_item(30, 6.5, LocalDate.of(2028,6,1), DamageType.NONE);
+    us.branch.add_item(31, 90, LocalDate.of(3000,1,1), DamageType.PHYSICAL);
+    us.branch.add_item(32, 4.2, LocalDate.of(2030,1,1), DamageType.NONE);
+    us.branch.add_item(33, 2, LocalDate.of(2050,8,29), DamageType.NONE);
+    us.branch.add_item(34, 3.4, LocalDate.of(2025,1,1), DamageType.NONE);
+    us.branch.add_item(35, 20, LocalDate.of(2050,1,1), DamageType.NONE);
     }
     public static void initialize_discount(UserMenu us){
-        us.branch.set_category_discount(new Category("Baking", "Bread", new Size(500, MeasureUnit.GM)), new Discount(LocalDate.of(2023,10,1), 50, true, 0 ));
-        us.branch.set_item_discount(13, new Discount(LocalDate.of(2023,10,1),1.5, false, 0 ));
+        us.branch.set_category_discount(new Category("Baking", "Bread", new Size(500, MeasureUnit.GM)), new Discount(LocalDate.of(2023,10,1), 50, true, 2));
+        us.branch.set_item_discount(19, new Discount(LocalDate.of(2023,10,1), 1.5, false, 0));
     }
 }

@@ -158,7 +158,7 @@ public class UserMenu {
         System.out.println("Removing from the stock completed successfully. Returning to main menu...");
     }
     public void generate_report(){
-        System.out.print("Choose what type of report would you want?\n1. Catalog\n2. Stock\n3. Damage\n4. Current Items\n Report type: "); int report_type = input_number();
+        System.out.print("Choose what type of report would you want?\n1. Category\n2. Stock\n3. Damage\n4. Current Items\n Report type: "); int report_type = input_number();
         switch (report_type){
             case (1) -> category_report();
             case (2) -> branch.generate_stock_report();

@@ -45,8 +45,8 @@ public class CatalogItem {
     public int get_shelves_location(){return this.shelves_location;}
     public int get_back_location(){return this.back_location;}
     public String toString(){
-        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪,%s; Amount: %d; Min Capacity: %d",
-                id, category, name, manufacturer, sell_price, (discount == null ? "" : discount.toString()), shelves_amount + back_amount, min_capacity);
+        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; Amount: %d; Min Capacity: %d; Discount: %s",
+                id, category, name, manufacturer, sell_price,shelves_amount + back_amount, min_capacity ,(discount == null ? "" : discount.toString()));
     }
     public Discount get_discount(){return this.discount;}
     public void set_discount(Discount discount){this.discount = discount;}
