@@ -15,12 +15,12 @@ public class CurrentCatalogReport extends ACatalogReport{
         String min_cap = String.valueOf(item.get_min_capacity());
         String discount = item.get_discount() != null ? item.get_discount().toString() : "";
         return new String[]{id, name, category, manufacturer, sell_price,
-                shelves_location + " & " + back_location, shelves_amount + " & " + back_amount, total_amount + "+" + min_cap,
+                shelves_location + " & " + back_location, shelves_amount + " & " + back_amount, total_amount + " & " + min_cap,
                 discount};
     }
     public String[] get_header(){
         return new String[]{"ID", "Name", "Category", "Manufacturer", "Sell Price",
-                "Locations", "Amounts", "Total vs. Min",
+                "Locations", "Amounts", "Total and Min",
                 "Discount Description"};
     }
 }
