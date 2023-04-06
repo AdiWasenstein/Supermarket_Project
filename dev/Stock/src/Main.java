@@ -13,8 +13,8 @@ public class Main {
     static Category hand_soap500 = new Category("Toiletries", "Hand Soap", new Size(500, MeasureUnit.ML));
     static Category pan50 = new Category("Kitchen", "Kitchen Tools", new Size(50, MeasureUnit.CM));
     static Category fork100 = new Category("Kitchen", "Cutlery", new Size(100, MeasureUnit.UNIT));
-    static Category cap100 = new Category("Food Accessories", "Caps", new Size(100, MeasureUnit.UNIT));
-    static Category plate50 = new Category("Food Accessories", "Plates", new Size(50, MeasureUnit.UNIT));
+    static Category cap100 = new Category("Kitchenware", "Caps", new Size(100, MeasureUnit.UNIT));
+    static Category plate50 = new Category("Kitchenware", "Plates", new Size(50, MeasureUnit.UNIT));
     static Category rice1000 = new Category("Legumes", "Rice", new Size(1000, MeasureUnit.GM));
     static Category pasta1000 = new Category("Legumes", "Pasta", new Size(1000, MeasureUnit.GM));
     static Category pita10 = new Category("Breads", "Pitas", new Size(10, MeasureUnit.UNIT));

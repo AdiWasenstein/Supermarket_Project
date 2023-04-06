@@ -39,7 +39,7 @@ public class Discount {
         return is_date_valid() && amount_to_add(current_capacity) == 0;
     }
     public String toString(){
-        return String.format("%.1f%s, %d+ till %s", value, (is_percentage ? "%" : "ILS"), min_capacity,
+        return String.format("%.1f%s, %d+ end %s", value, (is_percentage ? "%" : "ILS"), min_capacity,
                 expiration_date.format(DateTimeFormatter.ofPattern("d/M/yy")));
     }
 }
