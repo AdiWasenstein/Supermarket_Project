@@ -14,6 +14,6 @@ public class DamagedReport extends AItemReport {
         return new String[]{barcode, id, name, category, location, damage_description};
     }
     public String[] get_header(){
-        return new String[]{"Barcode", "Name", "ID", "Category", "Location", "Damage Description"};
+        return new String[]{"Barcode", "ID", "Name", "Category", "Location", "Damage Description"};
     }
 }

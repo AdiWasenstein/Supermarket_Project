@@ -67,7 +67,7 @@ public class Branch {
             catalog_item.inc_shelves();
             return item.get_barcode();
         }
-        if(!this.back.add_item(item, for_front))
+        if(!this.back.add_item(item, true))
             return -1;
         catalog_item.inc_back();
         return item.get_barcode();
