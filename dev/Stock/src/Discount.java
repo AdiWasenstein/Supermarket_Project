@@ -38,7 +38,7 @@ public class Discount {
         return is_date_valid() && amount_to_add(current_capacity) == 0;
     }
     public String toString(){
-        return String.format("%.1f%s for amount ≥ %d until %s", value, (is_percentage ? "%" : "ILS"), min_capacity,
+        return String.format("%.1f%s for %d+ until %s", value, (is_percentage ? "%" : "ILS"), min_capacity,
                 expiration_date.toString());
     }
 }
