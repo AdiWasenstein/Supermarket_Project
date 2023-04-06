@@ -6,8 +6,7 @@ public class CurrentCatalogReport extends ACatalogReport{
         String name = item.get_name();
         String category = item.get_category().toString();
         String manufacturer = item.get_manufacturer();
-        String sell_price = item.get_price() + "₪";
-        String discounted_price = String.format("%.1f", item.get_discounted_price()) + "₪";
+        String sell_price = item.get_price() + "ILS";
         String shelves_location = String.valueOf(item.get_shelves_location());
         String back_location = String.valueOf(item.get_back_location());
         String shelves_amount = String.valueOf(item.get_shelves_amount());
@@ -15,13 +14,13 @@ public class CurrentCatalogReport extends ACatalogReport{
         String total_amount = String.valueOf(item.get_total_amount());
         String min_cap = String.valueOf(item.get_min_capacity());
         String discount = item.get_discount() != null ? item.get_discount().toString() : "";
-        return new String[]{id, name, category, manufacturer, sell_price, discounted_price,
+        return new String[]{id, name, category, manufacturer, sell_price,
                 shelves_location + " & " + back_location, shelves_amount + " & " + back_amount, total_amount, min_cap,
                 discount};
     }
     public String[] get_header(){
-        return new String[]{"ID", "Name", "Category", "Manufacturer", "Sell Price", "Discounted Price",
-                "Shelves & Back Locations", "Shelves & Back Amounts", "Total Amount", "Min Capacity",
+        return new String[]{"ID", "Name", "Category", "Manufacturer", "Sell Price",
+                "Shelves & Back Locations", "Shelves & Back Amounts", "Total", "Min Amount",
                 "Discount Description"};
     }
 }
