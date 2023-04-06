@@ -34,7 +34,7 @@ public class Item {
     public boolean is_expired(){ return date_difference() > 0;}
     public String get_expiration_str(){return this.expiration_date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));}
     public DamageType get_damage(){return this.damage_type;}
-    public void set_damaged(DamageType type){
+    public void set_damage(DamageType type){
         this.damage_type = type;
     }
     public int get_location(){ return this.location;}

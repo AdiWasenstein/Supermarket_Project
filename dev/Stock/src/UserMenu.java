@@ -47,9 +47,9 @@ public class UserMenu {
         System.out.println("4. Remove item from stock");
         System.out.println("5. Generate Report");
         System.out.println("6. Set price for an item");
-        System.out.println("7. Set minimal capacity for an item");
+        System.out.println("7. Set minimum capacity for an item");
         System.out.println("8. Set discount");
-        System.out.println("9. Change Item location");
+        System.out.println("9. Change Item's Details");
         System.out.println("0. Exit");
     }
     public void add_to_catalog(){
@@ -106,7 +106,7 @@ public class UserMenu {
         System.out.println("Enter the item's details:");
         System.out.print("ID: "); int id = input_number();
         if(!branch.contains_id(id)){
-            System.out.println("Invalid ID. Returning to main menu...");
+            id_request();
             return;
         }
         System.out.print("Cost price: "); double cost_price = input_double();
@@ -154,9 +154,11 @@ public class UserMenu {
             return;
         }
         CatalogItem catalog_item = branch.get_catalog_from_barcode(id);
-        if(catalog_item.get_min_capacity() == catalog_item.get_total_amount() + 1)
+        if(catalog_item.get_min_capacity() > catalog_item.get_total_amount())
             System.out.println("THE ITEM CROSSED THE MINIMUM GAP, CONSIDER ORDERING MORE UNITS IMMEDIATELY");
-        System.out.println("Removing from the stock completed successfully. Returning to main menu...");
+        String fill_shelves = catalog_item.get_shelves_amount() < catalog_item.get_min_capacity() / 2 ?
+                String.format(" Consider filling the shelves with %s (ID %d).", catalog_item.get_name(), catalog_item.get_id()) : "";
+        System.out.format("Removing from the stock completed successfully.%s Returning to main menu...\n", fill_shelves);
     }
     public void generate_report(){
         System.out.print("Choose what type of report would you want?\n1. Per Category\n2. Required Stock\n3. Damaged Items\n4. Stock items\n5. All Catalog\nReport type: "); int report_type = input_number();
@@ -219,7 +221,7 @@ public class UserMenu {
     public void set_price(){
         System.out.print("Enter the item ID: "); int id = input_number();
         if(!branch.contains_id(id)){
-            System.out.println("Invalid ID. Returning to main menu...");
+            id_request();
             return;
         }
         System.out.print("Enter the new price: "); double price = input_double();
@@ -236,7 +238,7 @@ public class UserMenu {
     public void set_capacity(){
         System.out.print("Enter the item ID: "); int id = input_number();
         if(!branch.contains_id(id)){
-            System.out.println("Invalid ID. Returning to main menu...");
+            id_request();
             return;
         }
         System.out.print("Enter the new capacity: "); int amount = input_number();
@@ -277,7 +279,7 @@ public class UserMenu {
             case(1) -> {
                 System.out.print("Enter item's ID: "); int id = input_number();
                 if(!branch.set_item_discount(id, discount)){
-                    System.out.println("Invalid ID. Returning to main menu...");
+                    id_request();
                 }
             }
             case (2) -> {
@@ -304,13 +306,67 @@ public class UserMenu {
             default -> System.out.println("Invalid option. Returning to main menu...");
         }
     }
-    public void change_location(){
-        System.out.print("Enter the item barcode"); int barcode = input_number();
-        if (!this.branch.transfer(barcode)){
-            System.out.print("Invalid item barcode. Returning to main menu...");
+    public void change_details(){
+        System.out.print("Enter the item barcode: "); int barcode = input_number();
+        if(!this.branch.contains_barcode(barcode)) {
+            barcode_request();
+            return;
         }
-        else
-            System.out.format("Changing the item location to location %d completed successfully. Returning to main menu...", this.branch.get_item_location(barcode));
+        System.out.println("""
+                What details do you want to change?\s
+                1. Change Location
+                2. Update Damage
+                Choice:\s""");
+        int choice = input_number();
+        switch (choice){
+            case (1) -> change_location(barcode);
+            case (2) -> change_damages(barcode);
+            default -> System.out.println("Invalid choice. Returning to main menu...");
+        }
+    }
+    public void change_location(int barcode){
+        if (!this.branch.transfer(barcode)){
+            System.out.print("Error at changing location. Returning to main menu...");
+        }
+        System.out.format("Changing the item location to location %d completed successfully. Returning to main menu...\n", this.branch.get_item_location(barcode));
+    }
+    public void id_request(){
+        System.out.println("""
+                ID not found in the system. Do you want to add a new item to the catalog?
+                1. Yes
+                2. No
+                Choice:\s"""); int choice = input_number();
+        if (choice == 1) {
+            add_to_catalog();
+        } else {
+            System.out.println("Returning to main menu...");
+        }
+    }
+    public void barcode_request(){
+        System.out.println("""
+                Barcode not found in the system. Do you want to add a new item to the stock?
+                1. Yes
+                2. No
+                 Choice:\s"""); int choice = input_number();
+        if (choice == 1) {
+            add_item_to_stock();
+        } else {
+            System.out.println("Returning to main menu...");
+        }
+    }
+
+    public void change_damages(int barcode){
+        System.out.print("Choose damage type:\n1. Cover\n2. PHYSICAL\n3. ELECTRICAL\n4. ROTTEN\nDamage type: "); int damage_type = input_number();
+        if(damage_type < 1 || damage_type > 4){
+            System.out.println("Invalid choice. Returning to main menu...");
+            return;
+        }
+        if(!this.branch.set_damage(barcode, DamageType.values()[damage_type - 1])) {
+            System.out.println("Error setting new damage. Returning to main menu...");
+            return;
+        }
+        System.out.format("Adding damage %s to barcode %d completed successfully. Returning to main menu...\n",
+                DamageType.values()[damage_type - 1], barcode);
     }
     public UserMenu(){
         System.out.print("Welcome to the system, please enter your branch's address: ");

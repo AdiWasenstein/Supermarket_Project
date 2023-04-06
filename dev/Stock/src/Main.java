@@ -104,8 +104,8 @@ public class Main {
         for(int i = 0; i < 4; i++){
             int id1 = rnd.nextInt(10, 36);
             int id2 = rnd.nextInt(10, 36);
-            double value_disc = rnd.nextDouble(3);
-            double perc_disc = rnd.nextInt(10) * 5;
+            double value_disc = rnd.nextInt(1,30)/10.0;
+            double perc_disc = rnd.nextInt(1, 10) * 5;
             int month1 = rnd.nextInt(1, 13);
             int month2 = rnd.nextInt(1, 13);
             int min1 = rnd.nextInt(7);

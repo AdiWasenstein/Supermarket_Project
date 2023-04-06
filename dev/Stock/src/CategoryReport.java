@@ -8,7 +8,7 @@ public class CategoryReport extends ACatalogReport{
         String sub = catalog_item.get_category().get_sub_category();
         String size = String.format("%.1f %ss", catalog_item.get_category().get_size_amount(), catalog_item.get_category().get_measureunit().name());
         String manufacturer = catalog_item.get_manufacturer();
-        String sell_price = String.valueOf(catalog_item.get_price());
+        String sell_price = catalog_item.get_price() + "₪";
         String amount = String.valueOf(catalog_item.get_total_amount());
         String min = String.valueOf(catalog_item.get_min_capacity());
         String discount = catalog_item.get_discount() == null ? "" : catalog_item.get_discount().toString();

@@ -12,4 +12,7 @@ public abstract class AItemReport extends AReport{
             records.add(get_data(item));
         }
     }
+    public String get_location(Item item){
+        return (item.get_location() < Branch.BACKSTART ? "Shelves" : "Back") + String.format(" - %d", item.get_location());
+    }
 }

@@ -22,16 +22,16 @@ public class Branch {
     public int barcode_to_id(int barcode){
         return Math.max(this.shelves.barcode_to_id(barcode), this.back.barcode_to_id(barcode));
     }
-    public CatalogItem get_catalog_from_barcode(int id){
-        return this.catalog.get(id);
-    }
+    public CatalogItem get_catalog_from_barcode(int id){return this.catalog.get(id);}
     public boolean set_item_price(int id, double price) {
         if (!contains_id(id) || price < 0)
             return false;
         catalog.get(id).set_price(price);
         return true;
     }
-
+    public boolean set_damage(int barcode, DamageType damage){
+        return this.shelves.set_damage(barcode, damage) || this.back.set_damage(barcode, damage);
+    }
     public boolean set_item_capacity(int id, int amount){
         if (!contains_id(id) || amount < 0)
             return false;
@@ -113,12 +113,15 @@ public class Branch {
         return this.back.add_item(item, true);
     }
     public boolean transfer(int barcode){
-        if (this.shelves.contain(barcode))
+        if (this.shelves.contains(barcode))
             return transfer_front_to_back(barcode);
-        else if (this.back.contain(barcode)){
+        else if (this.back.contains(barcode)){
             return transfer_back_to_front(barcode);
         }
         return false;
+    }
+    public boolean contains_barcode(int barcode){
+        return this.shelves.contains(barcode) || this.back.contains(barcode);
     }
     public void generate_stock_report(){
         StockReport stock_report = new StockReport();

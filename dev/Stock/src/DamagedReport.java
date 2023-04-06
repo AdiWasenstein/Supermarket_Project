@@ -6,7 +6,7 @@ public class DamagedReport extends AItemReport {
         String id = String.valueOf(item.get_catalog_item().get_id());
         String name = item.get_catalog_item().get_name();
         String category = item.catalog_item.get_category().toString();
-        String location = String.valueOf(item.get_location());
+        String location = get_location(item);
         DamageType damage = item.get_damage();
         String expiration = item.is_expired() ? String.format("%d days expired", item.date_difference()) : "";
         String damage_type = damage == DamageType.NONE ? "" : damage.name();

@@ -6,8 +6,8 @@ public class CurrentCatalogReport extends ACatalogReport{
         String name = item.get_name();
         String category = item.get_category().toString();
         String manufacturer = item.get_manufacturer();
-        String sell_price = String.valueOf(item.get_price());
-        String discounted_price = String.format("%.1f", item.get_discounted_price());
+        String sell_price = item.get_price() + "₪";
+        String discounted_price = String.format("%.1f", item.get_discounted_price()) + "₪";
         String shelves_location = String.valueOf(item.get_shelves_location());
         String back_location = String.valueOf(item.get_back_location());
         String shelves_amount = String.valueOf(item.get_shelves_amount());
