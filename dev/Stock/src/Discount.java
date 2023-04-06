@@ -2,7 +2,6 @@ package Stock.src;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 public class Discount {
     LocalDate expiration_date;
@@ -40,7 +39,7 @@ public class Discount {
         return is_date_valid() && amount_to_add(current_capacity) == 0;
     }
     public String toString(){
-        return String.format("%.1f%s, %d+ until %s", value, (is_percentage ? "%" : "ILS"), min_capacity,
-                expiration_date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+        return String.format("%.1f%s, %d+ till %s", value, (is_percentage ? "%" : "ILS"), min_capacity,
+                expiration_date.format(DateTimeFormatter.ofPattern("d/M/yy")));
     }
 }

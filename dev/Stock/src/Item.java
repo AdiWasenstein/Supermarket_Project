@@ -1,7 +1,6 @@
 package Stock.src;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 
 public class Item {
@@ -32,7 +31,7 @@ public class Item {
         return ChronoUnit.DAYS.between( this.expiration_date, LocalDate.now());
     }
     public boolean is_expired(){ return date_difference() > 0;}
-    public String get_expiration_str(){return this.expiration_date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));}
+    public String get_expiration_str(){return this.expiration_date.format(DateTimeFormatter.ofPattern("d/M/yy"));}
     public DamageType get_damage(){return this.damage_type;}
     public void set_damage(DamageType type){
         this.damage_type = type;

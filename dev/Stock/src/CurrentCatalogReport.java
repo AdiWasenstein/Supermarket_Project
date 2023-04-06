@@ -19,7 +19,7 @@ public class CurrentCatalogReport extends ACatalogReport{
                 discount};
     }
     public String[] get_header(){
-        return new String[]{"ID", "Name", "Category", "Manufacturer", "Sell Price",
+        return new String[]{"ID", "Name", "Category", "Manufacturer", "Price",
                 "Locations", "Amounts", "Total & Min",
                 "Discount Details"};
     }
