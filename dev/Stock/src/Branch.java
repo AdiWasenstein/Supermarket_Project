@@ -124,7 +124,7 @@ public class Branch {
         return this.shelves.contains(barcode) || this.back.contains(barcode);
     }
     public void generate_stock_report(){
-        StockReport stock_report = new StockReport();
+        RequiredStockReport stock_report = new RequiredStockReport();
         for(CatalogItem catalog_item : this.catalog.values())
             if(catalog_item.get_shelves_amount() + catalog_item.get_back_amount() < catalog_item.get_min_capacity())
                 stock_report.add_to_report(catalog_item);
@@ -159,7 +159,7 @@ public class Branch {
     }
 
     public void generate_all_items_report(){
-        CurrentItemsReport rep = new CurrentItemsReport();
+        StockItemsReport rep = new StockItemsReport();
         for (Item item : shelves.all_items_report())
             rep.add_to_report(item);
         for (Item item : back.all_items_report())
@@ -167,7 +167,7 @@ public class Branch {
         rep.generate_report();
     }
     public void generate_catalog_report(){
-        CurrentCatalogReport rep = new CurrentCatalogReport();
+        AllCatalogReport rep = new AllCatalogReport();
         for(CatalogItem catalog_item : catalog.values())
             rep.add_to_report(catalog_item);
         rep.generate_report();

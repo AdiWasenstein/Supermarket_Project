@@ -1,7 +1,6 @@
 package Stock.src;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 public class Main {
     static Category milk1000 = new Category("Dairy", "Milk", new Size(1000, MeasureUnit.ML));
@@ -28,8 +27,8 @@ public class Main {
         UserMenu us = new UserMenu();
         if (us.initialize_data() == 1) {
             initialize_Catalog(us);
-            for (int i = 0; i < 100; i++)
-                initialize_Items(us);
+            for (int i = 0; i < 15; i++)
+                initialize_Items(us, i);
             initialize_discount(us);
         }
         us.communicate();// Labohen
@@ -63,57 +62,48 @@ public class Main {
     us.branch.add_catalog_item(34, "Fanta", soft_drink1500, "Coca Cola", 8.7, 200);
     us.branch.add_catalog_item(35, "Oval Plates", plate50, "Naaman", 80, 20);
     }
-    public static void initialize_Items(UserMenu us){
-        Random rnd = new Random();
-        switch (rnd.nextInt(3)){
+    public static void initialize_Items(UserMenu us, int i){
+        switch (i % 4){
             case(0) -> {
-                us.branch.add_item(10, 3, LocalDate.of(2023,4,11), DamageType.NONE);
-                us.branch.add_item(11, 5.8, LocalDate.of(2024,4,29), DamageType.NONE);
-                us.branch.add_item(12, 3.7, LocalDate.of(2023,4,18), DamageType.NONE);
-                us.branch.add_item(13, 3, LocalDate.of(2023,4,3), DamageType.NONE);
-                us.branch.add_item(14, 4.8, LocalDate.of(2023,4,20), DamageType.NONE);
-                us.branch.add_item(15, 9, LocalDate.of(2024,2,19), DamageType.NONE);
-                us.branch.add_item(16, 3, LocalDate.of(2023,4,17), DamageType.NONE);
-                us.branch.add_item(17, 2.15, LocalDate.of(2023,4,19), DamageType.NONE);
-                us.branch.add_item(18, 4, LocalDate.of(2023,4,8), DamageType.NONE);
-                us.branch.add_item(19, 9.66, LocalDate.of(2024,6,4), DamageType.ROTTEN);
-                us.branch.add_item(20, 4.6, LocalDate.of(2025,12,31), DamageType.NONE);
-                us.branch.add_item(21, 7, LocalDate.of(2030,1,1), DamageType.NONE);
-                us.branch.add_item(22, 3.8, LocalDate.of(2023,4,25), DamageType.ROTTEN);
+                us.branch.add_item(10, 3, LocalDate.of(2023, 4, 11), i % 7 == 0 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(11, 5.8, LocalDate.of(2024, 4, 29), i % 7 == 1 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(12, 3.7, LocalDate.of(2023, 4, 18), i % 7 == 2 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(13, 3, LocalDate.of(2023, 4, 3), i % 7 == 3 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(14, 4.8, LocalDate.of(2023, 4, 20), i % 7 == 4 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(15, 9, LocalDate.of(2024, 2, 19), i % 7 == 5 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(16, 3, LocalDate.of(2023, 4, 17), i % 7 == 6 ? DamageType.values()[i % 5] : DamageType.NONE);
             }
             case(1) -> {
-                us.branch.add_item(23, 9, LocalDate.of(2030,12,31), DamageType.NONE);
-                us.branch.add_item(24, 25, LocalDate.of(2023,12,17), DamageType.NONE);
-                us.branch.add_item(25, 6, LocalDate.of(2090,1,1), DamageType.COVER);
-                us.branch.add_item(26, 3, LocalDate.of(2023,4,13), DamageType.NONE);
-                us.branch.add_item(27, 4.6, LocalDate.of(2025,1,30), DamageType.NONE);
-                us.branch.add_item(28, 25, LocalDate.of(2025,12,31), DamageType.NONE);
-                us.branch.add_item(29, 1.9, LocalDate.of(2050,8,27), DamageType.NONE);
+                us.branch.add_item(17, 2.15, LocalDate.of(2023,4,19), i % 7 == 0 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(18, 4, LocalDate.of(2023,4,8), i % 7 == 1 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(19, 9.66, LocalDate.of(2024,6,4), i % 7 == 2 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(20, 4.6, LocalDate.of(2025,12,31), i % 7 == 3 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(21, 7, LocalDate.of(2030,1,1), i % 7 == 4 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(22, 3.8, LocalDate.of(2023,4,25), i % 7 == 5 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(23, 9, LocalDate.of(2030,12,31), i % 7 == 6 ? DamageType.values()[i % 5] : DamageType.NONE);
             }
             case(2) -> {
-                us.branch.add_item(30, 6.5, LocalDate.of(2028,6,1), DamageType.NONE);
-                us.branch.add_item(31, 90, LocalDate.of(2000,1,1), DamageType.PHYSICAL);
-                us.branch.add_item(32, 4.2, LocalDate.of(2030,1,1), DamageType.NONE);
-                us.branch.add_item(33, 2, LocalDate.of(2050,8,29), DamageType.NONE);
-                us.branch.add_item(34, 3.4, LocalDate.of(2025,1,1), DamageType.NONE);
-                us.branch.add_item(35, 20, LocalDate.of(2050,1,1), DamageType.NONE);
+                us.branch.add_item(24, 25, LocalDate.of(2023,12,17), i % 7 == 0 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(25, 6, LocalDate.of(2090,1,1), i % 7 == 1 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(26, 3, LocalDate.of(2023,4,13), i % 7 == 2 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(27, 4.6, LocalDate.of(2025,1,30), i % 7 == 3 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(28, 25, LocalDate.of(2025,12,31), i % 7 == 4 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(29, 1.9, LocalDate.of(2050,8,27), i % 7 == 5 ? DamageType.values()[i % 5] : DamageType.NONE);
+            }
+            case(3) -> {
+                us.branch.add_item(30, 6.5, LocalDate.of(2028,6,1), i % 7 == 0 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(31, 90, LocalDate.of(2000,1,1), i % 7 == 1 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(32, 4.2, LocalDate.of(2030,1,1), i % 7 == 2 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(33, 2, LocalDate.of(2050,8,29), i % 7 == 3 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(34, 3.4, LocalDate.of(2025,1,1), i % 7 == 4 ? DamageType.values()[i % 5] : DamageType.NONE);
+                us.branch.add_item(35, 20, LocalDate.of(2050,1,1), i % 7 == 5 ? DamageType.values()[i % 5] : DamageType.NONE);
             }
         }
     }
     public static void initialize_discount(UserMenu us){
         us.branch.set_category_discount(white_bread500, new Discount(LocalDate.of(2023,10,1), 50, true, 2));
-        Random rnd = new Random();
-        for(int i = 0; i < 4; i++){
-            int id1 = rnd.nextInt(10, 36);
-            int id2 = rnd.nextInt(10, 36);
-            double value_disc = rnd.nextInt(1,30)/10.0;
-            double perc_disc = rnd.nextInt(1, 10) * 5;
-            int month1 = rnd.nextInt(1, 13);
-            int month2 = rnd.nextInt(1, 13);
-            int min1 = rnd.nextInt(7);
-            int min2 = rnd.nextInt(7);
-            us.branch.set_item_discount(id1, new Discount(LocalDate.of(2023,month1,1), value_disc, false, min1));
-            us.branch.set_item_discount(id2, new Discount(LocalDate.of(2023,month2,1), perc_disc, true, min2));
-        }
+        us.branch.set_item_discount(10, new Discount(LocalDate.of(2023,8,1), 3, false, 2));
+        us.branch.set_item_discount(34, new Discount(LocalDate.of(2023,5,1), 30, true, 0));
+        us.branch.set_item_discount(35, new Discount(LocalDate.of(2023,4,1), 40, true, 4));
     }
 }

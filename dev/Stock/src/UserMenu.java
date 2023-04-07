@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class UserMenu {
     static Scanner input = new Scanner(System.in);
-    public Branch branch;
+    Branch branch;
 
     public int input_number(){
         int num;
@@ -375,11 +375,11 @@ public class UserMenu {
     public int initialize_data(){
         System.out.println("Do you want to initialize the data?\n1. Yes\n2. No"); int initialize = input_number();
         if (initialize == 1){
-            System.out.println("System initialized successfully.");
+            System.out.println("System initialized with data successfully.");
             return 1;
         }
         else
-            System.out.println("System is not initialized.");
+            System.out.println("Empty system was initialized successfully.");
         return 2;
     }
 

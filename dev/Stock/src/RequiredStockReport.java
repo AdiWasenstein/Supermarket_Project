@@ -1,8 +1,7 @@
 package Stock.src;
 
-public class StockReport extends ACatalogReport{ // To add ACatalog
+public class RequiredStockReport extends ACatalogReport{ // To add ACatalog
     public String[] get_data(CatalogItem catalog_item){
-        //TO Do
         String id = String.valueOf(catalog_item.get_id());
         String name = catalog_item.get_name();
         String amount = String.valueOf(catalog_item.get_min_capacity() * 2 - catalog_item.get_total_amount());

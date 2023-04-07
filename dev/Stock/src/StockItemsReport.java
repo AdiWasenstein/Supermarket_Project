@@ -1,6 +1,6 @@
 package Stock.src;
 
-public class CurrentItemsReport extends AItemReport {
+public class StockItemsReport extends AItemReport {
     public String[] get_data(Item item){
         CatalogItem catalog_item = item.get_catalog_item();
         String barcode = String.valueOf(item.get_barcode());

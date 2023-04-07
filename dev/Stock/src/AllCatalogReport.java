@@ -1,6 +1,6 @@
 package Stock.src;
 
-public class CurrentCatalogReport extends ACatalogReport{
+public class AllCatalogReport extends ACatalogReport{
     public String[] get_data(CatalogItem item){
         String id = String.valueOf(item.get_id());
         String name = item.get_name();
