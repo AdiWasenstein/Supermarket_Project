@@ -26,10 +26,12 @@ public class Main {
 
     public static void main(String[] args) {
         UserMenu us = new UserMenu();
-        initialize_Catalog(us);
-        for (int i = 0; i < 100; i++)
-            initialize_Items(us);
-        initialize_discount(us);
+        if (us.initialize_data() == 1) {
+            initialize_Catalog(us);
+            for (int i = 0; i < 100; i++)
+                initialize_Items(us);
+            initialize_discount(us);
+        }
         us.communicate();// Labohen
     }
 

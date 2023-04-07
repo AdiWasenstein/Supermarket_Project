@@ -371,7 +371,16 @@ public class UserMenu {
     public UserMenu(){
         System.out.print("Welcome to the system, please enter your branch's address: ");
         this.branch = new Branch(input.nextLine());
-        System.out.println("System initialized successfully.");
+    }
+    public int initialize_data(){
+        System.out.println("Do you want to initialize the data?\n1. Yes\n2. No"); int initialize = input_number();
+        if (initialize == 1){
+            System.out.println("System initialized successfully.");
+            return 1;
+        }
+        else
+            System.out.println("System is not initialized.");
+        return 2;
     }
 
     public void communicate(){
