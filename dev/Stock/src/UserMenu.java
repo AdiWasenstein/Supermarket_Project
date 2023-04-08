@@ -232,7 +232,7 @@ public class UserMenu {
         if (!this.branch.set_item_price(id, price)){
             System.out.print("Invalid item ID. Returning to main menu...");
         }
-        System.out.format("Catalog item ID %d's price changed to %.1f₪ successfully. Returning to main menu...\n", id, price);
+        System.out.format("Catalog item ID %d's price changed to %.1fILS successfully. Returning to main menu...\n", id, price);
     }
 
     public void set_capacity(){
