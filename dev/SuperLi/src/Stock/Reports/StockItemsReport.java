@@ -19,6 +19,6 @@ public class StockItemsReport extends AItemReport {
         return new String[]{barcode, id, name, location, expiration_date, damage_type, cost_price + " & " + sell_price, discount};
     }
     public String[] get_header(){
-        return new String[]{"Barcode", "ID", "Name", "Location", "Expiration", "Damage", "Cost & Sell Price", "Discount Description"};
+        return new String[]{"Barcode", "ID", "Name", "Location", "Expiration", "Damage", "Cost & Sell Price", "CostumerDiscount Description"};
     }
 }

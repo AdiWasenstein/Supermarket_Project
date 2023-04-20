@@ -48,7 +48,7 @@ public class UserMenu {
         System.out.println("5. Generate Report");
         System.out.println("6. Set price for an item");
         System.out.println("7. Set minimum capacity for an item");
-        System.out.println("8. Set discount");
+        System.out.println("8. Set costumerDiscount");
         System.out.println("9. Change Item's Details");
         System.out.println("0. Exit");
     }
@@ -252,13 +252,13 @@ public class UserMenu {
         System.out.format("Catalog ID %d's minimum capacity changed to %d successfully. Returning to main menu...\n", id, amount);
     }
     public void set_discount(){
-        System.out.println("Please enter discount details:");
+        System.out.println("Please enter costumerDiscount details:");
         System.out.println("Expiration date (Format: d/M/yy): "); LocalDate date = input_date();
         if(date == null || date.isBefore(LocalDate.now())){
             System.out.println("Invalid date. Returning to main menu...");
             return;
         }
-        System.out.print("Discount value: "); double value = input_double();
+        System.out.print("CostumerDiscount value: "); double value = input_double();
         if(value < 0) {
             System.out.println("Invalid value. Returning to main menu...");
             return;
@@ -273,12 +273,12 @@ public class UserMenu {
             System.out.println("Invalid amount. Returning to main menu...");
             return;
         }
-        Discount discount = new Discount(date, value, value_type == 2, min_amount);
-        System.out.print("What type of discount would you like to apply:\n1. Item discount\n2. Category discount\nDiscount Type: "); int discount_type = input_number();
+        CostumerDiscount costumerDiscount = new CostumerDiscount(date, value, value_type == 2, min_amount);
+        System.out.print("What type of costumerDiscount would you like to apply:\n1. Item costumerDiscount\n2. Category costumerDiscount\nCostumerDiscount Type: "); int discount_type = input_number();
         switch(discount_type){
             case(1) -> {
                 System.out.print("Enter item's ID: "); int id = input_number();
-                if(!branch.set_item_discount(id, discount)){
+                if(!branch.set_item_discount(id, costumerDiscount)){
                     id_request();
                 }
             }
@@ -301,7 +301,7 @@ public class UserMenu {
                     return;
                 }
                 MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
-                this.branch.set_category_discount(new Category(prime, sub, new Size(size, measure_unit)), discount);
+                this.branch.set_category_discount(new Category(prime, sub, new Size(size, measure_unit)), costumerDiscount);
             }
             default -> System.out.println("Invalid option. Returning to main menu...");
         }

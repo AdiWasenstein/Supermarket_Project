@@ -176,17 +176,17 @@ public class Branch {
             rep.add_to_report(catalog_item);
         rep.generate_report();
     }
-    public boolean set_item_discount(int id, Discount discount){
+    public boolean set_item_discount(int id, CostumerDiscount costumerDiscount){
         CatalogItem catalog_item = this.catalog.get(id);
         if(catalog_item == null)
             return false;
-        catalog_item.setDiscount(discount);
+        catalog_item.setDiscount(costumerDiscount);
         return true;
     }
-    public void set_category_discount(Category category, Discount discount){
+    public void set_category_discount(Category category, CostumerDiscount costumerDiscount){
         for(CatalogItem catalog_item : this.catalog.values())
             if(catalog_item.isFromCategory(category))
-                catalog_item.setDiscount(discount);
+                catalog_item.setDiscount(costumerDiscount);
     }
     public int get_item_location(int barcode){
         int id = shelves.barcode_to_id(barcode);

@@ -23,6 +23,6 @@ public class AllCatalogReport extends ACatalogReport{
     public String[] get_header(){
         return new String[]{"ID", "Name", "Category", "Manufacturer", "Price",
                 "Locations", "Amounts", "Tot & Min",
-                "Discount Details"};
+                "CostumerDiscount Details"};
     }
 }

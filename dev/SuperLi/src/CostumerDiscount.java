@@ -3,13 +3,13 @@ package SuperLi.src;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Discount {
+public class CostumerDiscount {
     LocalDate expirationDate;
     double value;
     boolean isPercentage;
     int minCapacity;
 
-    public Discount(LocalDate expirationDate, double value, boolean isPercentage, int minCapacity){
+    public CostumerDiscount(LocalDate expirationDate, double value, boolean isPercentage, int minCapacity){
         this.expirationDate = expirationDate;
         this.value = value;
         this.isPercentage = isPercentage;

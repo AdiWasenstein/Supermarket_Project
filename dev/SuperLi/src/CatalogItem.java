@@ -11,7 +11,7 @@ public class CatalogItem {
     int backAmount;
     int shelvesLocation;
     int backLocation;
-    Discount discount;
+    CostumerDiscount costumerDiscount;
     public CatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category, int shelvesLocation, int backLocation){
         this.id = id;
         this.shelvesAmount = 0;
@@ -23,7 +23,7 @@ public class CatalogItem {
         this.category = category;
         this.shelvesLocation = shelvesLocation;
         this.backLocation = backLocation;
-        this.discount = null;
+        this.costumerDiscount = null;
     }
     public int getId(){ return this.id;}
     public String getName(){return this.name;}
@@ -45,20 +45,20 @@ public class CatalogItem {
     public int getShelvesLocation(){return this.shelvesLocation;}
     public int getBackLocation(){return this.backLocation;}
     public String toString(){
-        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; Amount: %d; Min Capacity: %d; Discount: %s",
-                id, category, name, manufacturer, sellPrice, shelvesAmount + backAmount, minCapacity,(discount == null ? "" : discount.toString()));
+        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; Amount: %d; Min Capacity: %d; CostumerDiscount: %s",
+                id, category, name, manufacturer, sellPrice, shelvesAmount + backAmount, minCapacity,(costumerDiscount == null ? "" : costumerDiscount.toString()));
     }
-    public Discount getDiscount(){return this.discount;}
-    public void setDiscount(Discount discount){this.discount = discount;}
+    public CostumerDiscount getDiscount(){return this.costumerDiscount;}
+    public void setDiscount(CostumerDiscount costumerDiscount){this.costumerDiscount = costumerDiscount;}
     public double getDiscountedPrice() {
-        if(this.discount == null)
+        if(this.costumerDiscount == null)
             return this.sellPrice;
-        return getDiscountedPrice(this.discount.getMinCapacity());
+        return getDiscountedPrice(this.costumerDiscount.getMinCapacity());
     }
     public double getDiscountedPrice(int amount) {
-        if(discount == null)
+        if(costumerDiscount == null)
             return this.sellPrice;
-        return this.discount.generateDiscount(this.sellPrice, amount);
+        return this.costumerDiscount.generateDiscount(this.sellPrice, amount);
     }
     public boolean isFromCategory(Category category){return category.equals(this.getCategory());}
     public boolean isFromCategory(String prime_category){

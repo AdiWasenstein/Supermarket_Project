@@ -101,9 +101,9 @@ public class Main {
         }
     }
     public static void initialize_discount(UserMenu us){
-        us.branch.set_category_discount(white_bread500, new Discount(LocalDate.of(2023,10,1), 50, true, 2));
-        us.branch.set_item_discount(10, new Discount(LocalDate.of(2023,8,1), 3, false, 2));
-        us.branch.set_item_discount(34, new Discount(LocalDate.of(2023,5,1), 30, true, 0));
-        us.branch.set_item_discount(35, new Discount(LocalDate.of(2023,4,1), 40, true, 4));
+        us.branch.set_category_discount(white_bread500, new CostumerDiscount(LocalDate.of(2023,10,1), 50, true, 2));
+        us.branch.set_item_discount(10, new CostumerDiscount(LocalDate.of(2023,8,1), 3, false, 2));
+        us.branch.set_item_discount(34, new CostumerDiscount(LocalDate.of(2023,5,1), 30, true, 0));
+        us.branch.set_item_discount(35, new CostumerDiscount(LocalDate.of(2023,4,1), 40, true, 4));
     }
 }
