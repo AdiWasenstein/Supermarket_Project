@@ -1,5 +1,7 @@
 package SuperLi.src;
 
+import SuperLi.src.Stock.CostumerDiscount;
+
 public class CatalogItem {
     int id;
     String name;

@@ -1,5 +1,7 @@
 package SuperLi.src;
 
+import SuperLi.src.Stock.CostumerDiscount;
+
 import java.time.LocalDate;
 
 public class Main {
