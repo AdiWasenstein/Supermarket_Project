@@ -1,7 +1,7 @@
 package SuperLi.src.Stock.Reports;
 
 import SuperLi.src.Branch;
-import SuperLi.src.Item;
+import SuperLi.src.Stock.Item;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,4 @@
 package SuperLi.src.Stock;
-import SuperLi.src.DamageType;
-import SuperLi.src.Item;
 
 import java.util.*;
 

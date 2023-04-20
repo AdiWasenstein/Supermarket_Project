@@ -1,5 +1,6 @@
 package SuperLi.src;
 import SuperLi.src.Stock.CostumerDiscount;
+import SuperLi.src.Stock.DamageType;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -1,8 +1,8 @@
 package SuperLi.src.Stock.Reports;
 
 import SuperLi.src.CatalogItem;
-import SuperLi.src.DamageType;
-import SuperLi.src.Item;
+import SuperLi.src.Stock.DamageType;
+import SuperLi.src.Stock.Item;
 
 public class StockItemsReport extends AItemReport {
     public String[] get_data(Item item){

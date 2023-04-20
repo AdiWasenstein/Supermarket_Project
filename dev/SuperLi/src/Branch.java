@@ -1,8 +1,6 @@
 package SuperLi.src;
-import SuperLi.src.Stock.BackStorage;
-import SuperLi.src.Stock.CostumerDiscount;
+import SuperLi.src.Stock.*;
 import SuperLi.src.Stock.Reports.*;
-import SuperLi.src.Stock.StoreShelves;
 
 import java.time.LocalDate;
 import java.util.*;
