@@ -9,191 +9,193 @@ public class Branch {
     String address;
     StoreShelves shelves;
     BackStorage back;
-    Map<Integer, CatalogItem> catalog;
+    Map<Integer, CatalogItem> catalogItemsMap;
     public final static int BACKSTART = 1000;
     public final static int BACKEND = 2000;
     public Branch(String address){
         this.address = address;
         this.shelves = new StoreShelves();
         this.back = new BackStorage();
-        this.catalog = new HashMap<>();
+        this.catalogItemsMap = new HashMap<>();
     }
-    public String get_address(){return this.address;}
-    public boolean contains_id(int id){
-        return catalog.containsKey(id);
-    }
-    public int barcode_to_id(int barcode){
-        return Math.max(this.shelves.barcode_to_id(barcode), this.back.barcode_to_id(barcode));
-    }
-    public CatalogItem get_catalog_from_barcode(int id){return this.catalog.get(id);}
-    public boolean set_item_price(int id, double price) {
-        if (!contains_id(id) || price < 0)
-            return false;
-        catalog.get(id).setPrice(price);
-        return true;
-    }
-    public boolean set_damage(int barcode, DamageType damage){
-        return this.shelves.set_damage(barcode, damage) || this.back.set_damage(barcode, damage);
-    }
-    public boolean set_item_capacity(int id, int amount){
-        if (!contains_id(id) || amount < 0)
-            return false;
-        catalog.get(id).setMinCapacity(amount);
-        return true;
-    }
-    public boolean add_catalog_item(int id, String name, Category category, String manufacturer, double sell_price, int min_capacity){
-        if(catalog.containsKey(id))
+    public String getAddress(){return this.address;}
+
+    //Catalog Items
+    public boolean addCatalogItem(int id, String name, Category category, String manufacturer, double sellPrice, int minCapacity){
+        if(catalogItemsMap.containsKey(id))
             return false;
         Random rnd = new Random();
-        int shelves_location = rnd.nextInt(BACKSTART);
-        int back_location = rnd.nextInt(BACKSTART, BACKEND + 1);
-        catalog.put(id, new CatalogItem(id, name, manufacturer, sell_price, min_capacity, category, shelves_location, back_location));
+        int shelvesLocation = rnd.nextInt(BACKSTART);
+        int backLocation = rnd.nextInt(BACKSTART, BACKEND + 1);
+        catalogItemsMap.put(id, new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation));
         return true;
     }
-    public boolean remove_catalog_item(int id){
-        if(!catalog.containsKey(id))
+    public boolean removeCatalogItem(int id){
+        if(!catalogItemsMap.containsKey(id))
             return false;
-        this.shelves.remove_catalog_item(id);
-        this.back.remove_catalog_item(id);
-        this.catalog.remove(id);
+        this.shelves.removeCatalogItem(id);
+        this.back.removeCatalogItem(id);
+        this.catalogItemsMap.remove(id);
         return true;
     }
-    public int add_item(int id, double cost_price, LocalDate expiration_date, DamageType damage, boolean for_front){
-        CatalogItem catalog_item = catalog.get(id);
-        if(catalog_item == null)
-            return -1;
-        Item item = new Item(catalog_item, cost_price, expiration_date, damage, catalog_item.getBackLocation());
-        if(for_front) {
-            item.setLocation(catalog_item.getShelvesLocation());
-            if(!this.shelves.add_item(item, false))
-                return -1;
-            catalog_item.incShelves();
-            return item.getBarcode();
-        }
-        if(!this.back.add_item(item, true))
-            return -1;
-        catalog_item.incBack();
-        return item.getBarcode();
+    public boolean containsId(int id){
+        return catalogItemsMap.containsKey(id);
     }
-    public int add_item(int id, double cost_price, LocalDate expiration_date, DamageType damage){
-        CatalogItem catalog_item = catalog.get(id);
-        if(catalog_item == null)
-            return -1;
-        boolean for_front = catalog_item.getShelvesAmount() < catalog_item.getMinCapacity();
-        return add_item(id, cost_price, expiration_date, damage, for_front);
-    }
-    public boolean remove_item(int barcode){
-        Item front_item = this.shelves.remove_item(barcode);
-        Item back_item = this.back.remove_item(barcode);
-        if(front_item != null) {
-            int id = front_item.getCatalogItem().getId();
-            CatalogItem catalog_item = catalog.get(id);
-            catalog_item.decShelves();
-            return true;
-        }
-        if(back_item != null){
-            int id = back_item.getCatalogItem().getId();
-        CatalogItem catalog_item = catalog.get(id);
-            catalog_item.decBack();
+    public boolean setPrice(int id, double price) {
+        if (!containsId(id) || price < 0)
+            return false;
+        catalogItemsMap.get(id).setPrice(price);
         return true;
-        }
-        return false;
     }
-    public boolean transfer_back_to_front(int barcode){
-        Item item = this.back.remove_item(barcode);
-        if (item == null)
+    public boolean setMinCapacity(int id, int amount){
+        if (!containsId(id) || amount < 0)
             return false;
-        this.catalog.get(item.getCatalogItem().getId()).decBack();
-        this.catalog.get(item.getCatalogItem().getId()).incShelves();
-        return this.shelves.add_item(item, false);
+        catalogItemsMap.get(id).setMinCapacity(amount);
+        return true;
     }
-    public boolean transfer_front_to_back(int barcode){
-        Item item = this.shelves.remove_item(barcode);
-        if (item == null)
+    public boolean setItemDiscount(int id, CostumerDiscount costumerDiscount){
+        CatalogItem catalogItem = this.catalogItemsMap.get(id);
+        if(catalogItem == null)
             return false;
-        this.catalog.get(item.getCatalogItem().getId()).decShelves();
-        this.catalog.get(item.getCatalogItem().getId()).incBack();
-        return this.back.add_item(item, true);
+        catalogItem.setDiscount(costumerDiscount);
+        return true;
     }
-    public boolean transfer(int barcode){
-        if (this.shelves.contains(barcode))
-            return transfer_front_to_back(barcode);
-        else if (this.back.contains(barcode)){
-            return transfer_back_to_front(barcode);
-        }
-        return false;
+    public void setCategoryDiscount(Category category, CostumerDiscount costumerDiscount){
+        for(CatalogItem catalogItem : this.catalogItemsMap.values())
+            if(catalogItem.isFromCategory(category))
+                catalogItem.setDiscount(costumerDiscount);
     }
-    public boolean contains_barcode(int barcode){
-        return this.shelves.contains(barcode) || this.back.contains(barcode);
+    public void generateCatalogReport(){
+        AllCatalogReport rep = new AllCatalogReport();
+        for(CatalogItem catalogItem : catalogItemsMap.values())
+            rep.add_to_report(catalogItem);
+        rep.generate_report();
     }
-    public void generate_stock_report(){
-        RequiredStockReport stock_report = new RequiredStockReport();
-        for(CatalogItem catalog_item : this.catalog.values())
-            if(catalog_item.getShelvesAmount() + catalog_item.getBackAmount() < catalog_item.getMinCapacity())
-                stock_report.add_to_report(catalog_item);
-        stock_report.generate_report();
-    }
-    public void generate_category_report(ArrayList<String> primes, ArrayList<String[]> prime_subs, ArrayList<Category> full){
-        CategoryReport category_report = new CategoryReport();
-        for(CatalogItem catalog_item :  this.catalog.values()){
-            Category item_category = catalog_item.getCategory();
-            boolean to_add = primes.contains(item_category.get_prime_category());
-            if(!to_add) {
+    public void generateCategoryReport(ArrayList<String> primes, ArrayList<String[]> prime_subs, ArrayList<Category> full){
+        CategoryReport categoryReport = new CategoryReport();
+        for(CatalogItem catalogItem :  this.catalogItemsMap.values()){
+            Category itemCategory = catalogItem.getCategory();
+            boolean toAdd = primes.contains(itemCategory.get_prime_category());
+            if(!toAdd) {
                 for (String[] prime_sub : prime_subs)
-                    if (catalog_item.isFromCategory(prime_sub[0], prime_sub[1])) {
-                        to_add = true;
+                    if (catalogItem.isFromCategory(prime_sub[0], prime_sub[1])) {
+                        toAdd = true;
                         break;
                     }
             }
-            to_add = to_add || full.contains(item_category);
-            if(to_add)
-                category_report.add_to_report(catalog_item);
+            toAdd = toAdd || full.contains(itemCategory);
+            if(toAdd)
+                categoryReport.add_to_report(catalogItem);
         }
-        category_report.generate_report();
+        categoryReport.generate_report();
     }
 
-    public void generate_damaged_report(){
-        DamagedReport damaged_report = new DamagedReport();
-        for(Item item : shelves.damaged_items())
-            damaged_report.add_to_report(item);
-        for(Item item : back.damaged_items())
-            damaged_report.add_to_report(item);
-        damaged_report.generate_report();
+    // Stock Items
+    public int addItem(int id, double costPrice, LocalDate expirationDate, DamageType damage, boolean forFront){
+        CatalogItem catalogItem = catalogItemsMap.get(id);
+        if(catalogItem == null)
+            return -1;
+        Item item = new Item(catalogItem, costPrice, expirationDate, damage, catalogItem.getBackLocation());
+        if(forFront) {
+            item.setLocation(catalogItem.getShelvesLocation());
+            if(!this.shelves.addItem(item, false))
+                return -1;
+            catalogItem.incShelves();
+            return item.getBarcode();
+        }
+        if(!this.back.addItem(item, true))
+            return -1;
+        catalogItem.incBack();
+        return item.getBarcode();
     }
-
-    public void generate_all_items_report(){
-        StockItemsReport rep = new StockItemsReport();
-        for (Item item : shelves.all_items_report())
-            rep.add_to_report(item);
-        for (Item item : back.all_items_report())
-            rep.add_to_report(item);
-        rep.generate_report();
+    public int addItem(int id, double costPrice, LocalDate expirationDate, DamageType damage){
+        CatalogItem catalogItem = catalogItemsMap.get(id);
+        if(catalogItem == null)
+            return -1;
+        boolean forFront = catalogItem.getShelvesAmount() < catalogItem.getMinCapacity();
+        return addItem(id, costPrice, expirationDate, damage, forFront);
     }
-    public void generate_catalog_report(){
-        AllCatalogReport rep = new AllCatalogReport();
-        for(CatalogItem catalog_item : catalog.values())
-            rep.add_to_report(catalog_item);
-        rep.generate_report();
+    public boolean removeItem(int barcode){
+        Item frontItem = this.shelves.removeItem(barcode);
+        Item backItem = this.back.removeItem(barcode);
+        if(frontItem != null) {
+            int id = frontItem.getCatalogItem().getId();
+            CatalogItem catalogItem = catalogItemsMap.get(id);
+            catalogItem.decShelves();
+            return true;
+        }
+        if(backItem != null){
+            int id = backItem.getCatalogItem().getId();
+            CatalogItem catalogItem = catalogItemsMap.get(id);
+            catalogItem.decBack();
+            return true;
+        }
+        return false;
     }
-    public boolean set_item_discount(int id, CostumerDiscount costumerDiscount){
-        CatalogItem catalog_item = this.catalog.get(id);
-        if(catalog_item == null)
-            return false;
-        catalog_item.setDiscount(costumerDiscount);
-        return true;
+    public boolean containsBarcode(int barcode){
+        return this.shelves.contains(barcode) || this.back.contains(barcode);
     }
-    public void set_category_discount(Category category, CostumerDiscount costumerDiscount){
-        for(CatalogItem catalog_item : this.catalog.values())
-            if(catalog_item.isFromCategory(category))
-                catalog_item.setDiscount(costumerDiscount);
+    public boolean setDamage(int barcode, DamageType damage){
+        return this.shelves.setDamage(barcode, damage) || this.back.setDamage(barcode, damage);
     }
-    public int get_item_location(int barcode){
-        int id = shelves.barcode_to_id(barcode);
+    public int getItemLocation(int barcode){
+        int id = shelves.barcodeToId(barcode);
         if(id >= 0)
-            return catalog.get(id).getShelvesLocation();
-        id = back.barcode_to_id(barcode);
+            return catalogItemsMap.get(id).getShelvesLocation();
+        id = back.barcodeToId(barcode);
         if(id < 0)
             return -1;
-        return catalog.get(id).getBackLocation();
+        return catalogItemsMap.get(id).getBackLocation();
+    }
+    public boolean transferItem(int barcode){
+        if (this.shelves.contains(barcode))
+            return transferFrontToBack(barcode);
+        else if (this.back.contains(barcode)){
+            return transferBackToFront(barcode);
+        }
+        return false;
+    }
+    public boolean transferFrontToBack(int barcode){
+        Item item = this.shelves.removeItem(barcode);
+        if (item == null)
+            return false;
+        this.catalogItemsMap.get(item.getCatalogItem().getId()).decShelves();
+        this.catalogItemsMap.get(item.getCatalogItem().getId()).incBack();
+        return this.back.addItem(item, true);
+    }
+    public boolean transferBackToFront(int barcode){
+        Item item = this.back.removeItem(barcode);
+        if (item == null)
+            return false;
+        this.catalogItemsMap.get(item.getCatalogItem().getId()).decBack();
+        this.catalogItemsMap.get(item.getCatalogItem().getId()).incShelves();
+        return this.shelves.addItem(item, false);
+    }
+    public int barcodeToId(int barcode){
+        return Math.max(this.shelves.barcodeToId(barcode), this.back.barcodeToId(barcode));
+    }
+    public CatalogItem getCatalogItemFromBarcode(int id){return this.catalogItemsMap.get(id);}
+    public void generateRequiredStockReport(){
+        RequiredStockReport requiredStockReport = new RequiredStockReport();
+        for(CatalogItem catalogItem : this.catalogItemsMap.values())
+            if(catalogItem.getShelvesAmount() + catalogItem.getBackAmount() < catalogItem.getMinCapacity())
+                requiredStockReport.add_to_report(catalogItem);
+        requiredStockReport.generate_report();
+    }
+    public void generateStockItemsReport(){
+        StockItemsReport rep = new StockItemsReport();
+        for (Item item : shelves.getItems())
+            rep.add_to_report(item);
+        for (Item item : back.getItems())
+            rep.add_to_report(item);
+        rep.generate_report();
+    }
+    public void generateDamagedReport(){
+        DamagedReport damagedReport = new DamagedReport();
+        for(Item item : shelves.getDamagedItems())
+            damagedReport.add_to_report(item);
+        for(Item item : back.getDamagedItems())
+            damagedReport.add_to_report(item);
+        damagedReport.generate_report();
     }
 }
