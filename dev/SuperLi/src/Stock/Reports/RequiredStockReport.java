@@ -1,12 +1,15 @@
-package Stock.src;
+package SuperLi.src.Stock.Reports;
+
+import SuperLi.src.CatalogItem;
+import SuperLi.src.Category;
 
 public class RequiredStockReport extends ACatalogReport{ // To add ACatalog
     public String[] get_data(CatalogItem catalog_item){
-        String id = String.valueOf(catalog_item.get_id());
-        String name = catalog_item.get_name();
-        String amount = String.valueOf(catalog_item.get_min_capacity() * 2 - catalog_item.get_total_amount());
-        String manufacturer = catalog_item.get_manufacturer();
-        Category category = catalog_item.get_category();
+        String id = String.valueOf(catalog_item.getId());
+        String name = catalog_item.getName();
+        String amount = String.valueOf(catalog_item.getMinCapacity() * 2 - catalog_item.getTotalAmount());
+        String manufacturer = catalog_item.getManufacturer();
+        Category category = catalog_item.getCategory();
         String size = String.format("%.1f %ss", category.get_size_amount(), category.get_measureunit().name());
         return new String[]{id, manufacturer, name, size, amount};
     }

@@ -1,4 +1,7 @@
-package Stock.src;
+package SuperLi.src.Stock.Reports;
+
+import SuperLi.src.Branch;
+import SuperLi.src.Item;
 
 import java.util.ArrayList;
 
@@ -13,6 +16,6 @@ public abstract class AItemReport extends AReport{
         }
     }
     public String get_location(Item item){
-        return (item.get_location() < Branch.BACKSTART ? "Shelves" : "Back") + String.format(" - %d", item.get_location());
+        return (item.getLocation() < Branch.BACKSTART ? "Shelves" : "Back") + String.format(" - %d", item.getLocation());
     }
 }

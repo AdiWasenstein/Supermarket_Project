@@ -1,14 +1,17 @@
-package Stock.src;
+package SuperLi.src.Stock.Reports;
+
+import SuperLi.src.DamageType;
+import SuperLi.src.Item;
 
 public class DamagedReport extends AItemReport {
     public String[] get_data(Item item){
-        String barcode = String.valueOf(item.get_barcode());
-        String id = String.valueOf(item.get_catalog_item().get_id());
-        String name = item.get_catalog_item().get_name();
-        String category = item.catalog_item.get_category().toString();
+        String barcode = String.valueOf(item.getBarcode());
+        String id = String.valueOf(item.getCatalogItem().getId());
+        String name = item.getCatalogItem().getName();
+        String category = item.getCatalogItem().getCategory().toString();
         String location = get_location(item);
-        DamageType damage = item.get_damage();
-        String expiration = item.is_expired() ? String.format("%d days expired", item.date_difference()) : "";
+        DamageType damage = item.getDamage();
+        String expiration = item.is_expired() ? String.format("%d days expired", item.dateDifference()) : "";
         String damage_type = damage == DamageType.NONE ? "" : damage.name();
         String damage_description = damage_type + (item.is_expired() && damage != DamageType.NONE ? " and " : "") + expiration;
         return new String[]{barcode, id, name, category, location, damage_description};

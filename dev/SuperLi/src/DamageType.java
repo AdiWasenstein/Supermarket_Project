@@ -1,4 +1,4 @@
-package Stock.src;
+package SuperLi.src;
 
 public enum DamageType {
     COVER,

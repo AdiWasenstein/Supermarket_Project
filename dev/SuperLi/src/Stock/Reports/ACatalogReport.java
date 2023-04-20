@@ -1,4 +1,6 @@
-package Stock.src;
+package SuperLi.src.Stock.Reports;
+
+import SuperLi.src.CatalogItem;
 
 import java.util.ArrayList;
 

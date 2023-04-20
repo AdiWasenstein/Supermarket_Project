@@ -1,4 +1,4 @@
-package Stock.src;
+package SuperLi.src.Stock;
 import java.util.*;
 
 public class StoreShelves extends StorageUnit {

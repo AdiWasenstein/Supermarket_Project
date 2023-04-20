@@ -1,19 +1,22 @@
-package Stock.src;
+package SuperLi.src.Stock;
+import SuperLi.src.DamageType;
+import SuperLi.src.Item;
+
 import java.util.*;
 
 public abstract class StorageUnit {
     Map<Integer, Item> items;
 
     public boolean add_item(Item item, boolean for_back){
-        if(items.containsKey(item.get_barcode()))
+        if(items.containsKey(item.getBarcode()))
             return false;
         if (for_back) {
-            item.set_location(item.get_catalog_item().get_back_location());
-            items.put(item.get_barcode(), item);
+            item.setLocation(item.getCatalogItem().getBackLocation());
+            items.put(item.getBarcode(), item);
             return true;
         }
-        item.set_location(item.get_catalog_item().get_shelves_location());
-        items.put(item.get_barcode(), item);
+        item.setLocation(item.getCatalogItem().getShelvesLocation());
+        items.put(item.getBarcode(), item);
         return true;
     }
     public Item remove_item(int barcode){
@@ -24,13 +27,13 @@ public abstract class StorageUnit {
     public void remove_catalog_item(int id){
         Set<Integer> barcodes = Set.copyOf(items.keySet());
         for(Integer barcode: barcodes)
-            if(items.get(barcode).get_catalog_item().get_id() == id)
+            if(items.get(barcode).getCatalogItem().getId() == id)
                 items.remove(barcode);
     }
     public ArrayList<Item> damaged_items(){
         ArrayList<Item> damaged_report = new ArrayList<>();
         for(Item item : items.values())
-            if (item.get_damage() != DamageType.NONE || item.is_expired())
+            if (item.getDamage() != DamageType.NONE || item.is_expired())
                 damaged_report.add(item);
         return damaged_report;
     }
@@ -43,13 +46,13 @@ public abstract class StorageUnit {
         Item item = this.items.get(barcode);
         if(item == null)
             return -1;
-        return item.get_catalog_item().get_id();
+        return item.getCatalogItem().getId();
     }
     public boolean set_damage(int barcode, DamageType damage){
         Item item = items.get(barcode);
         if(item == null)
             return false;
-        item.set_damage(damage);
+        item.setDamage(damage);
         return true;
     }
 }

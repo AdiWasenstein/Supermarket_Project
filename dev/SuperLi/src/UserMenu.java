@@ -1,4 +1,4 @@
-package Stock.src;
+package SuperLi.src;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -154,10 +154,10 @@ public class UserMenu {
             return;
         }
         CatalogItem catalog_item = branch.get_catalog_from_barcode(id);
-        if(catalog_item.get_min_capacity() > catalog_item.get_total_amount())
+        if(catalog_item.getMinCapacity() > catalog_item.getTotalAmount())
             System.out.println("THE ITEM CROSSED THE MINIMUM GAP, CONSIDER ORDERING MORE UNITS IMMEDIATELY");
-        String fill_shelves = catalog_item.get_shelves_amount() < catalog_item.get_min_capacity() / 2 ?
-                String.format(" Consider filling the shelves with %s (ID %d).", catalog_item.get_name(), catalog_item.get_id()) : "";
+        String fill_shelves = catalog_item.getShelvesAmount() < catalog_item.getMinCapacity() / 2 ?
+                String.format(" Consider filling the shelves with %s (ID %d).", catalog_item.getName(), catalog_item.getId()) : "";
         System.out.format("Removing from the stock completed successfully.%s Returning to main menu...\n", fill_shelves);
     }
     public void generate_report(){
