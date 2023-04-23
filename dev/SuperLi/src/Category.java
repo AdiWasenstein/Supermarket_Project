@@ -1,8 +1,8 @@
 package SuperLi.src;
+import java.util.*;
 
 public class Category{
-    String prime_category;
-    String sub_category;
+    ArrayList<String> categories;
     Size size;
 
     public Category(ArrayList<String> categories, Size size){
