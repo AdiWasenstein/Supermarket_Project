@@ -5,35 +5,30 @@ public class Category{
     String sub_category;
     Size size;
 
-    public Category(String prime_category, String sub_category, Size size){
-        this.prime_category = prime_category;
-        this.sub_category = sub_category;
+    public Category(ArrayList<String> categories, Size size){
+        this.categories = categories;
         this.size = size;
     }
     public String toString(){
-        return String.format("%s, %s, %.1f %ss", this.prime_category, this.sub_category, this.size.get_amount(), this.size.get_measureunit().name());
+        String categoriesStr = this.categories.toString().substring(1, this.categories.toString().length() - 2);
+        return String.format("%s, %.1f %ss", categoriesStr, this.size.get_amount(), this.size.get_measureunit().name());
     }
-    public String get_prime_category(){
-        return this.prime_category;
+    public ArrayList<String> getCategories(){
+        return this.categories;
     }
-    public String get_sub_category(){
-        return this.sub_category;
-    }
-    public MeasureUnit get_measureunit(){
+    public Size getSize(){return this.size;}
+    public MeasureUnit getMeasureunit(){
         return this.size.get_measureunit();
     }
-    public double get_size_amount(){
+    public double getSizeAmount(){
         return this.size.get_amount();
     }
     @Override
     public boolean equals(Object category){
         if(!(category instanceof Category other))
             return false;
-        String other_prime = other.get_prime_category();
-        String other_sub = other.get_sub_category();
-        MeasureUnit other_unit = other.get_measureunit();
-        double other_size = other.get_size_amount();
-        return prime_category.equals(other_prime) && sub_category.equals(other_sub) &&
-                size.get_measureunit() == other_unit && size.get_amount() == other_size;
+        if(!size.equals(other.getSize()))
+            return false;
+        return categories.containsAll(other.getCategories());
     }
 }

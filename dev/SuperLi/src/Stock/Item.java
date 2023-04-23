@@ -12,15 +12,13 @@ public class Item {
     LocalDate expirationDate;
     DamageType damageType;
     int location;
-    static int counter = 1;
-    public Item(CatalogItem catalogItem, double costPrice, LocalDate expirationDate, DamageType damageType, int location){
+    public Item(int barcode, CatalogItem catalogItem, double costPrice, LocalDate expirationDate, DamageType damageType, int location){
         this.catalogItem = catalogItem;
-        this.barcode = counter;
+        this.barcode = barcode;
         this.costPrice = costPrice;
         this.expirationDate = expirationDate;
         this.damageType = damageType;
         this.location = location;
-        counter++;
     }
     public CatalogItem getCatalogItem(){
         return this.catalogItem;
