@@ -8,10 +8,10 @@ public class CategoryReport extends ACatalogReport{
         String name = catalog_item.getName();
         String category = catalog_item.getCategory().toString();
         String manufacturer = catalog_item.getManufacturer();
-        String sell_price = catalog_item.getSellPrice() + "ILS";
+        String sell_price = catalog_item.getPrice() + "ILS";
         String amount = String.valueOf(catalog_item.getTotalAmount());
         String min = String.valueOf(catalog_item.getMinCapacity());
-        String discount = catalog_item.getCostumerDiscount() == null ? "" : catalog_item.getCostumerDiscount().toString();
+        String discount = catalog_item.getDiscount() == null ? "" : catalog_item.getDiscount().toString();
         return new String[]{id, name, category, manufacturer, sell_price, amount, min, discount};
     }
     public String[] get_header(){

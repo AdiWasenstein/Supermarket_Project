@@ -2,7 +2,6 @@ package SuperLi.src;
 import SuperLi.src.Stock.CostumerDiscount;
 import SuperLi.src.Stock.DamageType;
 
-import SuperLi.src.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 
 public class UserMenu {
     static Scanner input = new Scanner(System.in);
-    public Branch branch;
+    Branch branch;
 
     public int input_number(){
         int num;

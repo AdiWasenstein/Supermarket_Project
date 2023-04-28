@@ -10,7 +10,7 @@ public class RequiredStockReport extends ACatalogReport{ // To add ACatalog
         String amount = String.valueOf(catalog_item.getMinCapacity() * 2 - catalog_item.getTotalAmount());
         String manufacturer = catalog_item.getManufacturer();
         Category category = catalog_item.getCategory();
-        String size = String.format("%.1f %ss", category.getSizeAmount(), category.getMeasureunit().name());
+        String size = String.format("%.1f %ss", category.get_size_amount(), category.get_measureunit().name());
         return new String[]{id, manufacturer, name, size, amount};
     }
     public String[] get_header(){

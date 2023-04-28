@@ -5,19 +5,90 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Branch {
-    final String address;
-    final int id;
+    String address;
     StoreShelves shelves;
     BackStorage back;
-    static int counter = 0;
+    Map<Integer, CatalogItem> catalogItemsMap;
+    public final static int BACKSTART = 1000;
+    public final static int BACKEND = 2000;
     public Branch(String address){
         this.address = address;
-        this.id = counter++;
         this.shelves = new StoreShelves();
         this.back = new BackStorage();
+        this.catalogItemsMap = new HashMap<>();
     }
-    public String getAddress(){return address;}
-    public int getId(){return id;}
+    public String getAddress(){return this.address;}
+
+    //Catalog Items
+    public boolean addCatalogItem(int id, String name, Category category, String manufacturer, double sellPrice, int minCapacity){
+        if(catalogItemsMap.containsKey(id))
+            return false;
+        Random rnd = new Random();
+        int shelvesLocation = rnd.nextInt(BACKSTART);
+        int backLocation = rnd.nextInt(BACKSTART, BACKEND + 1);
+        catalogItemsMap.put(id, new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation));
+        return true;
+    }
+    public boolean removeCatalogItem(int id){
+        if(!catalogItemsMap.containsKey(id))
+            return false;
+        this.shelves.removeCatalogItem(id);
+        this.back.removeCatalogItem(id);
+        this.catalogItemsMap.remove(id);
+        return true;
+    }
+    public boolean containsId(int id){
+        return catalogItemsMap.containsKey(id);
+    }
+    public boolean setPrice(int id, double price) {
+        if (!containsId(id) || price < 0)
+            return false;
+        catalogItemsMap.get(id).setPrice(price);
+        return true;
+    }
+    public boolean setMinCapacity(int id, int amount){
+        if (!containsId(id) || amount < 0)
+            return false;
+        catalogItemsMap.get(id).setMinCapacity(amount);
+        return true;
+    }
+    public boolean setItemDiscount(int id, CostumerDiscount costumerDiscount){
+        CatalogItem catalogItem = this.catalogItemsMap.get(id);
+        if(catalogItem == null)
+            return false;
+        catalogItem.setDiscount(costumerDiscount);
+        return true;
+    }
+    public void setCategoryDiscount(Category category, CostumerDiscount costumerDiscount){
+        for(CatalogItem catalogItem : this.catalogItemsMap.values())
+            if(catalogItem.isFromCategory(category))
+                catalogItem.setDiscount(costumerDiscount);
+    }
+    public void generateCatalogReport(){
+        AllCatalogReport rep = new AllCatalogReport();
+        for(CatalogItem catalogItem : catalogItemsMap.values())
+            rep.add_to_report(catalogItem);
+        rep.generate_report();
+    }
+    public void generateCategoryReport(ArrayList<String> primes, ArrayList<String[]> prime_subs, ArrayList<Category> full){
+        CategoryReport categoryReport = new CategoryReport();
+        for(CatalogItem catalogItem :  this.catalogItemsMap.values()){
+            Category itemCategory = catalogItem.getCategory();
+            boolean toAdd = primes.contains(itemCategory.get_prime_category());
+            if(!toAdd) {
+                for (String[] prime_sub : prime_subs)
+                    if (catalogItem.isFromCategory(prime_sub[0], prime_sub[1])) {
+                        toAdd = true;
+                        break;
+                    }
+            }
+            toAdd = toAdd || full.contains(itemCategory);
+            if(toAdd)
+                categoryReport.add_to_report(catalogItem);
+        }
+        categoryReport.generate_report();
+    }
+
     // Stock Items
     public int addItem(int id, double costPrice, LocalDate expirationDate, DamageType damage, boolean forFront){
         CatalogItem catalogItem = catalogItemsMap.get(id);

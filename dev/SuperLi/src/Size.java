@@ -14,10 +14,4 @@ public class Size {
     public MeasureUnit get_measureunit(){
         return this.type;
     }
-    @Override
-    public boolean equals(Object size){
-        if(!(size instanceof Size other))
-            return false;
-        return amount == other.get_amount() && type == other.get_measureunit();
-    }
 }

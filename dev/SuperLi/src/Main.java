@@ -1,29 +1,30 @@
 package SuperLi.src;
 
-import SuperLi.src.Stock.*;
+import SuperLi.src.Stock.CostumerDiscount;
+import SuperLi.src.Stock.DamageType;
 
 import java.time.LocalDate;
 
 public class Main {
-//    static Category milk1000 = new Category("Dairy", "Milk", new Size(1000, MeasureUnit.ML));
-//    static Category milk1500 = new Category("Dairy", "Milk", new Size(1500, MeasureUnit.ML));
-//    static Category cottage250 = new Category("Dairy", "Cheese", new Size(250, MeasureUnit.GM));
-//    static Category gouda100 = new Category("Dairy", "Cheese", new Size(100, MeasureUnit.GM));
-//    static Category pudding250 = new Category("Dairy", "Puddings", new Size(250, MeasureUnit.GM));
-//    static Category shampoo750 = new Category("Toiletries", "Shampoo", new Size(750, MeasureUnit.ML));
-//    static Category hand_soap500 = new Category("Toiletries", "Hand Soap", new Size(500, MeasureUnit.ML));
-//    static Category pan50 = new Category("Kitchen", "Kitchen Tools", new Size(50, MeasureUnit.CM));
-//    static Category fork100 = new Category("Kitchen", "Cutlery", new Size(100, MeasureUnit.UNIT));
-//    static Category cap100 = new Category("Kitchenware", "Caps", new Size(100, MeasureUnit.UNIT));
-//    static Category plate50 = new Category("Kitchenware", "Plates", new Size(50, MeasureUnit.UNIT));
-//    static Category rice1000 = new Category("Legumes", "Rice", new Size(1000, MeasureUnit.GM));
-//    static Category pasta1000 = new Category("Legumes", "Pasta", new Size(1000, MeasureUnit.GM));
-//    static Category pita10 = new Category("Breads", "Pitas", new Size(10, MeasureUnit.UNIT));
-//    static Category rice_cake500 = new Category("Breads", "Rice Cakes", new Size(500, MeasureUnit.GM));
-//    static Category white_bread500 = new Category("Breads", "White Bread", new Size(500, MeasureUnit.GM));
-//    static Category red_wine750 = new Category("Beverage", "Alcohol", new Size(750, MeasureUnit.ML));
-//    static Category soft_drink1500 = new Category("Beverage", "Soft Drinks", new Size(1500, MeasureUnit.ML));
-//    static Category cake_mold21 = new Category("Baking", "Disposable", new Size(21, MeasureUnit.CM));
+    static Category milk1000 = new Category("Dairy", "Milk", new Size(1000, MeasureUnit.ML));
+    static Category milk1500 = new Category("Dairy", "Milk", new Size(1500, MeasureUnit.ML));
+    static Category cottage250 = new Category("Dairy", "Cheese", new Size(250, MeasureUnit.GM));
+    static Category gouda100 = new Category("Dairy", "Cheese", new Size(100, MeasureUnit.GM));
+    static Category pudding250 = new Category("Dairy", "Puddings", new Size(250, MeasureUnit.GM));
+    static Category shampoo750 = new Category("Toiletries", "Shampoo", new Size(750, MeasureUnit.ML));
+    static Category hand_soap500 = new Category("Toiletries", "Hand Soap", new Size(500, MeasureUnit.ML));
+    static Category pan50 = new Category("Kitchen", "Kitchen Tools", new Size(50, MeasureUnit.CM));
+    static Category fork100 = new Category("Kitchen", "Cutlery", new Size(100, MeasureUnit.UNIT));
+    static Category cap100 = new Category("Kitchenware", "Caps", new Size(100, MeasureUnit.UNIT));
+    static Category plate50 = new Category("Kitchenware", "Plates", new Size(50, MeasureUnit.UNIT));
+    static Category rice1000 = new Category("Legumes", "Rice", new Size(1000, MeasureUnit.GM));
+    static Category pasta1000 = new Category("Legumes", "Pasta", new Size(1000, MeasureUnit.GM));
+    static Category pita10 = new Category("Breads", "Pitas", new Size(10, MeasureUnit.UNIT));
+    static Category rice_cake500 = new Category("Breads", "Rice Cakes", new Size(500, MeasureUnit.GM));
+    static Category white_bread500 = new Category("Breads", "White Bread", new Size(500, MeasureUnit.GM));
+    static Category red_wine750 = new Category("Beverage", "Alcohol", new Size(750, MeasureUnit.ML));
+    static Category soft_drink1500 = new Category("Beverage", "Soft Drinks", new Size(1500, MeasureUnit.ML));
+    static Category cake_mold21 = new Category("Baking", "Disposable", new Size(21, MeasureUnit.CM));
 
     public static void main(String[] args) {
         UserMenu us = new UserMenu();
@@ -37,32 +38,32 @@ public class Main {
     }
 
     public static void initialize_Catalog(UserMenu us){
-//    us.branch.addCatalogItem(10, "Milk 3%", milk1500, "Tnuva", 9.9, 95);
-//    us.branch.addCatalogItem(11, "Milk 5%", milk1500, "Tnuva", 9.9, 95);
-//    us.branch.addCatalogItem(12, "Milk 3%", milk1000, "Tnuva", 5.9, 101);
-//    us.branch.addCatalogItem(13, "Milk 5%", milk1000, "Tnuva", 5.9, 101);
-//    us.branch.addCatalogItem(14, "Milk 2%", milk1500, "Tnuva", 9.9, 70);
-//    us.branch.addCatalogItem(15, "Soy Milk", milk1000, "BIO", 15.9, 50);
-//    us.branch.addCatalogItem(16, "cottage 9%", cottage250, "Tara", 6.4, 85);
-//    us.branch.addCatalogItem(17, "Yolo", pudding250, "Tnuva", 5, 50);
-//    us.branch.addCatalogItem(18, "Milky", pudding250, "Tnuva", 5.9, 60);
-//    us.branch.addCatalogItem(19, "Gouda", gouda100, "Emek", 19, 94);
-//    us.branch.addCatalogItem(20, "Pita", pita10, "Angle", 11, 50);
-//    us.branch.addCatalogItem(21, "Rice Cakes", rice_cake500, "Fitness", 17, 50);
-//    us.branch.addCatalogItem(22, "White Bread", white_bread500, "Berman", 7, 60);
-//    us.branch.addCatalogItem(23, "Head & Shoulders", shampoo750, "Procter & Gamble", 17, 50);
-//    us.branch.addCatalogItem(24, "Red Wine",red_wine750 , "Gamla", 60, 30);
-//    us.branch.addCatalogItem(25, "Cake Mold", cake_mold21, "Namal", 11.9, 40);
-//    us.branch.addCatalogItem(26, "Cottage 5%", cottage250, "Tnuva", 6.4, 200);
-//    us.branch.addCatalogItem(27, "Cottage 12%", cottage250, "Tnuva", 6.4, 500);
-//    us.branch.addCatalogItem(28, "Persian rice", rice1000, "Sugat", 11.5, 80);
-//    us.branch.addCatalogItem(29, "Penne pasta", pasta1000, "Rummo", 5.9, 120);
-//    us.branch.addCatalogItem(30, "Pnina Hand Soap", hand_soap500, "Pnina Rosenblum", 12, 80);
-//    us.branch.addCatalogItem(31, "Pan 21cm", pan50, "Teffal", 200, 30);
-//    us.branch.addCatalogItem(32, "Fork 100 units", fork100, "Namal", 11, 100);
-//    us.branch.addCatalogItem(33, "Hot cups 100 units", cap100, "Namal", 21.3, 176);
-//    us.branch.addCatalogItem(34, "Fanta", soft_drink1500, "Coca Cola", 8.7, 200);
-//    us.branch.addCatalogItem(35, "Oval Plates", plate50, "Naaman", 80, 20);
+    us.branch.addCatalogItem(10, "Milk 3%", milk1500, "Tnuva", 9.9, 95);
+    us.branch.addCatalogItem(11, "Milk 5%", milk1500, "Tnuva", 9.9, 95);
+    us.branch.addCatalogItem(12, "Milk 3%", milk1000, "Tnuva", 5.9, 101);
+    us.branch.addCatalogItem(13, "Milk 5%", milk1000, "Tnuva", 5.9, 101);
+    us.branch.addCatalogItem(14, "Milk 2%", milk1500, "Tnuva", 9.9, 70);
+    us.branch.addCatalogItem(15, "Soy Milk", milk1000, "BIO", 15.9, 50);
+    us.branch.addCatalogItem(16, "cottage 9%", cottage250, "Tara", 6.4, 85);
+    us.branch.addCatalogItem(17, "Yolo", pudding250, "Tnuva", 5, 50);
+    us.branch.addCatalogItem(18, "Milky", pudding250, "Tnuva", 5.9, 60);
+    us.branch.addCatalogItem(19, "Gouda", gouda100, "Emek", 19, 94);
+    us.branch.addCatalogItem(20, "Pita", pita10, "Angle", 11, 50);
+    us.branch.addCatalogItem(21, "Rice Cakes", rice_cake500, "Fitness", 17, 50);
+    us.branch.addCatalogItem(22, "White Bread", white_bread500, "Berman", 7, 60);
+    us.branch.addCatalogItem(23, "Head & Shoulders", shampoo750, "Procter & Gamble", 17, 50);
+    us.branch.addCatalogItem(24, "Red Wine",red_wine750 , "Gamla", 60, 30);
+    us.branch.addCatalogItem(25, "Cake Mold", cake_mold21, "Namal", 11.9, 40);
+    us.branch.addCatalogItem(26, "Cottage 5%", cottage250, "Tnuva", 6.4, 200);
+    us.branch.addCatalogItem(27, "Cottage 12%", cottage250, "Tnuva", 6.4, 500);
+    us.branch.addCatalogItem(28, "Persian rice", rice1000, "Sugat", 11.5, 80);
+    us.branch.addCatalogItem(29, "Penne pasta", pasta1000, "Rummo", 5.9, 120);
+    us.branch.addCatalogItem(30, "Pnina Hand Soap", hand_soap500, "Pnina Rosenblum", 12, 80);
+    us.branch.addCatalogItem(31, "Pan 21cm", pan50, "Teffal", 200, 30);
+    us.branch.addCatalogItem(32, "Fork 100 units", fork100, "Namal", 11, 100);
+    us.branch.addCatalogItem(33, "Hot cups 100 units", cap100, "Namal", 21.3, 176);
+    us.branch.addCatalogItem(34, "Fanta", soft_drink1500, "Coca Cola", 8.7, 200);
+    us.branch.addCatalogItem(35, "Oval Plates", plate50, "Naaman", 80, 20);
     }
     public static void initialize_Items(UserMenu us, int i){
         switch (i % 4){
@@ -103,7 +104,7 @@ public class Main {
         }
     }
     public static void initialize_discount(UserMenu us){
-//        us.branch.setCategoryDiscount(white_bread500, new CostumerDiscount(LocalDate.of(2023,10,1), 50, true, 2));
+        us.branch.setCategoryDiscount(white_bread500, new CostumerDiscount(LocalDate.of(2023,10,1), 50, true, 2));
         us.branch.setItemDiscount(10, new CostumerDiscount(LocalDate.of(2023,8,1), 3, false, 2));
         us.branch.setItemDiscount(34, new CostumerDiscount(LocalDate.of(2023,5,1), 30, true, 0));
         us.branch.setItemDiscount(35, new CostumerDiscount(LocalDate.of(2023,4,1), 40, true, 4));
