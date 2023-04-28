@@ -57,13 +57,13 @@ public class Branch {
         CatalogItem catalogItem = this.catalogItemsMap.get(id);
         if(catalogItem == null)
             return false;
-        catalogItem.setDiscount(costumerDiscount);
+        catalogItem.setCostumerDiscount(costumerDiscount);
         return true;
     }
     public void setCategoryDiscount(Category category, CostumerDiscount costumerDiscount){
         for(CatalogItem catalogItem : this.catalogItemsMap.values())
             if(catalogItem.isFromCategory(category))
-                catalogItem.setDiscount(costumerDiscount);
+                catalogItem.setCostumerDiscount(costumerDiscount);
     }
     public void generateCatalogReport(){
         AllCatalogReport rep = new AllCatalogReport();
@@ -71,23 +71,22 @@ public class Branch {
             rep.add_to_report(catalogItem);
         rep.generate_report();
     }
-    public void generateCategoryReport(ArrayList<String> primes, ArrayList<String[]> prime_subs, ArrayList<Category> full){
+    public void generateCategoryReport(ArrayList<Category> categories, ArrayList<ArrayList<String>> categoriesStrList) {
         CategoryReport categoryReport = new CategoryReport();
-        for(CatalogItem catalogItem :  this.catalogItemsMap.values()){
+        for (CatalogItem catalogItem : this.catalogItemsMap.values()) {
             Category itemCategory = catalogItem.getCategory();
-            boolean toAdd = primes.contains(itemCategory.get_prime_category());
-            if(!toAdd) {
-                for (String[] prime_sub : prime_subs)
-                    if (catalogItem.isFromCategory(prime_sub[0], prime_sub[1])) {
-                        toAdd = true;
-                        break;
-                    }
-            }
-            toAdd = toAdd || full.contains(itemCategory);
-            if(toAdd)
+            if (categories.contains(itemCategory)) {
                 categoryReport.add_to_report(catalogItem);
+                continue;
+            }
+            for (ArrayList<String> categoriesStr : categoriesStrList) {
+                if (itemCategory.getCategories().containsAll(categoriesStr)) {
+                    categoryReport.add_to_report(catalogItem);
+                    break;
+                }
+            }
+            categoryReport.generate_report();
         }
-        categoryReport.generate_report();
     }
 
     // Stock Items

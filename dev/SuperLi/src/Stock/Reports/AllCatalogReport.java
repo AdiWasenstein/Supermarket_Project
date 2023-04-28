@@ -15,7 +15,7 @@ public class AllCatalogReport extends ACatalogReport{
         String back_amount = String.valueOf(item.getBackAmount());
         String total_amount = String.valueOf(item.getTotalAmount());
         String min_cap = String.valueOf(item.getMinCapacity());
-        String discount = item.getDiscount() != null ? item.getDiscount().toString() : "";
+        String discount = item.getCostumerDiscount() != null ? item.getCostumerDiscount().toString() : "";
         return new String[]{id, name, category, manufacturer, sell_price,
                 shelves_location + " & " + back_location, shelves_amount + " & " + back_amount, total_amount + " & " + min_cap,
                 discount};

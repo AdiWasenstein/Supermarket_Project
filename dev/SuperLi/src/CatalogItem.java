@@ -1,7 +1,7 @@
 package SuperLi.src;
 
 import SuperLi.src.Stock.CostumerDiscount;
-
+import java.util.*;
 public class CatalogItem {
     int id;
     String name;
@@ -47,11 +47,11 @@ public class CatalogItem {
     public int getShelvesLocation(){return this.shelvesLocation;}
     public int getBackLocation(){return this.backLocation;}
     public String toString(){
-        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; Amount: %d; Min Capacity: %d; CostumerDiscount: %s",
-                id, category, name, manufacturer, sellPrice, shelvesAmount + backAmount, minCapacity,(costumerDiscount == null ? "" : costumerDiscount.toString()));
+        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; ; Min Capacity: %d; CostumerDiscount: %s",
+                id, category, name, manufacturer, sellPrice, minCapacity,(costumerDiscount == null ? "" : costumerDiscount.toString()));
     }
-    public CostumerDiscount getDiscount(){return this.costumerDiscount;}
-    public void setDiscount(CostumerDiscount costumerDiscount){this.costumerDiscount = costumerDiscount;}
+    public CostumerDiscount getCostumerDiscount(){return this.costumerDiscount;}
+    public void setCostumerDiscount(CostumerDiscount costumerDiscount){this.costumerDiscount = costumerDiscount;}
     public double getDiscountedPrice() {
         if(this.costumerDiscount == null)
             return this.sellPrice;
@@ -63,11 +63,5 @@ public class CatalogItem {
         return this.costumerDiscount.generateDiscount(this.sellPrice, amount);
     }
     public boolean isFromCategory(Category category){return category.equals(this.getCategory());}
-    public boolean isFromCategory(String prime_category){
-        return prime_category.equals(getCategory().get_prime_category());
-    }
-    public boolean isFromCategory(String prime_category, String sub_category){
-        return isFromCategory(prime_category) &&
-                sub_category.equals(category.get_sub_category());
-    }
+    public boolean isFromCategory(ArrayList<String> categoriesStrList){return category.getCategories().containsAll(categoriesStrList);}
 }

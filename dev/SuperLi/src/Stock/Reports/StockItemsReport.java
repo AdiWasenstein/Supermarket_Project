@@ -12,7 +12,7 @@ public class StockItemsReport extends AItemReport {
         String id = String.valueOf(catalog_item.getId());
         String cost_price = String.valueOf(item.getCostPrice());
         String sell_price = item.getCatalogItem().getPrice() + "ILS";
-        String discount = item.getCatalogItem().getDiscount() == null ? "" : item.getCatalogItem().getDiscount().toString();
+        String discount = item.getCatalogItem().getCostumerDiscount() == null ? "" : item.getCatalogItem().getCostumerDiscount().toString();
         String location = get_location(item);
         String expiration_date = item.getExpirationString();
         String damage_type = item.getDamage() == DamageType.NONE ? "" : item.getDamage().name();
