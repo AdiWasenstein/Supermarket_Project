@@ -16,13 +16,16 @@ public class CatalogItemDataMapper implements IDataMapper<CatalogItem>{
     public Optional<CatalogItem> find(String param){
         return Optional.empty();
     }
-    public LinkedList<CatalogItem> findAll(String param){
-        return new LinkedList<>();
-    }
     public void insert(CatalogItem object){
     }
     public void update(CatalogItem object){
     }
     public void delete(CatalogItem object){
+    }
+    public LinkedList<CatalogItem> findAllFromCategory(Category category){
+        return new LinkedList<>();
+    }
+    public LinkedList<CatalogItem> findAllFromCategory(LinkedList<String> categories) {
+        return new LinkedList<>();
     }
 }

@@ -18,9 +18,6 @@ public class StockItemDataMapper implements IDataMapper<StockItem>{
     public Optional<StockItem> find(String param){
         return Optional.empty();
     }
-    public LinkedList<StockItem> findAll(String param){
-        return new LinkedList<>();
-    }
     public void insert(StockItem object){
     }
     public void update(StockItem object){
