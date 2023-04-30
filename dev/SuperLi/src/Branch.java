@@ -19,50 +19,6 @@ public class Branch {
     public int getId(){return this.id;}
     public String getAddress(){return this.address;}
     //Catalog Items
-    public boolean addCatalogItem(int id, String name, Category category, String manufacturer, double sellPrice, int minCapacity){
-        if(catalogItemsMap.containsKey(id))
-            return false;
-        Random rnd = new Random();
-        int shelvesLocation = rnd.nextInt(BACKSTART);
-        int backLocation = rnd.nextInt(BACKSTART, BACKEND + 1);
-        catalogItemsMap.put(id, new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation));
-        return true;
-    }
-    public boolean removeCatalogItem(int id){
-        if(!catalogItemsMap.containsKey(id))
-            return false;
-        this.shelves.removeCatalogItem(id);
-        this.back.removeCatalogItem(id);
-        this.catalogItemsMap.remove(id);
-        return true;
-    }
-    public boolean containsId(int id){
-        return catalogItemsMap.containsKey(id);
-    }
-    public boolean setPrice(int id, double price) {
-        if (!containsId(id) || price < 0)
-            return false;
-        catalogItemsMap.get(id).setPrice(price);
-        return true;
-    }
-    public boolean setMinCapacity(int id, int amount){
-        if (!containsId(id) || amount < 0)
-            return false;
-        catalogItemsMap.get(id).setMinCapacity(amount);
-        return true;
-    }
-    public boolean setItemDiscount(int id, CostumerDiscount costumerDiscount){
-        CatalogItem catalogItem = this.catalogItemsMap.get(id);
-        if(catalogItem == null)
-            return false;
-        catalogItem.setCostumerDiscount(costumerDiscount);
-        return true;
-    }
-    public void setCategoryDiscount(Category category, CostumerDiscount costumerDiscount){
-        for(CatalogItem catalogItem : this.catalogItemsMap.values())
-            if(catalogItem.isFromCategory(category))
-                catalogItem.setCostumerDiscount(costumerDiscount);
-    }
     public void generateCatalogReport(){
         AllCatalogReport rep = new AllCatalogReport();
         for(CatalogItem catalogItem : catalogItemsMap.values())
