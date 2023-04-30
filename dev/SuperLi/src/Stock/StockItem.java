@@ -11,16 +11,17 @@ public class StockItem {
     double costPrice;
     LocalDate expirationDate;
     DamageType damageType;
+    int branchId;
     int location;
     static int counter = 1;
-    public StockItem(CatalogItem catalogItem, double costPrice, LocalDate expirationDate, DamageType damageType, int location){
+    public StockItem(CatalogItem catalogItem, int barcode, double costPrice, LocalDate expirationDate, DamageType damageType, int branchId, int location){
         this.catalogItem = catalogItem;
-        this.barcode = counter;
+        this.barcode = barcode;
         this.costPrice = costPrice;
         this.expirationDate = expirationDate;
         this.damageType = damageType;
+        this.branchId = branchId;
         this.location = location;
-        counter++;
     }
     public CatalogItem getCatalogItem(){
         return this.catalogItem;
@@ -36,11 +37,12 @@ public class StockItem {
     public void setDamage(DamageType type){
         this.damageType = type;
     }
+    public int getBranchId(){return this.branchId;}
     public int getLocation(){ return this.location;}
     public void setLocation(int location){this.location = location;}
     public String toString(){
         return String.format("ID: %d; Barcode: %d; Price: %.1f₪; Location: %d; Manufacturer: %s; Amount: %d; Shelves Amount: %d; Back Amount: %d",
                 getCatalogItem().getId(), getBarcode(), getCatalogItem().getDiscountedPrice(), getLocation(), getCatalogItem().getManufacturer(),
-                getCatalogItem().getTotalAmount(), getCatalogItem().getShelvesAmount(), getCatalogItem().getBackAmount());
+                getCatalogItem().getTotalAmount(this.branchId), getCatalogItem().getShelvesAmount(this.branchId), getCatalogItem().getBackAmount(this.branchId));
     }
 }
