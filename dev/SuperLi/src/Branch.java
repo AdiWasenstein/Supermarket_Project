@@ -6,20 +6,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Branch {
-    String address;
-    StoreShelves shelves;
-    BackStorage back;
-    Map<Integer, CatalogItem> catalogItemsMap;
+    final int id;
+    final String address;
     public final static int BACKSTART = 1000;
     public final static int BACKEND = 2000;
-    public Branch(String address){
+    StockItemDataMapper stockItemDataMapper;
+    public Branch(String address, int id){
         this.address = address;
-        this.shelves = new StoreShelves();
-        this.back = new BackStorage();
-        this.catalogItemsMap = new HashMap<>();
+        this.id = id;
+        stockItemDataMapper = StockItemDataMapper.getInstance();
     }
+    public int getId(){return this.id;}
     public String getAddress(){return this.address;}
-
     //Catalog Items
     public boolean addCatalogItem(int id, String name, Category category, String manufacturer, double sellPrice, int minCapacity){
         if(catalogItemsMap.containsKey(id))
@@ -90,90 +88,76 @@ public class Branch {
     }
 
     // Stock Items
-    public int addItem(int id, double costPrice, LocalDate expirationDate, DamageType damage, boolean forFront){
-        CatalogItem catalogItem = catalogItemsMap.get(id);
-        if(catalogItem == null)
-            return -1;
-        StockItem item = new StockItem(catalogItem, costPrice, expirationDate, damage, catalogItem.getBackLocation());
-        if(forFront) {
-            item.setLocation(catalogItem.getShelvesLocation());
-            if(!this.shelves.addItem(item, false))
-                return -1;
-            catalogItem.incShelves();
-            return item.getBarcode();
-        }
-        if(!this.back.addItem(item, true))
-            return -1;
-        catalogItem.incBack();
-        return item.getBarcode();
+    public StockItem getStockItem(int barcode) {
+        Optional<StockItem> stockItem = StockItemDataMapper.getInstance().find(Integer.toString(barcode));
+        if(stockItem.isEmpty() || stockItem.get().getBranchId() != this.id)
+            return null;
+        return stockItem.get();
     }
-    public int addItem(int id, double costPrice, LocalDate expirationDate, DamageType damage){
-        CatalogItem catalogItem = catalogItemsMap.get(id);
-        if(catalogItem == null)
-            return -1;
-        boolean forFront = catalogItem.getShelvesAmount() < catalogItem.getMinCapacity();
-        return addItem(id, costPrice, expirationDate, damage, forFront);
+    public boolean addStockItem(CatalogItem catalogItem, int barcode, double costPrice, LocalDate expirationDate, DamageType damage, boolean forFront) {
+        if(getStockItem(barcode) != null)
+            return false;
+        int location = forFront ? catalogItem.getShelvesLocation() : catalogItem.getBackLocation();
+        StockItem stockItem = new StockItem(catalogItem, barcode, costPrice, expirationDate, damage, this.id, location);
+        stockItemDataMapper.insert(stockItem);
+        return true;
+    }
+    public boolean addStockItem(CatalogItem catalogItem, int barcode, double costPrice, LocalDate expirationDate, DamageType damage){
+        boolean forFront = catalogItem.getShelvesAmount(id) < catalogItem.getMinCapacity();
+        return addStockItem(catalogItem, barcode, costPrice, expirationDate, damage, forFront);
     }
     public boolean removeItem(int barcode){
-        StockItem frontItem = this.shelves.removeItem(barcode);
-        StockItem backItem = this.back.removeItem(barcode);
-        if(frontItem != null) {
-            int id = frontItem.getCatalogItem().getId();
-            CatalogItem catalogItem = catalogItemsMap.get(id);
-            catalogItem.decShelves();
-            return true;
-        }
-        if(backItem != null){
-            int id = backItem.getCatalogItem().getId();
-            CatalogItem catalogItem = catalogItemsMap.get(id);
-            catalogItem.decBack();
-            return true;
-        }
-        return false;
+        StockItem stockItem =  getStockItem(barcode);
+        if(stockItem == null || stockItem.getBranchId() != this.id)
+            return false;
+        stockItemDataMapper.delete(stockItem);
+        return true;
     }
     public boolean containsBarcode(int barcode){
-        return this.shelves.contains(barcode) || this.back.contains(barcode);
+        return getStockItem(barcode) != null;
     }
     public boolean setDamage(int barcode, DamageType damage){
-        return this.shelves.setDamage(barcode, damage) || this.back.setDamage(barcode, damage);
+        StockItem stockItem = getStockItem(barcode);
+        if(stockItem == null)
+            return false;
+        stockItem.setDamage(damage);
+        return true;
     }
     public int getItemLocation(int barcode){
-        int id = shelves.barcodeToId(barcode);
-        if(id >= 0)
-            return catalogItemsMap.get(id).getShelvesLocation();
-        id = back.barcodeToId(barcode);
-        if(id < 0)
+        StockItem stockItem = getStockItem(barcode);
+        if(stockItem == null)
             return -1;
-        return catalogItemsMap.get(id).getBackLocation();
+        return stockItem.getLocation();
     }
     public boolean transferItem(int barcode){
-        if (this.shelves.contains(barcode))
-            return transferFrontToBack(barcode);
-        else if (this.back.contains(barcode)){
-            return transferBackToFront(barcode);
-        }
-        return false;
+        StockItem stockItem = getStockItem(barcode);
+        if(stockItem == null)
+            return false;
+        int currentLocation = stockItem.getLocation();
+        if(currentLocation < Branch.BACKSTART)
+            transferFrontToBack(barcode);
+        else
+            transferBackToFront(barcode);
+        return true;
     }
     public boolean transferFrontToBack(int barcode){
-        StockItem item = this.shelves.removeItem(barcode);
-        if (item == null)
+        StockItem stockItem = getStockItem(barcode);
+        if(stockItem == null)
             return false;
-        this.catalogItemsMap.get(item.getCatalogItem().getId()).decShelves();
-        this.catalogItemsMap.get(item.getCatalogItem().getId()).incBack();
-        return this.back.addItem(item, true);
+        stockItem.setLocation(stockItem.getCatalogItem().getBackLocation());
+        return true;
     }
     public boolean transferBackToFront(int barcode){
-        StockItem item = this.back.removeItem(barcode);
-        if (item == null)
+        StockItem stockItem = getStockItem(barcode);
+        if(stockItem == null)
             return false;
-        this.catalogItemsMap.get(item.getCatalogItem().getId()).decBack();
-        this.catalogItemsMap.get(item.getCatalogItem().getId()).incShelves();
-        return this.shelves.addItem(item, false);
+        stockItem.setLocation(stockItem.getCatalogItem().getShelvesLocation());
+        return true;
     }
     public int barcodeToId(int barcode){
-        return Math.max(this.shelves.barcodeToId(barcode), this.back.barcodeToId(barcode));
+        StockItem stockItem = getStockItem(barcode);
+        return stockItem == null ? -1 : stockItem.getCatalogItem().getId();
     }
-    public CatalogItem getCatalogItemFromBarcode(int id){return this.catalogItemsMap.get(id);}
     public void generateRequiredStockReport(){
         RequiredStockReport requiredStockReport = new RequiredStockReport();
         for(CatalogItem catalogItem : this.catalogItemsMap.values())
