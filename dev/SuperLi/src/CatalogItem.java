@@ -14,8 +14,6 @@ public class CatalogItem {
     CostumerDiscount costumerDiscount;
     public CatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category, int shelvesLocation, int backLocation){
         this.id = id;
-        this.shelvesAmount = 0;
-        this.backAmount = 0;
         this.name = name;
         this.manufacturer = manufacturer;
         this.sellPrice = sellPrice;
