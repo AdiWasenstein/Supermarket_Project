@@ -27,8 +27,8 @@ public class CatalogItem {
     public String getName(){return this.name;}
     public String getManufacturer(){return this.manufacturer;}
     public Category getCategory(){return this.category;}
-    public double getPrice(){return this.sellPrice;}
-    public void setPrice(double price){this.sellPrice = price;}
+    public double getSellPrice(){return this.sellPrice;}
+    public void setSellPrice(double price){this.sellPrice = price;}
     public int getMinCapacity() { return this.minCapacity;}
     public void setMinCapacity(int capacity){this.minCapacity = capacity;}
     public int getTotalAmount(int branchId){return getShelvesAmount(branchId) + getBackAmount(branchId);}

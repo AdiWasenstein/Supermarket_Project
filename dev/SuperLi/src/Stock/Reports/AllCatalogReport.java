@@ -8,7 +8,7 @@ public class AllCatalogReport extends ACatalogReport{
         String name = item.getName();
         String category = item.getCategory().toString();
         String manufacturer = item.getManufacturer();
-        String sell_price = item.getPrice() + "ILS";
+        String sell_price = item.getSellPrice() + "ILS";
         String shelves_location = String.valueOf(item.getShelvesLocation());
         String back_location = String.valueOf(item.getBackLocation());
         String shelves_amount = String.valueOf(item.getShelvesAmount());
