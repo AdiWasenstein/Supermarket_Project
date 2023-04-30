@@ -3,6 +3,7 @@ package SuperLi.src.Stock.Reports;
 import SuperLi.src.CatalogItem;
 
 public class AllCatalogReport extends ACatalogReport{
+    public AllCatalogReport(int branchId){super(branchId);}
     public String[] get_data(CatalogItem item){
         String id = String.valueOf(item.getId());
         String name = item.getName();
@@ -11,9 +12,9 @@ public class AllCatalogReport extends ACatalogReport{
         String sell_price = item.getSellPrice() + "ILS";
         String shelves_location = String.valueOf(item.getShelvesLocation());
         String back_location = String.valueOf(item.getBackLocation());
-        String shelves_amount = String.valueOf(item.getShelvesAmount());
-        String back_amount = String.valueOf(item.getBackAmount());
-        String total_amount = String.valueOf(item.getTotalAmount());
+        String shelves_amount = String.valueOf(item.getShelvesAmount(this.branchId));
+        String back_amount = String.valueOf(item.getBackAmount(this.branchId));
+        String total_amount = String.valueOf(item.getTotalAmount(this.branchId));
         String min_cap = String.valueOf(item.getMinCapacity());
         String discount = item.getCostumerDiscount() != null ? item.getCostumerDiscount().toString() : "";
         return new String[]{id, name, category, manufacturer, sell_price,
