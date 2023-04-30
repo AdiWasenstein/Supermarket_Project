@@ -13,7 +13,6 @@ public class StockItem {
     DamageType damageType;
     int branchId;
     int location;
-    static int counter = 1;
     public StockItem(CatalogItem catalogItem, int barcode, double costPrice, LocalDate expirationDate, DamageType damageType, int branchId, int location){
         this.catalogItem = catalogItem;
         this.barcode = barcode;

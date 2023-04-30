@@ -2,8 +2,8 @@ package SuperLi.src;
 import java.util.*;
 
 public interface IDataMapper<T> {
-    public Optional<T> find(String param);
-    public void insert(T object);
-    public void update(T object);
-    public void delete(T object);
+    Optional<T> find(String param);
+    void insert(T object);
+    void update(T object);
+    void delete(T object);
 }

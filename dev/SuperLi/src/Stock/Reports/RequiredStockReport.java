@@ -1,6 +1,5 @@
 package SuperLi.src.Stock.Reports;
 
-import SuperLi.src.Branch;
 import SuperLi.src.CatalogItem;
 import SuperLi.src.Category;
 

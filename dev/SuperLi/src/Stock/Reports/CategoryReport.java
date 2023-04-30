@@ -1,7 +1,6 @@
 package SuperLi.src.Stock.Reports;
 
 import SuperLi.src.CatalogItem;
-import SuperLi.src.Category;
 
 public class CategoryReport extends ACatalogReport{
     public CategoryReport(int branchId){super(branchId);}
