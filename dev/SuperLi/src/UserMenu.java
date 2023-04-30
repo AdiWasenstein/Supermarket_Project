@@ -2,7 +2,6 @@ package SuperLi.src;
 import SuperLi.src.Stock.CostumerDiscount;
 import SuperLi.src.Stock.DamageType;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -92,10 +91,10 @@ public class UserMenu {
             System.out.println("Invalid price. Returning to main menu...");
             return;
         }
-        if(!branch.addCatalogItem(id, name, new Category(prime, sub, new Size(size, measure_unit)), manufacturer, price, min_capacity))
-            System.out.println("Failed to add item to catalog. Returning to main menu...");
-        else
-            System.out.println("Adding to the catalog completed successfully");
+//        if(!branch.addCatalogItem(id, name, new Category(prime, sub, new Size(size, measure_unit)), manufacturer, price, min_capacity))
+//            System.out.println("Failed to add item to catalog. Returning to main menu...");
+//        else
+//            System.out.println("Adding to the catalog completed successfully");
     }
 
     public void remove_from_catalog(){
@@ -215,12 +214,12 @@ public class UserMenu {
                         break;
                     }
                     MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
-                    fulls.add(new Category(prime, sub, new Size(size, measure_unit)));
+//                    fulls.add(new Category(prime, sub, new Size(size, measure_unit)));
                 }
                 default -> System.out.println("PLEASE OPTION. PLEASE ENTER VALID DIGIT");
             }
         }
-        branch.generateCategoryReport(primes, prime_subs, fulls);
+//        branch.generateCategoryReport(primes, prime_subs, fulls);
     }
     public void set_price(){
         System.out.print("Enter the item ID: "); int id = input_number();
@@ -305,7 +304,7 @@ public class UserMenu {
                     return;
                 }
                 MeasureUnit measure_unit = MeasureUnit.values()[measure_num - 1];
-                this.branch.setCategoryDiscount(new Category(prime, sub, new Size(size, measure_unit)), costumerDiscount);
+//                this.branch.setCategoryDiscount(new Category(prime, sub, new Size(size, measure_unit)), costumerDiscount);
             }
             default -> System.out.println("Invalid option. Returning to main menu...");
         }
