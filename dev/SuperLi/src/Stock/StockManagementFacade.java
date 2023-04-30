@@ -58,7 +58,7 @@ public class StockManagementFacade {
     }
 
     public int findBranchOfBarcode(int barcode) {
-        for (Branch branch : branchDataMapper.findAll(""))
+        for (Branch branch : branchDataMapper.findAll())
             if (branch.containsBarcode(barcode))
                 return branch.getId();
         return -1;
