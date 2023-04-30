@@ -9,8 +9,6 @@ public class CatalogItem {
     String manufacturer;
     double sellPrice;
     int minCapacity;
-    int shelvesAmount;
-    int backAmount;
     int shelvesLocation;
     int backLocation;
     CostumerDiscount costumerDiscount;
@@ -35,15 +33,15 @@ public class CatalogItem {
     public void setPrice(double price){this.sellPrice = price;}
     public int getMinCapacity() { return this.minCapacity;}
     public void setMinCapacity(int capacity){this.minCapacity = capacity;}
-    public int getTotalAmount(){return this.shelvesAmount + this.backAmount;}
-    public int getShelvesAmount(){ return this.shelvesAmount;}
-    public void setShelvesAmount(int amount){this.shelvesAmount = amount;}
-    public void incShelves(){setShelvesAmount(this.shelvesAmount + 1);}
-    public void decShelves(){setShelvesAmount(this.shelvesAmount - 1);}
-    public int getBackAmount(){ return this.backAmount;}
-    public void setBackAmount(int amount){this.backAmount = amount;}
-    public void incBack(){setBackAmount(this.backAmount + 1);}
-    public void decBack(){setBackAmount(this.backAmount - 1);}
+    public int getTotalAmount(int branchId){return getShelvesAmount(branchId) + getBackAmount(branchId);}
+    public int getShelvesAmount(int branchId){
+        StockItemDataMapper stockItemDataMapper = StockItemDataMapper.getInstance();
+        return stockItemDataMapper.getShelvesIdAmount(branchId, this.id);
+    }
+    public int getBackAmount(int branchId){
+        StockItemDataMapper stockItemDataMapper = StockItemDataMapper.getInstance();
+        return stockItemDataMapper.getBackIdAmount(branchId, this.id);
+    }
     public int getShelvesLocation(){return this.shelvesLocation;}
     public int getBackLocation(){return this.backLocation;}
     public String toString(){

@@ -30,4 +30,10 @@ public class StockItemDataMapper implements IDataMapper<StockItem>{
     public LinkedList<StockItem> findAllFromBranch(int branchId){
         return new LinkedList<>();
     }
+    public int getShelvesIdAmount(int branchId, int catalogId){
+        return 0;
+    }
+    public int getBackIdAmount(int branchId, int catalogId){
+        return 0;
+    }
 }
