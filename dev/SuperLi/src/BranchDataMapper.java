@@ -3,7 +3,7 @@ import java.util.*;
 
 public class BranchDataMapper implements IDataMapper<Branch>{
     Map<Integer, Branch> branchIdentityMap;
-    static BranchDataMapper branchDataMapper;
+    static BranchDataMapper branchDataMapper = null;
     private BranchDataMapper(){
         branchIdentityMap = new HashMap<>();
     }
@@ -15,7 +15,7 @@ public class BranchDataMapper implements IDataMapper<Branch>{
     public Optional<Branch> find(String param){
         return Optional.empty();
     }
-    public LinkedList<Branch> findAll(String param){
+    public LinkedList<Branch> findAll(){
         return new LinkedList<>();
     }
     public void insert(Branch object) {
