@@ -141,8 +141,8 @@ public class UserMenu {
         }
         int barcode = -1;
         switch (item_locate) {
-            case (1) -> barcode = branch.addItem(id, cost_price, date, type, false);
-            case (2) -> barcode = branch.addItem(id, cost_price, date, type, true);
+            case (1) -> barcode = branch.addStockItem(id, cost_price, date, type, false);
+            case (2) -> barcode = branch.addStockItem(id, cost_price, date, type, true);
             case (3) -> barcode = branch.addItem(id, cost_price, date, type);
         }
         if(barcode < 1)
