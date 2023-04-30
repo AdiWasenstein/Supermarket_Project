@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Item {
+public class StockItem {
     CatalogItem catalogItem;
     int barcode;
     double costPrice;
@@ -13,7 +13,7 @@ public class Item {
     DamageType damageType;
     int location;
     static int counter = 1;
-    public Item(CatalogItem catalogItem, double costPrice, LocalDate expirationDate, DamageType damageType, int location){
+    public StockItem(CatalogItem catalogItem, double costPrice, LocalDate expirationDate, DamageType damageType, int location){
         this.catalogItem = catalogItem;
         this.barcode = counter;
         this.costPrice = costPrice;

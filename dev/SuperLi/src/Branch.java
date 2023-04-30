@@ -94,7 +94,7 @@ public class Branch {
         CatalogItem catalogItem = catalogItemsMap.get(id);
         if(catalogItem == null)
             return -1;
-        Item item = new Item(catalogItem, costPrice, expirationDate, damage, catalogItem.getBackLocation());
+        StockItem item = new StockItem(catalogItem, costPrice, expirationDate, damage, catalogItem.getBackLocation());
         if(forFront) {
             item.setLocation(catalogItem.getShelvesLocation());
             if(!this.shelves.addItem(item, false))
@@ -115,8 +115,8 @@ public class Branch {
         return addItem(id, costPrice, expirationDate, damage, forFront);
     }
     public boolean removeItem(int barcode){
-        Item frontItem = this.shelves.removeItem(barcode);
-        Item backItem = this.back.removeItem(barcode);
+        StockItem frontItem = this.shelves.removeItem(barcode);
+        StockItem backItem = this.back.removeItem(barcode);
         if(frontItem != null) {
             int id = frontItem.getCatalogItem().getId();
             CatalogItem catalogItem = catalogItemsMap.get(id);
@@ -155,7 +155,7 @@ public class Branch {
         return false;
     }
     public boolean transferFrontToBack(int barcode){
-        Item item = this.shelves.removeItem(barcode);
+        StockItem item = this.shelves.removeItem(barcode);
         if (item == null)
             return false;
         this.catalogItemsMap.get(item.getCatalogItem().getId()).decShelves();
@@ -163,7 +163,7 @@ public class Branch {
         return this.back.addItem(item, true);
     }
     public boolean transferBackToFront(int barcode){
-        Item item = this.back.removeItem(barcode);
+        StockItem item = this.back.removeItem(barcode);
         if (item == null)
             return false;
         this.catalogItemsMap.get(item.getCatalogItem().getId()).decBack();
@@ -183,17 +183,17 @@ public class Branch {
     }
     public void generateStockItemsReport(){
         StockItemsReport rep = new StockItemsReport();
-        for (Item item : shelves.getItems())
+        for (StockItem item : shelves.getItems())
             rep.add_to_report(item);
-        for (Item item : back.getItems())
+        for (StockItem item : back.getItems())
             rep.add_to_report(item);
         rep.generate_report();
     }
     public void generateDamagedReport(){
         DamagedReport damagedReport = new DamagedReport();
-        for(Item item : shelves.getDamagedItems())
+        for(StockItem item : shelves.getDamagedItems())
             damagedReport.add_to_report(item);
-        for(Item item : back.getDamagedItems())
+        for(StockItem item : back.getDamagedItems())
             damagedReport.add_to_report(item);
         damagedReport.generate_report();
     }

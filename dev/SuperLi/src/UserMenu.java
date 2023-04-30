@@ -2,6 +2,7 @@ package SuperLi.src;
 import SuperLi.src.Stock.CostumerDiscount;
 import SuperLi.src.Stock.DamageType;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class UserMenu {
         System.out.println("6. Set price for an item");
         System.out.println("7. Set minimum capacity for an item");
         System.out.println("8. Set costumerDiscount");
-        System.out.println("9. Change Item's Details");
+        System.out.println("9. Change StockItem's Details");
         System.out.println("0. Exit");
     }
     public void add_to_catalog(){
@@ -136,7 +137,7 @@ public class UserMenu {
         }
         System.out.print("Choose where to put the item:\n1. Back storage\n2. Shelves\n3. Dont mind\nChoice: "); int item_locate = input_number();
         if (!(item_locate >= 1 && item_locate <= 3)){
-            System.out.println("Invalid Item Location choice. Returning to main menu...");
+            System.out.println("Invalid StockItem Location choice. Returning to main menu...");
             return;
         }
         int barcode = -1;
@@ -147,7 +148,7 @@ public class UserMenu {
         }
         if(barcode < 1)
             System.out.println("Error at adding to stock");
-        System.out.format("Adding to the stock completed successfully. Item's barcode is %d. Returning to main menu...", barcode);
+        System.out.format("Adding to the stock completed successfully. StockItem's barcode is %d. Returning to main menu...", barcode);
     }
     public void remove_from_stock(){
         System.out.print("Enter the barcode: "); int barcode = input_number();
@@ -277,7 +278,7 @@ public class UserMenu {
             return;
         }
         CostumerDiscount costumerDiscount = new CostumerDiscount(date, value, value_type == 2, min_amount);
-        System.out.print("What type of costumerDiscount would you like to apply:\n1. Item costumerDiscount\n2. Category costumerDiscount\nCostumerDiscount Type: "); int discount_type = input_number();
+        System.out.print("What type of costumerDiscount would you like to apply:\n1. StockItem costumerDiscount\n2. Category costumerDiscount\nCostumerDiscount Type: "); int discount_type = input_number();
         switch(discount_type){
             case(1) -> {
                 System.out.print("Enter item's ID: "); int id = input_number();

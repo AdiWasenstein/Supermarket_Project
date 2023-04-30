@@ -1,10 +1,10 @@
 package SuperLi.src.Stock.Reports;
 
 import SuperLi.src.Stock.DamageType;
-import SuperLi.src.Stock.Item;
+import SuperLi.src.Stock.StockItem;
 
 public class DamagedReport extends AItemReport {
-    public String[] get_data(Item item){
+    public String[] get_data(StockItem item){
         String barcode = String.valueOf(item.getBarcode());
         String id = String.valueOf(item.getCatalogItem().getId());
         String name = item.getCatalogItem().getName();
