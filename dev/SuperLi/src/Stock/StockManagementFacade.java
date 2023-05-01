@@ -18,7 +18,6 @@ public class StockManagementFacade {
         catalogItemDataMapper = CatalogItemDataMapper.getInstance();
         branchDataMapper = BranchDataMapper.getInstance();
     }
-
     public static StockManagementFacade getInstance() {
         if (stockManagementFacade == null)
             stockManagementFacade = new StockManagementFacade();
@@ -37,7 +36,6 @@ public class StockManagementFacade {
         Optional<CatalogItem> catalogItem = catalogItemDataMapper.find(Integer.toString(id));
         return catalogItem.orElse(null);
     }
-
     public Branch getBranch(int branchId) {
         Optional<Branch> branch = branchDataMapper.find(Integer.toString(branchId));
         return branch.orElse(null);

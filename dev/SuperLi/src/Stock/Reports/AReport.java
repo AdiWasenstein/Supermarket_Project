@@ -13,10 +13,10 @@ public abstract class AReport {
         int[] widths = columns_widths(headers, records);
         print_seperator(widths, headers.length);
         print_record(headers, widths);
-        print_seperator(widths);
+        print_seperator(widths, headers.length);
         for(String[] record : records)
             print_record(record, widths);
-        print_seperator(widths);
+        print_seperator(widths, headers.length);
     }
     public int[] columns_widths(String[] headers, ArrayList<String[]> records){
         int[] widths= Arrays.stream(headers).mapToInt(String::length).toArray();
