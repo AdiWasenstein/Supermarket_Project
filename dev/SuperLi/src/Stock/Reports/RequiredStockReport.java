@@ -3,18 +3,28 @@ package SuperLi.src.Stock.Reports;
 import SuperLi.src.CatalogItem;
 import SuperLi.src.Category;
 
-public class RequiredStockReport extends ACatalogReport{ // To add ACatalog
-    public RequiredStockReport(int branchId){super(branchId);}
-    public String[] get_data(CatalogItem catalog_item){
-        String id = String.valueOf(catalog_item.getId());
-        String name = catalog_item.getName();
-        String amount = String.valueOf(catalog_item.getMinCapacity() * 2 - catalog_item.getTotalAmount(this.branchId));
-        String manufacturer = catalog_item.getManufacturer();
-        Category category = catalog_item.getCategory();
+import java.util.HashMap;
+import java.util.Map;
+
+public class RequiredStockReport extends ACatalogReport{
+    int branchId;
+    public RequiredStockReport(int branchId){this.branchId = branchId;}
+    public String[] getRecordData(CatalogItem catalogItem){
+        String id = String.valueOf(catalogItem.getId());
+        String name = catalogItem.getName();
+        String amount = String.valueOf(catalogItem.getMinCapacity() * 2 - catalogItem.getTotalAmount(this.branchId));
+        String manufacturer = catalogItem.getManufacturer();
+        Category category = catalogItem.getCategory();
         String size = String.format("%.1f %ss", category.getSizeAmount(), category.getMeasureUnit().name());
         return new String[]{id, manufacturer, name, size, amount};
     }
-    public String[] get_header(){
+    public String[] getHeaders(){
         return new String[]{"ID", "Manufacturer", "Name", "Size", "Amount To Order"};
+    }
+    public Map<Integer, Integer> getReportData(){
+        Map<Integer, Integer> amountsToOrder = new HashMap<>();
+        for(CatalogItem catalogItem : catalogItems)
+            amountsToOrder.put(catalogItem.getId(), catalogItem.getMinCapacity() * 2 - catalogItem.getTotalAmount(this.branchId));
+        return amountsToOrder;
     }
 }

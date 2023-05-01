@@ -5,18 +5,18 @@ import SuperLi.src.CatalogItem;
 import java.util.ArrayList;
 
 public abstract class ACatalogReport extends AReport {
-    int branchId;
-    ArrayList<CatalogItem> catalog_items;
-    public ACatalogReport(int branchId) {
-        this.branchId = branchId;
-        catalog_items = new ArrayList<>();
+    ArrayList<CatalogItem> catalogItems;
+    public ACatalogReport() {
+        catalogItems = new ArrayList<>();
     }
-    public void add_to_report(CatalogItem catalog_item) {
-        catalog_items.add(catalog_item);
+    public void addToReport(CatalogItem catalog_item) {
+        catalogItems.add(catalog_item);
     }
-    public abstract String[] get_data(CatalogItem catalog_item);
-    public void initialize_records(){
-        for(CatalogItem catalog_item : catalog_items)
-            records.add(get_data(catalog_item));
+    public abstract String[] getRecordData(CatalogItem catalog_item);
+    public ArrayList<String[]> initializeRecords(){
+        ArrayList<String[]> records = new ArrayList<>();
+        for(CatalogItem catalog_item : catalogItems)
+            records.add(getRecordData(catalog_item));
+        return records;
     }
 }
