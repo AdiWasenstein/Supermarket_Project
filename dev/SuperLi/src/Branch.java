@@ -19,29 +19,29 @@ public class Branch {
     public int getId(){return this.id;}
     public String getAddress(){return this.address;}
     //Catalog Items
-    public void generateCatalogReport(){
-        AllCatalogReport rep = new AllCatalogReport();
-        for(CatalogItem catalogItem : catalogItemsMap.values())
-            rep.add_to_report(catalogItem);
-        rep.generate_report();
-    }
-    public void generateCategoryReport(ArrayList<Category> categories, ArrayList<ArrayList<String>> categoriesStrList) {
-        CategoryReport categoryReport = new CategoryReport();
-        for (CatalogItem catalogItem : this.catalogItemsMap.values()) {
-            Category itemCategory = catalogItem.getCategory();
-            if (categories.contains(itemCategory)) {
-                categoryReport.add_to_report(catalogItem);
-                continue;
-            }
-            for (ArrayList<String> categoriesStr : categoriesStrList) {
-                if (itemCategory.getCategories().containsAll(categoriesStr)) {
-                    categoryReport.add_to_report(catalogItem);
-                    break;
-                }
-            }
-            categoryReport.generate_report();
-        }
-    }
+//    public void generateCatalogReport(){
+//        AllCatalogReport rep = new AllCatalogReport(this.id);
+//        for(CatalogItem catalogItem : catalogItemsMap.values())
+//            rep.addToReport(catalogItem);
+//        rep.generate_report();
+//    }
+//    public void generateCategoryReport(ArrayList<Category> categories, ArrayList<ArrayList<String>> categoriesStrList) {
+//        CategoryReport categoryReport = new CategoryReport();
+//        for (CatalogItem catalogItem : this.catalogItemsMap.values()) {
+//            Category itemCategory = catalogItem.getCategory();
+//            if (categories.contains(itemCategory)) {
+//                categoryReport.addToReport(catalogItem);
+//                continue;
+//            }
+//            for (ArrayList<String> categoriesStr : categoriesStrList) {
+//                if (itemCategory.getCategories().containsAll(categoriesStr)) {
+//                    categoryReport.addToReport(catalogItem);
+//                    break;
+//                }
+//            }
+//            categoryReport.generate_report();
+//        }
+//    }
 
     // Stock Items
     public StockItem getStockItem(int barcode) {
@@ -114,27 +114,27 @@ public class Branch {
         StockItem stockItem = getStockItem(barcode);
         return stockItem == null ? -1 : stockItem.getCatalogItem().getId();
     }
-    public void generateRequiredStockReport(){
-        RequiredStockReport requiredStockReport = new RequiredStockReport();
-        for(CatalogItem catalogItem : this.catalogItemsMap.values())
-            if(catalogItem.getShelvesAmount() + catalogItem.getBackAmount() < catalogItem.getMinCapacity())
-                requiredStockReport.add_to_report(catalogItem);
-        requiredStockReport.generate_report();
-    }
-    public void generateStockItemsReport(){
-        StockItemsReport rep = new StockItemsReport();
-        for (StockItem item : shelves.getItems())
-            rep.add_to_report(item);
-        for (StockItem item : back.getItems())
-            rep.add_to_report(item);
-        rep.generate_report();
-    }
-    public void generateDamagedReport(){
-        DamagedReport damagedReport = new DamagedReport();
-        for(StockItem item : shelves.getDamagedItems())
-            damagedReport.add_to_report(item);
-        for(StockItem item : back.getDamagedItems())
-            damagedReport.add_to_report(item);
-        damagedReport.generate_report();
-    }
+//    public void generateRequiredStockReport(){
+//        RequiredStockReport requiredStockReport = new RequiredStockReport();
+//        for(CatalogItem catalogItem : this.catalogItemsMap.values())
+//            if(catalogItem.getShelvesAmount() + catalogItem.getBackAmount() < catalogItem.getMinCapacity())
+//                requiredStockReport.addToReport(catalogItem);
+//        requiredStockReport.generate_report();
+//    }
+//    public void generateStockItemsReport(){
+//        StockItemsReport rep = new StockItemsReport();
+//        for (StockItem item : shelves.getItems())
+//            rep.addToReport(item);
+//        for (StockItem item : back.getItems())
+//            rep.addToReport(item);
+//        rep.generate_report();
+//    }
+//    public void generateDamagedReport(){
+//        DamagedReport damagedReport = new DamagedReport();
+//        for(StockItem item : shelves.getDamagedItems())
+//            damagedReport.addToReport(item);
+//        for(StockItem item : back.getDamagedItems())
+//            damagedReport.addToReport(item);
+//        damagedReport.generate_report();
+//    }
 }
