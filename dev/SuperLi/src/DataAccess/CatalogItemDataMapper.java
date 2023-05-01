@@ -25,9 +25,7 @@ public class CatalogItemDataMapper implements IDataMapper<CatalogItem> {
     }
     public void delete(CatalogItem object){
     }
-    public LinkedList<CatalogItem> findAllFromCategory(Category category){
-        return new LinkedList<>();
-    }
+    public LinkedList<CatalogItem> findAllFromCategory(Category category){return new LinkedList<>();}
     public LinkedList<CatalogItem> findAllFromCategory(LinkedList<String> categories) {
         return new LinkedList<>();
     }
