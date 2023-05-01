@@ -31,4 +31,5 @@ public class CatalogItemDataMapper implements IDataMapper<CatalogItem> {
     public LinkedList<CatalogItem> findAllFromCategory(LinkedList<String> categories) {
         return new LinkedList<>();
     }
+    public LinkedList<CatalogItem> findAll(){return new LinkedList<>();}
 }
