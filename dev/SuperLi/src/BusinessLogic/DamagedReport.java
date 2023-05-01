@@ -1,7 +1,4 @@
-package SuperLi.src.Stock.Reports;
-
-import SuperLi.src.Stock.DamageType;
-import SuperLi.src.Stock.StockItem;
+package SuperLi.src.BusinessLogic;
 
 public class DamagedReport extends AStockItemReport {
     public String[] getRecordData(StockItem stockItem){

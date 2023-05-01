@@ -1,4 +1,4 @@
-package SuperLi.src;
+package SuperLi.src.BusinessLogic;
 
 public enum MeasureUnit {
     UNIT,

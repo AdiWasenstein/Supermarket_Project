@@ -1,10 +1,7 @@
-package SuperLi.src.Stock;
+package SuperLi.src.BusinessLogic;
 
-import SuperLi.src.BranchDataMapper;
-import SuperLi.src.CatalogItem;
-import SuperLi.src.CatalogItemDataMapper;
-import SuperLi.src.Branch;
-import SuperLi.src.Category;
+import SuperLi.src.DataAccess.BranchDataMapper;
+import SuperLi.src.DataAccess.CatalogItemDataMapper;
 
 import java.time.LocalDate;
 import java.util.Optional;

@@ -1,5 +1,4 @@
-package SuperLi.src.Stock;
-import SuperLi.src.CatalogItem;
+package SuperLi.src.BusinessLogic;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

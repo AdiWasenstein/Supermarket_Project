@@ -1,6 +1,7 @@
-package SuperLi.src;
+package SuperLi.src.BusinessLogic;
 
-import SuperLi.src.Stock.CostumerDiscount;
+import SuperLi.src.DataAccess.StockItemDataMapper;
+
 import java.util.*;
 public class CatalogItem {
     int id;

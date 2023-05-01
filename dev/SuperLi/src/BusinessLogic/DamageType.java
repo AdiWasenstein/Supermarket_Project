@@ -1,4 +1,4 @@
-package SuperLi.src.Stock;
+package SuperLi.src.BusinessLogic;
 
 public enum DamageType {
     COVER,

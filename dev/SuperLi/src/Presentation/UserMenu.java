@@ -1,6 +1,10 @@
-package SuperLi.src;
-import SuperLi.src.Stock.CostumerDiscount;
-import SuperLi.src.Stock.DamageType;
+package SuperLi.src.Presentation;
+import SuperLi.src.BusinessLogic.Branch;
+import SuperLi.src.BusinessLogic.CatalogItem;
+import SuperLi.src.BusinessLogic.Category;
+import SuperLi.src.BusinessLogic.MeasureUnit;
+import SuperLi.src.BusinessLogic.CostumerDiscount;
+import SuperLi.src.BusinessLogic.DamageType;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

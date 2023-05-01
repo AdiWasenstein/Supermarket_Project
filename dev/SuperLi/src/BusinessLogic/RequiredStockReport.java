@@ -1,7 +1,4 @@
-package SuperLi.src.Stock.Reports;
-
-import SuperLi.src.CatalogItem;
-import SuperLi.src.Category;
+package SuperLi.src.BusinessLogic;
 
 import java.util.HashMap;
 import java.util.Map;

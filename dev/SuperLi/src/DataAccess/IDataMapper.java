@@ -1,4 +1,4 @@
-package SuperLi.src;
+package SuperLi.src.DataAccess;
 import java.util.*;
 
 public interface IDataMapper<T> {

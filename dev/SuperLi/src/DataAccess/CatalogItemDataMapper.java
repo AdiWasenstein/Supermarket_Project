@@ -1,8 +1,11 @@
-package SuperLi.src;
+package SuperLi.src.DataAccess;
+
+import SuperLi.src.BusinessLogic.CatalogItem;
+import SuperLi.src.BusinessLogic.Category;
 
 import java.util.*;
 
-public class CatalogItemDataMapper implements IDataMapper<CatalogItem>{
+public class CatalogItemDataMapper implements IDataMapper<CatalogItem> {
     Map<Integer, CatalogItem> catalogItemsIdentitiyMap;
     static CatalogItemDataMapper catalogItemDataMapper = null;
     private CatalogItemDataMapper(){

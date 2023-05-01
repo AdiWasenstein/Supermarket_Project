@@ -1,9 +1,9 @@
-package SuperLi.src;
+package SuperLi.src.DataAccess;
 
-import SuperLi.src.Stock.StockItem;
+import SuperLi.src.BusinessLogic.StockItem;
 import java.util.*;
 
-public class StockItemDataMapper implements IDataMapper<StockItem>{
+public class StockItemDataMapper implements IDataMapper<StockItem> {
     Map<Integer, StockItem> stockItemsIdentitiyMap;
     static StockItemDataMapper stockItemDataMapper = null;
     private StockItemDataMapper(){

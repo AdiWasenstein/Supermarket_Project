@@ -1,4 +1,4 @@
-package SuperLi.src.Stock.Reports;
+package SuperLi.src.BusinessLogic;
 
 import java.util.ArrayList;
 import java.util.Arrays;

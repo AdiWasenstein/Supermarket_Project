@@ -1,6 +1,4 @@
-package SuperLi.src.Stock.Reports;
-
-import SuperLi.src.CatalogItem;
+package SuperLi.src.BusinessLogic;
 
 public class CategoryReport extends ACatalogReport{
     public String[] getRecordData(CatalogItem catalogItem){

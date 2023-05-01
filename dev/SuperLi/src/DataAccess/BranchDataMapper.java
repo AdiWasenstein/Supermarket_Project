@@ -1,7 +1,9 @@
-package SuperLi.src;
+package SuperLi.src.DataAccess;
+import SuperLi.src.BusinessLogic.Branch;
+
 import java.util.*;
 
-public class BranchDataMapper implements IDataMapper<Branch>{
+public class BranchDataMapper implements IDataMapper<Branch> {
     Map<Integer, Branch> branchIdentityMap;
     static BranchDataMapper branchDataMapper = null;
     private BranchDataMapper(){

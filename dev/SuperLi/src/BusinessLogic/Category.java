@@ -1,4 +1,4 @@
-package SuperLi.src;
+package SuperLi.src.BusinessLogic;
 import java.util.*;
 
 public class Category{

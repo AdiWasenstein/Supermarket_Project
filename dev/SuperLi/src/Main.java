@@ -1,10 +1,5 @@
 package SuperLi.src;
 
-import SuperLi.src.Stock.CostumerDiscount;
-import SuperLi.src.Stock.DamageType;
-
-import java.time.LocalDate;
-
 public class Main {
 //    static Category milk1000 = new Category("Dairy", "Milk", new Size(1000,MeasureUnit.ML));
 //    static Category milk1500 = new Category("Dairy", "Milk", new Size(1500, MeasureUnit.ML));
