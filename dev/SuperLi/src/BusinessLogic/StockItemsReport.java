@@ -1,6 +1,7 @@
 package SuperLi.src.BusinessLogic;
 
 public class StockItemsReport extends AStockItemReport {
+    int branchId;
     public String[] getRecordData(StockItem stockItem){
         CatalogItem catalogItem = stockItem.getCatalogItem();
         String barcode = String.valueOf(stockItem.getBarcode());

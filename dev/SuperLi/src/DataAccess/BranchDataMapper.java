@@ -17,13 +17,8 @@ public class BranchDataMapper implements IDataMapper<Branch> {
     public Optional<Branch> find(String param){
         return Optional.empty();
     }
-    public LinkedList<Branch> findAll(){
-        return new LinkedList<>();
-    }
-    public void insert(Branch object) {
-    }
-    public void update(Branch object) {
-    }
-    public void delete(Branch object) {
-    }
+    public LinkedList<Branch> findAll(){return new LinkedList<>();}
+    public void insert(Branch object) {}
+    public void update(Branch object) {}
+    public void delete(Branch object) {}
 }
