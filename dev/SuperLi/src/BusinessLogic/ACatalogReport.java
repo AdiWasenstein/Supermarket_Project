@@ -1,18 +1,18 @@
 package SuperLi.src.BusinessLogic;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public abstract class ACatalogReport extends AReport {
-    ArrayList<CatalogItem> catalogItems;
+    LinkedList<CatalogItem> catalogItems;
     public ACatalogReport() {
-        catalogItems = new ArrayList<>();
+        catalogItems = new LinkedList<>();
     }
-    public void addToReport(CatalogItem catalog_item) {
-        catalogItems.add(catalog_item);
+    public void addToReport(CatalogItem catalogItem) {
+        catalogItems.add(catalogItem);
     }
-    public abstract String[] getRecordData(CatalogItem catalog_item);
-    public ArrayList<String[]> initializeRecords(){
-        ArrayList<String[]> records = new ArrayList<>();
+    public abstract String[] getRecordData(CatalogItem catalogItem);
+    public LinkedList<String[]> initializeRecords(){
+        LinkedList<String[]> records = new LinkedList<>();
         for(CatalogItem catalog_item : catalogItems)
             records.add(getRecordData(catalog_item));
         return records;

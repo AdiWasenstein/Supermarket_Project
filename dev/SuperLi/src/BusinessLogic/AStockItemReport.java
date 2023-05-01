@@ -1,15 +1,15 @@
 package SuperLi.src.BusinessLogic;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public abstract class AStockItemReport extends AReport{
-    ArrayList<StockItem> stockItems;
-    public AStockItemReport() { stockItems = new ArrayList<>();}
+    LinkedList<StockItem> stockItems;
+    public AStockItemReport() { stockItems = new LinkedList<>();}
     public void addToReport(StockItem stockItem){
         stockItems.add(stockItem);}
     public abstract String[] getRecordData(StockItem stockItem);
-    public ArrayList<String[]> initializeRecords() {
-        ArrayList<String[]> records = new ArrayList<>();
+    public LinkedList<String[]> initializeRecords() {
+        LinkedList<String[]> records = new LinkedList<>();
         for (StockItem item : stockItems) {
             records.add(getRecordData(item));
         }

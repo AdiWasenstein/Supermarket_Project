@@ -4,6 +4,7 @@ import SuperLi.src.DataAccess.BranchDataMapper;
 import SuperLi.src.DataAccess.CatalogItemDataMapper;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Random;
 
@@ -109,5 +110,58 @@ public class StockManagementFacade {
             return false;
         catalogItem.setMinCapacity(amount);
         return true;
+    }
+
+    // Reports
+    public AllCatalogReport generateAllCatalogReport(){
+        AllCatalogReport report = new AllCatalogReport();
+        for(CatalogItem catalogItem : catalogItemDataMapper.findAll())
+            report.addToReport(catalogItem);
+        return report;
+    }
+    public CategoryReport generateCategoryReport(LinkedList<Category> categories, LinkedList<LinkedList<String>> categoriesStrList) {
+        CategoryReport report = new CategoryReport();
+        for (CatalogItem catalogItem : catalogItemDataMapper.findAll()) {
+            if (categories.contains(catalogItem.getCategory())) {
+                report.addToReport(catalogItem);
+                continue;
+            }
+            for (LinkedList<String> categoriesStr : categoriesStrList) {
+                if(catalogItem.isFromCategory(categoriesStr)){
+                    report.addToReport(catalogItem);
+                    break;
+                }
+            }
+        }
+        return report;
+    }
+    public RequiredStockReport generateRequiredStockReport(int branchId){
+        Branch branch = getBranch(branchId);
+        RequiredStockReport report = new RequiredStockReport(branchId);
+        if(branch == null)
+            return report;
+        for(CatalogItem catalogItem : catalogItemDataMapper.findAll())
+            if(branch.getTotalIdAmount(catalogItem.getId()) < catalogItem.getMinCapacity())
+                report.addToReport(catalogItem);
+        return report;
+    }
+    public StockItemsReport generateItemReport(int branchId){
+        StockItemsReport report = new StockItemsReport();
+        Branch branch = getBranch(branchId);
+        if (branch == null)
+            return report;
+        for (StockItem item : branch.findAllFromBranch())
+            report.addToReport(item);
+        return report;
+    }
+    public DamagedReport generateDamagedStockReport(int branchId){
+        DamagedReport report = new DamagedReport();
+        Branch branch = getBranch(branchId);
+        if (branch == null)
+            return report;
+        for (StockItem stockItem : branch.findAllFromBranch())
+            if(stockItem.needsToBeReturned())
+                report.addToReport(stockItem);
+        return report;
     }
 }

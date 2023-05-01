@@ -113,6 +113,18 @@ public class Branch {
         StockItem stockItem = getStockItem(barcode);
         return stockItem == null ? -1 : stockItem.getCatalogItem().getId();
     }
+    public int getShelvesIdAmount(int catalogId){
+        return stockItemDataMapper.getShelvesIdAmount(this.id, catalogId);
+    }
+    public int getBackIdAmount(int catalogId){
+        return stockItemDataMapper.getBackIdAmount(this.id, catalogId);
+    }
+    public int getTotalIdAmount(int catalogId){
+        return getShelvesIdAmount(catalogId) + getBackIdAmount(catalogId);
+    }
+    public LinkedList<StockItem> findAllFromBranch(){
+        return stockItemDataMapper.findAllFromBranch(this.id);
+    }
 //    public void generateRequiredStockReport(){
 //        RequiredStockReport requiredStockReport = new RequiredStockReport();
 //        for(CatalogItem catalogItem : this.catalogItemsMap.values())

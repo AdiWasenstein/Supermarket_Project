@@ -8,9 +8,9 @@ public class DamagedReport extends AStockItemReport {
         String category = stockItem.getCatalogItem().getCategory().toString();
         String location = getLocation(stockItem);
         DamageType damage = stockItem.getDamage();
-        String expiration = stockItem.is_expired() ? String.format("%d days expired", stockItem.dateDifference()) : "";
+        String expiration = stockItem.isExpired() ? String.format("%d days expired", stockItem.dateDifference()) : "";
         String damageType = damage == DamageType.NONE ? "" : damage.name();
-        String damageDescription = damageType + (stockItem.is_expired() && damage != DamageType.NONE ? " and " : "") + expiration;
+        String damageDescription = damageType + (stockItem.isExpired() && damage != DamageType.NONE ? " and " : "") + expiration;
         return new String[]{barcode, id, name, category, location, damageDescription};
     }
     public String[] getHeaders(){

@@ -29,7 +29,7 @@ public class StockItem {
     public long dateDifference(){
         return ChronoUnit.DAYS.between( this.expirationDate, LocalDate.now());
     }
-    public boolean is_expired(){ return dateDifference() > 0;}
+    public boolean isExpired(){ return dateDifference() > 0;}
     public String getExpirationString(){return this.expirationDate.format(DateTimeFormatter.ofPattern("d/M/yy"));}
     public DamageType getDamage(){return this.damageType;}
     public void setDamage(DamageType type){
@@ -38,6 +38,7 @@ public class StockItem {
     public int getBranchId(){return this.branchId;}
     public int getLocation(){ return this.location;}
     public void setLocation(int location){this.location = location;}
+    public boolean needsToBeReturned(){return isExpired() || getDamage().ordinal() < 4;}
     public String toString(){
         return String.format("ID: %d; Barcode: %d; Price: %.1f₪; Location: %d; Manufacturer: %s; Amount: %d; Shelves Amount: %d; Back Amount: %d",
                 getCatalogItem().getId(), getBarcode(), getCatalogItem().getDiscountedPrice(), getLocation(), getCatalogItem().getManufacturer(),

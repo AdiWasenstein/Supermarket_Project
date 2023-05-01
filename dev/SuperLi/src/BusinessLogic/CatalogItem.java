@@ -60,5 +60,5 @@ public class CatalogItem {
         return this.costumerDiscount.generateDiscount(this.sellPrice, amount);
     }
     public boolean isFromCategory(Category category){return category.equals(this.getCategory());}
-    public boolean isFromCategory(ArrayList<String> categoriesStrList){return category.getCategories().containsAll(categoriesStrList);}
+    public boolean isFromCategory(LinkedList<String> categoriesStrList){return category.getCategories().containsAll(categoriesStrList);}
 }

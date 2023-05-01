@@ -1,7 +1,7 @@
 package SuperLi.src.Presentation;
 
 import SuperLi.src.BusinessLogic.AReport;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -15,7 +15,7 @@ public class ReportViewer {
     }
     public void viewReport(AReport report){
         String[] headers = report.getHeaders();
-        ArrayList<String[]> records = report.initializeRecords();
+        LinkedList<String[]> records = report.initializeRecords();
         int[] widths = getColumnsWidths(headers, records);
         printSeperator(widths, headers.length);
         printRecord(headers, widths);
@@ -24,7 +24,7 @@ public class ReportViewer {
             printRecord(record, widths);
         printSeperator(widths, headers.length);
     }
-    public int[] getColumnsWidths(String[] headers, ArrayList<String[]> records){
+    public int[] getColumnsWidths(String[] headers, LinkedList<String[]> records){
         int[] widths= Arrays.stream(headers).mapToInt(String::length).toArray();
         for(String[] cells : records)
             for(int i = 0; i < headers.length; i++)
