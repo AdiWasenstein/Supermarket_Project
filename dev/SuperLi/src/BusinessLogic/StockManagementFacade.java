@@ -47,6 +47,16 @@ public class StockManagementFacade {
         catalogItemDataMapper.insert(catalogItem);
         return true;
     }
+    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category, int shelfLife) {
+        if (getCatalogItem(id) != null)
+            return false;
+        Random rnd = new Random();
+        int shelvesLocation = rnd.nextInt(Branch.BACKSTART);
+        int backLocation = rnd.nextInt(Branch.BACKSTART, Branch.BACKEND + 1);
+        CatalogItem catalogItem = new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation, shelfLife);
+        catalogItemDataMapper.insert(catalogItem);
+        return true;
+    }
     public boolean removeCatalogItem(int id) {
         CatalogItem catalogItem = getCatalogItem(id);
         if (catalogItem == null)
@@ -81,6 +91,28 @@ public class StockManagementFacade {
         if (branch == null)
             return false;
         return branch.addStockItem(catalogItem, barcode, costPrice, expirationDate, damage, front);
+    }
+    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, DamageType damage) {
+        if (findBranchOfBarcode(barcode) >= 0)
+            return false;
+        CatalogItem catalogItem = getCatalogItem(id);
+        if (catalogItem == null)
+            return false;
+        Branch branch = getBranch(branchId);
+        if (branch == null)
+            return false;
+        return branch.addStockItem(catalogItem, barcode, costPrice, damage);
+    }
+    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, DamageType damage, boolean front) {
+        if (findBranchOfBarcode(barcode) >= 0)
+            return false;
+        CatalogItem catalogItem = getCatalogItem(id);
+        if (catalogItem == null)
+            return false;
+        Branch branch = getBranch(branchId);
+        if (branch == null)
+            return false;
+        return branch.addStockItem(catalogItem, barcode, costPrice, damage, front);
     }
     public boolean removeStockItem(int barcode, int branchId){
         return getBranch(branchId).removeItem(barcode);

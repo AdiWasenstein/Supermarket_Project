@@ -13,6 +13,7 @@ public class CatalogItem {
     int shelvesLocation;
     int backLocation;
     CostumerDiscount costumerDiscount;
+    int shelfLife = 7;
     public CatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category, int shelvesLocation, int backLocation){
         this.id = id;
         this.name = name;
@@ -23,6 +24,18 @@ public class CatalogItem {
         this.shelvesLocation = shelvesLocation;
         this.backLocation = backLocation;
         this.costumerDiscount = null;
+    }
+    public CatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category, int shelvesLocation, int backLocation, int shelfLife){
+        this.id = id;
+        this.name = name;
+        this.manufacturer = manufacturer;
+        this.sellPrice = sellPrice;
+        this.minCapacity = minCapacity;
+        this.category = category;
+        this.shelvesLocation = shelvesLocation;
+        this.backLocation = backLocation;
+        this.costumerDiscount = null;
+        this.shelfLife = shelfLife;
     }
     public int getId(){ return this.id;}
     public String getName(){return this.name;}
@@ -43,9 +56,10 @@ public class CatalogItem {
     }
     public int getShelvesLocation(){return this.shelvesLocation;}
     public int getBackLocation(){return this.backLocation;}
+    public int getShelfLife(){return this.shelfLife;}
     public String toString(){
-        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1f₪; ; Min Capacity: %d; CostumerDiscount: %s",
-                id, category, name, manufacturer, sellPrice, minCapacity,(costumerDiscount == null ? "" : costumerDiscount.toString()));
+        return String.format("ID: %d; %s; %s; Manufacturer: %s; %.1fILS; Min Capacity: %d; Shelf Life: %d; CostumerDiscount: %s",
+                id, category, name, manufacturer, sellPrice, minCapacity,shelfLife, (costumerDiscount == null ? "" : costumerDiscount.toString()));
     }
     public CostumerDiscount getCostumerDiscount(){return this.costumerDiscount;}
     public void setCostumerDiscount(CostumerDiscount costumerDiscount){this.costumerDiscount = costumerDiscount;}

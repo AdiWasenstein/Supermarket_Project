@@ -21,6 +21,15 @@ public class StockItem {
         this.branchId = branchId;
         this.location = location;
     }
+    public StockItem(CatalogItem catalogItem, int barcode, double costPrice, DamageType damageType, int branchId, int location){
+        this.catalogItem = catalogItem;
+        this.barcode = barcode;
+        this.costPrice = costPrice;
+        this.expirationDate = LocalDate.now().plusDays(catalogItem.getShelfLife());
+        this.damageType = damageType;
+        this.branchId = branchId;
+        this.location = location;
+    }
     public CatalogItem getCatalogItem(){
         return this.catalogItem;
     }

@@ -15,7 +15,7 @@ public class Branch {
     public Branch(String address, int id){
         this.address = address;
         this.id = id;
-        this.branchOrders = new LinkedList<Order>();
+        this.branchOrders = new LinkedList<>();
         stockItemDataMapper = StockItemDataMapper.getInstance();
     }
     public LinkedList<Order> getBranchOrders()
@@ -58,6 +58,18 @@ public class Branch {
     public boolean addStockItem(CatalogItem catalogItem, int barcode, double costPrice, LocalDate expirationDate, DamageType damage){
         boolean forFront = catalogItem.getShelvesAmount(id) < catalogItem.getMinCapacity();
         return addStockItem(catalogItem, barcode, costPrice, expirationDate, damage, forFront);
+    }
+    public boolean addStockItem(CatalogItem catalogItem, int barcode, double costPrice, DamageType damage, boolean forFront) {
+        if(getStockItem(barcode) != null)
+            return false;
+        int location = forFront ? catalogItem.getShelvesLocation() : catalogItem.getBackLocation();
+        StockItem stockItem = new StockItem(catalogItem, barcode, costPrice, damage, this.id, location);
+        stockItemDataMapper.insert(stockItem);
+        return true;
+    }
+    public boolean addStockItem(CatalogItem catalogItem, int barcode, double costPrice, DamageType damage){
+        boolean forFront = catalogItem.getShelvesAmount(id) < catalogItem.getMinCapacity();
+        return addStockItem(catalogItem, barcode, costPrice, damage, forFront);
     }
     public boolean removeItem(int barcode){
         StockItem stockItem =  getStockItem(barcode);

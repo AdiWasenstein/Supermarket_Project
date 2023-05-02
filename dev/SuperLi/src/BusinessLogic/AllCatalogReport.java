@@ -11,11 +11,12 @@ public class AllCatalogReport extends ACatalogReport{
         String backLocation = String.valueOf(catalogItem.getBackLocation());
         String minCapacity = String.valueOf(catalogItem.getMinCapacity());
         String discount = catalogItem.getCostumerDiscount() != null ? catalogItem.getCostumerDiscount().toString() : "";
+        String shelfLife = String.valueOf(catalogItem.getShelfLife());
         return new String[]{id, name, category, manufacturer, sellPrice,
-                shelvesLocation + " & " + backLocation, minCapacity,
+                shelvesLocation + " & " + backLocation, minCapacity, shelfLife,
                 discount};
     }
     public String[] getHeaders(){
-        return new String[]{"ID", "Name", "Category", "Manufacturer", "Price", "Locations", "Min Capacity","CostumerDiscount Details"};
+        return new String[]{"ID", "Name", "Category", "Manufacturer", "Price", "Locations", "Min Capacity", "Shelf Life", "CostumerDiscount Details"};
     }
 }
