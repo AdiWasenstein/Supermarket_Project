@@ -28,9 +28,9 @@ public class AdminController {
     //this func checks if there is already a supplier with given id.
     public boolean isSupplierIdExists(int id)//CHANGE!
     {
-//        for(int i = 0; i< SuperLi.src.SystemManagment.allSuppliers.size(); i++)
+//        for(int i = 0; i< SuperLi.src.Presentation.MainMenu.allSuppliers.size(); i++)
 //        {
-//            if(SuperLi.src.SystemManagment.allSuppliers.get(i).getSupplierId() == id)
+//            if(SuperLi.src.Presentation.MainMenu.allSuppliers.get(i).getSupplierId() == id)
 //                return true;
 //        }
         return false;
@@ -97,7 +97,7 @@ public class AdminController {
     public void addNewBranch(String address)
     {
 //        Branch newB = new Branch(address);
-//        SuperLi.src.SystemManagment.allBranches.add(newB);
+//        SuperLi.src.Presentation.MainMenu.allBranches.add(newB);
         //MAYBE NEED TO THROW AN EXCEPTION.
     }
 

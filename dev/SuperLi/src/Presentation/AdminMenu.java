@@ -503,8 +503,8 @@ public class AdminMenu extends AMenu {
         {
             branchNumber = scan.nextInt();
             scan.nextLine();
-//            if(branchNumber <= 0 || branchNumber > SuperLi.src.SystemManagment.allBranches.size())
-//                throw new InvalidParameterException("Business.Branch number must be in range of 1 - " + SuperLi.src.SystemManagment.allBranches.size());
+//            if(branchNumber <= 0 || branchNumber > SuperLi.src.Presentation.MainMenu.allBranches.size())
+//                throw new InvalidParameterException("Business.Branch number must be in range of 1 - " + SuperLi.src.Presentation.MainMenu.allBranches.size());
         }
         catch (InputMismatchException e) {
             scan.nextLine();

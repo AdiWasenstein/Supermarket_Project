@@ -1,4 +1,4 @@
-package SuperLi.src;
+package SuperLi.src.Presentation;
 
 import SuperLi.src.BusinessLogic.Order;
 import SuperLi.src.BusinessLogic.Supplier;
@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.sql.*;
 
-public class SystemManagment {
+public class MainMenu {
     static LinkedList<Supplier> allSuppliers = new LinkedList<>();
     static LinkedList<Order> allOrders = new LinkedList<>();
     static LinkedList<Branch> allBranches = new LinkedList<>();

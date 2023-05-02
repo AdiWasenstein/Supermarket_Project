@@ -39,7 +39,7 @@ public class SupplierController {
     // returns the supplier if exist, else returns null.
     public Supplier findSupplierById(int id)//CHANGE!
     {
-//        for (Supplier supplier : SuperLi.src.SystemManagment.allSuppliers)
+//        for (Supplier supplier : SuperLi.src.Presentation.MainMenu.allSuppliers)
 //        {
 //            if (supplier.isIdEquals(id))
 //                return supplier;
@@ -107,7 +107,7 @@ public class SupplierController {
     //throws Exception if there is no fitting catalog item.
     public int getCatalogItemId(String itemName, String manufacturer, String category)throws Exception//CHANGE!
     {
-//        MarketItem itemM = SuperLi.src.SystemManagment.marketStock.getMarketItem(itemName,manufacturer);
+//        MarketItem itemM = SuperLi.src.Presentation.MainMenu.marketStock.getMarketItem(itemName,manufacturer);
         return 0;
     }
 

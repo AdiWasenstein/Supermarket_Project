@@ -36,7 +36,7 @@ public class OrderMenu extends AMenu{
 //        {
 //            try
 //            {
-//                if(SuperLi.src.SystemManagment.allBranches.isEmpty())
+//                if(SuperLi.src.Presentation.MainMenu.allBranches.isEmpty())
 //                {
 //                    System.out.println("There are no branches in the system, so it's impossible to make an order.");
 //                    return;
@@ -44,8 +44,8 @@ public class OrderMenu extends AMenu{
 //                System.out.println("Enter number of branch");
 //                branchNumber = scan.nextInt();
 //                scan.nextLine();
-//                if (branchNumber <= 0 || branchNumber > SuperLi.src.SystemManagment.allBranches.size())
-//                    throw new InvalidParameterException("Business.Branch number must be in range of 1 - " + SuperLi.src.SystemManagment.allBranches.size());
+//                if (branchNumber <= 0 || branchNumber > SuperLi.src.Presentation.MainMenu.allBranches.size())
+//                    throw new InvalidParameterException("Business.Branch number must be in range of 1 - " + SuperLi.src.Presentation.MainMenu.allBranches.size());
 //                break;
 //            }
 //            catch (InputMismatchException e) {
@@ -107,7 +107,7 @@ public class OrderMenu extends AMenu{
 //                {
 //                    throw new InvalidParameterException("Market Id must be non negative number");
 //                }
-//                if (!SuperLi.src.SystemManagment.marketStock.isItemExist(itemId))
+//                if (!SuperLi.src.Presentation.MainMenu.marketStock.isItemExist(itemId))
 //                {
 //                    throw new InvalidParameterException("Given market id does not belong to any of stock items.");
 //                }
