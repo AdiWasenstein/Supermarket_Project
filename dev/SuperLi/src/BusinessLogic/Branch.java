@@ -9,38 +9,36 @@ public class Branch {
     final String address;
     public final static int BACKSTART = 1000;
     public final static int BACKEND = 2000;
+    LinkedList<Order> branchOrders;
+
     StockItemDataMapper stockItemDataMapper;
     public Branch(String address, int id){
         this.address = address;
         this.id = id;
+        this.branchOrders = new LinkedList<Order>();
         stockItemDataMapper = StockItemDataMapper.getInstance();
+    }
+    public LinkedList<Order> getBranchOrders()
+    {
+        return this.branchOrders;
+    }
+
+    public void addOrder(Order order)
+    {
+        if (order != null)
+            branchOrders.add(order);
+    }
+
+    public void showOrderHistory()
+    {
+        if (this.branchOrders.isEmpty())
+            System.out.println("No orders yet to be made from this branch.");
+
+        for (Order order: branchOrders)
+            System.out.println(order);
     }
     public int getId(){return this.id;}
     public String getAddress(){return this.address;}
-    //Catalog Items
-//    public void generateCatalogReport(){
-//        AllCatalogReport rep = new AllCatalogReport(this.id);
-//        for(CatalogItem catalogItem : catalogItemsMap.values())
-//            rep.addToReport(catalogItem);
-//        rep.generate_report();
-//    }
-//    public void generateCategoryReport(ArrayList<Category> categories, ArrayList<ArrayList<String>> categoriesStrList) {
-//        CategoryReport categoryReport = new CategoryReport();
-//        for (CatalogItem catalogItem : this.catalogItemsMap.values()) {
-//            Category itemCategory = catalogItem.getCategory();
-//            if (categories.contains(itemCategory)) {
-//                categoryReport.addToReport(catalogItem);
-//                continue;
-//            }
-//            for (ArrayList<String> categoriesStr : categoriesStrList) {
-//                if (itemCategory.getCategories().containsAll(categoriesStr)) {
-//                    categoryReport.addToReport(catalogItem);
-//                    break;
-//                }
-//            }
-//            categoryReport.generate_report();
-//        }
-//    }
 
     // Stock Items
     public StockItem getStockItem(int barcode) {
@@ -125,27 +123,4 @@ public class Branch {
     public LinkedList<StockItem> findAllFromBranch(){
         return stockItemDataMapper.findAllFromBranch(this.id);
     }
-//    public void generateRequiredStockReport(){
-//        RequiredStockReport requiredStockReport = new RequiredStockReport();
-//        for(CatalogItem catalogItem : this.catalogItemsMap.values())
-//            if(catalogItem.getShelvesAmount() + catalogItem.getBackAmount() < catalogItem.getMinCapacity())
-//                requiredStockReport.addToReport(catalogItem);
-//        requiredStockReport.generate_report();
-//    }
-//    public void generateStockItemsReport(){
-//        StockItemsReport rep = new StockItemsReport();
-//        for (StockItem item : shelves.getItems())
-//            rep.addToReport(item);
-//        for (StockItem item : back.getItems())
-//            rep.addToReport(item);
-//        rep.generate_report();
-//    }
-//    public void generateDamagedReport(){
-//        DamagedReport damagedReport = new DamagedReport();
-//        for(StockItem item : shelves.getDamagedItems())
-//            damagedReport.addToReport(item);
-//        for(StockItem item : back.getDamagedItems())
-//            damagedReport.addToReport(item);
-//        damagedReport.generate_report();
-//    }
 }
