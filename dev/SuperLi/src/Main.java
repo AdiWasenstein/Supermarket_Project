@@ -29,7 +29,7 @@ public class Main {
 //                initialize_Items(us, i);
 //            initialize_discount(us);
 //        }
-//        us.communicate();// Labohn
+//        us.communicate();// Labohen
     }
 
 //    public static void initialize_Catalog(UserMenu us){
