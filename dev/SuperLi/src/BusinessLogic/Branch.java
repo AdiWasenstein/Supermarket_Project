@@ -71,7 +71,7 @@ public class Branch {
         boolean forFront = catalogItem.getShelvesAmount(id) < catalogItem.getMinCapacity();
         return addStockItem(catalogItem, barcode, costPrice, damage, forFront);
     }
-    public boolean removeItem(int barcode){
+    public boolean removeStockItem(int barcode){
         StockItem stockItem =  getStockItem(barcode);
         if(stockItem == null || stockItem.getBranchId() != this.id)
             return false;

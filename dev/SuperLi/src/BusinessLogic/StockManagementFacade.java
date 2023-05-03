@@ -115,7 +115,7 @@ public class StockManagementFacade {
         return branch.addStockItem(catalogItem, barcode, costPrice, damage, front);
     }
     public boolean removeStockItem(int barcode, int branchId){
-        return getBranch(branchId).removeItem(barcode);
+        return getBranch(branchId).removeStockItem(barcode);
     }
     public boolean setSellPrice(int id, double sellPrice){
         CatalogItem catalogItem = getCatalogItem(id);
