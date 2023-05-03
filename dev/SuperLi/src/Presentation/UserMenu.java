@@ -14,7 +14,7 @@ import SuperLi.src.BusinessLogic.PeriodicReport;
 //import java.util.ArrayList;
 //import java.util.Scanner;
 //
-public class UserMenu extends PeriodicReport {
+public class UserMenu{
 //    static Scanner input = new Scanner(System.in);
 //    Branch branch;
 //

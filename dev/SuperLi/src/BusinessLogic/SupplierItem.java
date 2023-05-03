@@ -1,7 +1,7 @@
 package SuperLi.src.BusinessLogic;
 import java.security.InvalidParameterException;
 
-public class SupplierItem extends DiscountDocument {
+public class SupplierItem{
     private int catalogNumber;
     private String itemName;
     private String manufacturer;
