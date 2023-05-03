@@ -12,6 +12,6 @@ public class CategoryReport extends ACatalogReport{
         return new String[]{id, name, category, manufacturer, sellPrice, min, discount};
     }
     public String[] getHeaders(){
-        return new String[]{"ID", "Name", "Category", "Manufacturer", "Sell Price", "Min Capacity", "CostumerDiscount Description"};
+        return new String[]{"ID", "Name", "Category", "Manufacturer", "Sell Price", "Min Capacity", "Costumer Discount Description"};
     }
 }
