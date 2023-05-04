@@ -1,0 +1,92 @@
+<mxfile host="app.diagrams.net" modified="2023-05-04T10:57:34.413Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="dCN9DhyzWuNtTnxS7QAY" version="21.2.7" type="onedrive">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-1" value="cd : isRequired" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=100;height=29;" vertex="1" parent="1">
+          <mxGeometry x="80" y="11" width="540" height="269" as="geometry" />
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-9" value="&lt;u&gt;stf : StockManagementFacade&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="170" y="80" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-11" value="&lt;font style=&quot;font-size: 9px;&quot; color=&quot;#333333&quot;&gt;isRequired(c, branch)&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.0249" y="6" width="80" relative="1" as="geometry">
+            <mxPoint x="88" y="81" as="sourcePoint" />
+            <mxPoint x="168" y="81" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0jmIUQOWp7MpPIxk5BJq-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=open;endFill=0;" edge="1" parent="1" source="ldnWGTXEVXRF20AnvlrI-1" target="0jmIUQOWp7MpPIxk5BJq-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ldnWGTXEVXRF20AnvlrI-1" value="&lt;u&gt;branch : Branch&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="195" y="200" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ldnWGTXEVXRF20AnvlrI-2" value="&lt;u&gt;c : Catalog Item&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="470" y="80" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ldnWGTXEVXRF20AnvlrI-7" value="&lt;font size=&quot;1&quot; color=&quot;#333333&quot;&gt;1. 1. 1. getId()&lt;br&gt;1. 2.&amp;nbsp;&lt;/font&gt;getMinCapacity()&lt;font size=&quot;1&quot; color=&quot;#333333&quot;&gt;&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.1268" y="1" width="80" relative="1" as="geometry">
+            <mxPoint x="355" y="94" as="sourcePoint" />
+            <mxPoint x="435" y="94" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ldnWGTXEVXRF20AnvlrI-8" value="&lt;font size=&quot;1&quot; color=&quot;#333333&quot;&gt;1. 1. getTotalIdAmount(c.getId)&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="-1" y="-63" width="80" relative="1" as="geometry">
+            <mxPoint x="227" y="145" as="sourcePoint" />
+            <mxPoint x="227" y="171" as="targetPoint" />
+            <mxPoint y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ldnWGTXEVXRF20AnvlrI-9" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="262" y="80" as="sourcePoint" />
+            <mxPoint x="302" y="80" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="262" y="70" />
+              <mxPoint x="282" y="70" />
+              <mxPoint x="302" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ldnWGTXEVXRF20AnvlrI-10" value="&lt;font size=&quot;1&quot; color=&quot;#333333&quot;&gt;1. branch.getTotalIdAmount(c.getId) &amp;lt;&lt;br&gt;c.getMinCapacity()&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.1296" y="1" width="80" relative="1" as="geometry">
+            <mxPoint x="244" y="65" as="sourcePoint" />
+            <mxPoint x="324" y="65" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LXVbnn2yfS-NiUUGr9Ni-4" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="vbn1vjWYSr6YsiNQEqlZ-9" target="ldnWGTXEVXRF20AnvlrI-2">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="310" y="120" as="sourcePoint" />
+            <mxPoint x="470" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LXVbnn2yfS-NiUUGr9Ni-5" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="vbn1vjWYSr6YsiNQEqlZ-9" target="ldnWGTXEVXRF20AnvlrI-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="450" y="220" as="sourcePoint" />
+            <mxPoint x="610" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nTNyph02wvrMlixBVprY-1" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" target="vbn1vjWYSr6YsiNQEqlZ-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="80" y="90" as="sourcePoint" />
+            <mxPoint x="220" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0jmIUQOWp7MpPIxk5BJq-1" value="&lt;u&gt;stock : StockItemDataMapper&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="410" y="200" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0jmIUQOWp7MpPIxk5BJq-3" value="1.1.2 getBackIdAmount(getBranchId(), cId) + &lt;br&gt;getShelvesIdAmount(getBranchId(), cId)&lt;font size=&quot;1&quot; color=&quot;#333333&quot;&gt;&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.1268" y="1" width="80" relative="1" as="geometry">
+            <mxPoint x="313" y="196.39" as="sourcePoint" />
+            <mxPoint x="393" y="196.39" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

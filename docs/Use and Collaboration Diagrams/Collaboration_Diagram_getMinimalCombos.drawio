@@ -1,0 +1,71 @@
+<mxfile host="app.diagrams.net" modified="2023-05-01T18:33:25.032Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="8xc0u5TvQpUmcd2oFgUg" version="21.2.3" type="onedrive">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-1" value="cd : getMinimalCombos" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=150;height=30;" vertex="1" parent="1">
+          <mxGeometry x="10" y="11" width="580" height="209" as="geometry" />
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-34" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="vbn1vjWYSr6YsiNQEqlZ-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="10" y="80" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-33" value="Order Managment" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="140" y="80" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-51" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="120" as="sourcePoint" />
+            <mxPoint x="140" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="180" y="139" />
+              <mxPoint x="140" y="139" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-57" value="getMinimalCombos(fastestCombos)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.2571" y="-22" width="80" relative="1" as="geometry">
+            <mxPoint x="84" y="58.5" as="sourcePoint" />
+            <mxPoint x="121" y="58" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="105" y="58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eug0yIInreZ6nuwDFGsd-4" value="1. *[combo in fastestCombos]&lt;br style=&quot;border-color: var(--border-color); font-size: 10px;&quot;&gt;1.1. comboLengthesList += length(combo)&lt;span style=&quot;font-size: 10px;&quot;&gt;&lt;br&gt;&lt;/span&gt;2. minLength = min(comboLengthesList)&lt;span style=&quot;font-size: 10px;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.04" y="-59" width="80" relative="1" as="geometry">
+            <mxPoint x="142" y="146.5" as="sourcePoint" />
+            <mxPoint x="179" y="146" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="163" y="146" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VgXWAQIeg6aO3Ldyr-_H-1" value="3. *[combo in fastestCombos]&lt;br style=&quot;border-color: var(--border-color); font-size: 10px;&quot;&gt;3.1. [length(combo) == minLength)]&lt;br&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;&amp;nbsp;: minimalCombos += combo&lt;/span&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.04" y="-59" width="80" relative="1" as="geometry">
+            <mxPoint x="383" y="146.5" as="sourcePoint" />
+            <mxPoint x="420" y="146" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="404" y="146" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VgXWAQIeg6aO3Ldyr-_H-2" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="421" y="120" as="sourcePoint" />
+            <mxPoint x="381" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="421" y="139" />
+              <mxPoint x="381" y="139" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
