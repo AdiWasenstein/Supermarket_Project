@@ -13,6 +13,21 @@ public class ReportViewer {
             reportViewer = new ReportViewer();
         return reportViewer;
     }
+    public void generateAllCatalogReport(){
+        viewReport(stockManagementFacade.generateAllCatalogReport());
+    }
+    public void generateCategoryReport(LinkedList<LinkedList<String>> categories){
+        viewReport(stockManagementFacade.generateCategoryReport(categories));
+    }
+    public void generateStockItemReport(int branchId){
+        viewReport(stockManagementFacade.generateStockItemsReport(branchId));
+    }
+    public void generateRequiredStockReport(int branchId){
+        viewReport(stockManagementFacade.generateRequiredStockReport(branchId));
+    }
+    public void generateDamagedReport(int branchId){
+        viewReport(stockManagementFacade.generateDamagedStockReport(branchId));
+    }
     public void viewReport(AReport report){
         String[] headers = report.getHeaders();
         LinkedList<String[]> records = report.initializeRecords();

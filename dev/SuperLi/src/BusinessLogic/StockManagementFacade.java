@@ -37,9 +37,10 @@ public class StockManagementFacade {
         Optional<Branch> branch = branchDataMapper.find(Integer.toString(branchId));
         return branch.orElse(null);
     }
-    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category) {
+    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, MeasureUnit measureUnit) {
         if (getCatalogItem(id) != null)
             return false;
+        Category category = new Category(categories, new Size(size, measureUnit));
         Random rnd = new Random();
         int shelvesLocation = rnd.nextInt(Branch.BACKSTART);
         int backLocation = rnd.nextInt(Branch.BACKSTART, Branch.BACKEND + 1);
@@ -47,10 +48,11 @@ public class StockManagementFacade {
         catalogItemDataMapper.insert(catalogItem);
         return true;
     }
-    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, Category category, int shelfLife) {
+    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, MeasureUnit measureUnit, int shelfLife) {
         if (getCatalogItem(id) != null)
             return false;
         Random rnd = new Random();
+        Category category = new Category(categories, new Size(size, measureUnit));
         int shelvesLocation = rnd.nextInt(Branch.BACKSTART);
         int backLocation = rnd.nextInt(Branch.BACKSTART, Branch.BACKEND + 1);
         CatalogItem catalogItem = new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation, shelfLife);
@@ -150,13 +152,9 @@ public class StockManagementFacade {
             report.addToReport(catalogItem);
         return report;
     }
-    public CategoryReport generateCategoryReport(LinkedList<Category> categories, LinkedList<LinkedList<String>> categoriesStrList) {
+    public CategoryReport generateCategoryReport(LinkedList<LinkedList<String>> categoriesStrList) {
         CategoryReport report = new CategoryReport();
         for (CatalogItem catalogItem : catalogItemDataMapper.findAll()) {
-            if (categories.contains(catalogItem.getCategory())) {
-                report.addToReport(catalogItem);
-                continue;
-            }
             for (LinkedList<String> categoriesStr : categoriesStrList) {
                 if(catalogItem.isFromCategory(categoriesStr)){
                     report.addToReport(catalogItem);
@@ -176,7 +174,7 @@ public class StockManagementFacade {
                 report.addToReport(catalogItem);
         return report;
     }
-    public StockItemsReport generateItemReport(int branchId){
+    public StockItemsReport generateStockItemsReport(int branchId){
         StockItemsReport report = new StockItemsReport();
         Branch branch = getBranch(branchId);
         if (branch == null)
