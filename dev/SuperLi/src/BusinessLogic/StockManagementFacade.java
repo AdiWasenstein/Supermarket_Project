@@ -144,19 +144,19 @@ public class StockManagementFacade {
         catalogItem.setSellPrice(sellPrice);
         return true;
     }
-    public boolean setCostumerDiscount(int id, LocalDate expirationDate, double value, boolean isPercentage, int minCapacity){
+    public boolean setCatalogItemCostumerDiscount(int id, LocalDate expirationDate, double value, boolean isPercentage, int minAmount){
         CatalogItem catalogItem = getCatalogItem(id);
         if(catalogItem == null)
             return false;
-        CostumerDiscount discount = new CostumerDiscount(expirationDate, value, isPercentage, minCapacity);
-        catalogItem.setCostumerDiscount(discount);
+        CostumerDiscount costumerDiscount = new CostumerDiscount(expirationDate, value, isPercentage, minAmount);
+        catalogItem.setCostumerDiscount(costumerDiscount);
         return true;
     }
-    public void setCategoryDiscount(LinkedList<String> categories, double size, MeasureUnit measureUnit, LocalDate expirationDate, double value, boolean isPercentage, int minCapacity){
-        CostumerDiscount discount = new CostumerDiscount(expirationDate, value, isPercentage, minCapacity);
-        Category category = new Category(categories, new Size(size, measureUnit));
+    public void setCategoryDiscount(LinkedList<String> categories, double size, int measureUnit, LocalDate expirationDate, double value, boolean isPercentage, int minAmount){
+        CostumerDiscount costumerDiscount = new CostumerDiscount(expirationDate, value, isPercentage, minAmount);
+        Category category = new Category(categories, new Size(size, MeasureUnit.values()[measureUnit]));
         for(CatalogItem catalogItem : catalogItemDataMapper.findAllFromCategory(category))
-            catalogItem.setCostumerDiscount(discount);
+            catalogItem.setCostumerDiscount(costumerDiscount);
     }
     public boolean setMinCapacity(int id, int amount){
         CatalogItem catalogItem = getCatalogItem(id);

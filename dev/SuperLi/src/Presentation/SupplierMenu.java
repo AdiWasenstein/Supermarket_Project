@@ -89,7 +89,7 @@ public class SupplierMenu extends AMenu {
        Supplier supplier = findSupplierUser(scan);
        if (supplier == null)
            return;
-       LinkedList<String> addedCategories = AdminMenu.getCategories(scan);//NEED TO CHANGE!
+       LinkedList<String> addedCategories = AdminMenu.getInstance().getCategory(scan);//NEED TO CHANGE!
        if (addedCategories.isEmpty())
            System.out.println("No catagories added.");
        else
