@@ -18,16 +18,49 @@ public class BranchStockManagerMenu extends AMenu{
         return branchStockManagerMenu;
     }
     public void printMenu(){
-        System.out.println("1. Add Stock Item");
-        System.out.println("2. Remove Stock Item.");
-        System.out.println("3. Adding Damage to Item.");
-        System.out.println("4. Move stock item.");
+        System.out.println("1. Create Shortage Order");
+        System.out.println("2. Update Periodic Report");
+        System.out.println("3. Print Report");
         System.out.println("0. Actually, I would like to exit menu.");
     }
     public void communicate(){
-
+        boolean run = true;
+        while (run) {
+            printMenu();
+            System.out.print("Please enter your option: ");
+            int choice = inputNumber();
+            switch (choice) {
+                case 1 -> createShortageStockOrder();
+                case 2 -> updatePeriodicOrder();
+                case 3 -> generateReport();
+                case 0 -> run = false;
+                default -> System.out.println("Invalid option");
+            }
+        }
     }
-    public void generateReport() {}
-    public void createShortageStockOrder() {}
-    public void updatePeriodicOrder() {}
+    public int getReport(){
+        System.out.println("1. Stock Item Report");
+        System.out.println("2. Required Stock Report");
+        System.out.println("3. Damaged Stock Report");
+        System.out.print("Please enter your option: "); return inputNumber();
+    }
+    public void generateReport() {
+        ReportViewer reportViewer = ReportViewer.getInstance();
+        switch (getReport()){
+            case 1 -> reportViewer.generateStockItemReport(branchId);
+            case 2 -> reportViewer.generateRequiredStockReport(branchId);
+            case 3 -> reportViewer.generateDamagedReport(branchId);
+            default -> System.out.println("Invalid option. Returning to main...");
+        }
+    }
+    public void createShortageStockOrder() {
+        if (!stockManagementFacade.createShortageOrder(branchId))
+            System.out.print("No items required for the branch. ");
+        else
+            System.out.print("Required stock ordered sent to the suppliers successfully. ");
+        System.out.println("Returning to menu...");
+    }
+    public void updatePeriodicOrder() {
+        //TO DO WITH SUPPLIERS
+    }
 }

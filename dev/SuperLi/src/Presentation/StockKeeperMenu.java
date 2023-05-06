@@ -37,6 +37,7 @@ public class StockKeeperMenu extends AMenu{
                 case 3 -> updateDamage();
                 case 4 -> moveStockItem();
                 case 0 -> run = false;
+                default -> System.out.println("Invalid option");
             }
         }
     }
