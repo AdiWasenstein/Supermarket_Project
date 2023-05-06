@@ -165,7 +165,16 @@ public class StockManagementFacade {
         catalogItem.setMinCapacity(amount);
         return true;
     }
-
+    public boolean setDamage(int barcode, int type, int branchId){
+        Branch branch = getBranch(branchId);
+        if (branch == null)
+            return false;
+        return branch.setStockItemDamage(barcode, DamageType.values()[type]);
+    }
+    public boolean moveStockItem(int barcode, int branchId){
+        Branch branch = getBranch(branchId);
+        return branch.transferItem(barcode);
+    }
     // Reports
     public AllCatalogReport generateAllCatalogReport(){
         AllCatalogReport report = new AllCatalogReport();

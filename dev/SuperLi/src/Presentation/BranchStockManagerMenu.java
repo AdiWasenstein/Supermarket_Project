@@ -17,7 +17,16 @@ public class BranchStockManagerMenu extends AMenu{
             branchStockManagerMenu.branchId = branchId;
         return branchStockManagerMenu;
     }
+    public void printMenu(){
+        System.out.println("1. Add Stock Item");
+        System.out.println("2. Remove Stock Item.");
+        System.out.println("3. Adding Damage to Item.");
+        System.out.println("4. Move stock item.");
+        System.out.println("0. Actually, I would like to exit menu.");
+    }
+    public void communicate(){
 
+    }
     public void generateReport() {}
     public void createShortageStockOrder() {}
     public void updatePeriodicOrder() {}
