@@ -8,21 +8,27 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class AdminMenu extends AMenu {
+
+    private static AdminMenu adminMenu = null;
+    private AdminMenu(){}
+    public static AdminMenu getInstance(){
+        if(adminMenu == null)
+            adminMenu = new AdminMenu();
+        return adminMenu;
+    }
+    public void communicate(){
+        // TO DO
+    }
+
     private AdminController adminCon;
 
     private static int adminPassword = 123;
     private static AdminMenu instance = new AdminMenu();
 
-    private AdminMenu()
-    {
-        this.adminCon = AdminController.getInstance();
-    }
-
-    public static AdminMenu getInstance()
-    {
-        return instance;
-    }
-
+//    private AdminMenu()
+//    {
+//        this.adminCon = AdminController.getInstance();
+//    }
     private int GetId(Scanner scan)
     {
         while (true)

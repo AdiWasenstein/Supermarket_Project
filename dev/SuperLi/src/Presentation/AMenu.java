@@ -5,8 +5,9 @@ import java.time.LocalDate;
 
 public abstract class AMenu {
     static Scanner input = new Scanner(System.in);
-
-    public int input_number(){
+    public abstract void printMenu();
+    public abstract void communicate();
+    public int inputNumber(){
         int num;
         try{
             num = input.nextInt();
@@ -15,9 +16,9 @@ public abstract class AMenu {
             num = -1;
         }
         input.nextLine();
-        return num;
+        return num < 0 ? -1 : num;
     }
-    public double input_double(){
+    public double inputDouble(){
         double num;
         try{
             num = input.nextDouble();
@@ -28,7 +29,7 @@ public abstract class AMenu {
         input.nextLine();
         return num;
     }
-    public LocalDate input_date(){
+    public LocalDate inputDate(){
         String date = input.nextLine();
         try{
             return LocalDate.parse(date, DateTimeFormatter.ofPattern("d/M/yy"));

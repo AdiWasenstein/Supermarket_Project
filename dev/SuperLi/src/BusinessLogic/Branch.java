@@ -39,7 +39,6 @@ public class Branch {
     }
     public int getId(){return this.id;}
     public String getAddress(){return this.address;}
-
     // Stock Items
     public StockItem getStockItem(int barcode) {
         Optional<StockItem> stockItem = StockItemDataMapper.getInstance().find(Integer.toString(barcode));
@@ -81,14 +80,20 @@ public class Branch {
     public boolean containsBarcode(int barcode){
         return getStockItem(barcode) != null;
     }
-    public boolean setDamage(int barcode, DamageType damage){
+    public boolean setStockItemDamage(int barcode, DamageType damage){
         StockItem stockItem = getStockItem(barcode);
         if(stockItem == null)
             return false;
         stockItem.setDamage(damage);
         return true;
     }
-    public int getItemLocation(int barcode){
+    public DamageType getStockItemDamage(int barcode){
+        StockItem stockItem = getStockItem(barcode);
+        if(stockItem == null)
+            return null;
+        return stockItem.getDamage();
+    }
+    public int getStockItemLocation(int barcode){
         StockItem stockItem = getStockItem(barcode);
         if(stockItem == null)
             return -1;
@@ -100,10 +105,8 @@ public class Branch {
             return false;
         int currentLocation = stockItem.getLocation();
         if(currentLocation < Branch.BACKSTART)
-            transferFrontToBack(barcode);
-        else
-            transferBackToFront(barcode);
-        return true;
+            return transferFrontToBack(barcode);
+        return transferBackToFront(barcode);
     }
     public boolean transferFrontToBack(int barcode){
         StockItem stockItem = getStockItem(barcode);

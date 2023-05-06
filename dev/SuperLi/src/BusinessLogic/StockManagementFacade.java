@@ -20,6 +20,9 @@ public class StockManagementFacade {
             stockManagementFacade = new StockManagementFacade();
         return stockManagementFacade;
     }
+    public int getBranchCount(){
+        return branchDataMapper.findAll().size();
+    }
     public boolean addBranch(int id, String address){
         if(getBranch(id) != null)
             return false;
@@ -66,35 +69,46 @@ public class StockManagementFacade {
         catalogItemDataMapper.delete(catalogItem);
         return true;
     }
+    public String getCatalogIdName(int id){
+        CatalogItem catalogItem = getCatalogItem(id);
+        return catalogItem == null ? null : catalogItem.getName();
+    }
+    public int barcodeToId(int barcode, int branchId){
+        Branch branch = getBranch(branchId);
+        return branch == null ? -1 : branch.barcodeToId(barcode);
+    }
+    public boolean isRequired(int catalogId, int branchId){
+        Branch branch = getBranch(branchId);
+        if(branch == null)
+            return false;
+        CatalogItem catalogItem = getCatalogItem(catalogId);
+        return branch.getTotalIdAmount(catalogId) < catalogItem.getMinCapacity();
+    }
+    public boolean needsShelvesIncrement(int catalogId, int branchId){
+        Branch branch = getBranch(branchId);
+        if(branch == null)
+            return false;
+        CatalogItem catalogItem = getCatalogItem(catalogId);
+        return branch.getShelvesIdAmount(catalogId) < catalogItem.getMinCapacity() / 2;
+    }
     public int findBranchOfBarcode(int barcode) {
         for (Branch branch : branchDataMapper.findAll())
             if (branch.containsBarcode(barcode))
                 return branch.getId();
         return -1;
     }
-    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, LocalDate expirationDate, DamageType damage) {
-        if (findBranchOfBarcode(barcode) >= 0)
-            return false;
-        CatalogItem catalogItem = getCatalogItem(id);
-        if (catalogItem == null)
-            return false;
+    public int getLocationOfBarcode(int barcode, int branchId){
         Branch branch = getBranch(branchId);
-        if (branch == null)
-            return false;
-        return branch.addStockItem(catalogItem, barcode, costPrice, expirationDate, damage);
+        return branch.getStockItemLocation(barcode);
     }
-    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, LocalDate expirationDate, DamageType damage, boolean front) {
-        if (findBranchOfBarcode(barcode) >= 0)
-            return false;
-        CatalogItem catalogItem = getCatalogItem(id);
-        if (catalogItem == null)
-            return false;
+    public String getStockItemDamage(int barcode, int branchId){
         Branch branch = getBranch(branchId);
-        if (branch == null)
-            return false;
-        return branch.addStockItem(catalogItem, barcode, costPrice, expirationDate, damage, front);
+        DamageType damage = branch.getStockItemDamage(barcode);
+        if(damage == null)
+            return "";
+        return damage.toString();
     }
-    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, DamageType damage) {
+    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, LocalDate expirationDate, int damage) {
         if (findBranchOfBarcode(barcode) >= 0)
             return false;
         CatalogItem catalogItem = getCatalogItem(id);
@@ -103,9 +117,11 @@ public class StockManagementFacade {
         Branch branch = getBranch(branchId);
         if (branch == null)
             return false;
-        return branch.addStockItem(catalogItem, barcode, costPrice, damage);
+        if(expirationDate != null)
+            return branch.addStockItem(catalogItem, barcode, costPrice, expirationDate, DamageType.values()[damage]);
+        return branch.addStockItem(catalogItem, barcode, costPrice, DamageType.values()[damage]);
     }
-    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, DamageType damage, boolean front) {
+    public boolean addStockItem(int id, int branchId, int barcode, double costPrice, LocalDate expirationDate, int damage, boolean front) {
         if (findBranchOfBarcode(barcode) >= 0)
             return false;
         CatalogItem catalogItem = getCatalogItem(id);
@@ -114,7 +130,9 @@ public class StockManagementFacade {
         Branch branch = getBranch(branchId);
         if (branch == null)
             return false;
-        return branch.addStockItem(catalogItem, barcode, costPrice, damage, front);
+        if(expirationDate != null)
+            return branch.addStockItem(catalogItem, barcode, costPrice, expirationDate, DamageType.values()[damage], front);
+        return branch.addStockItem(catalogItem, barcode, costPrice, DamageType.values()[damage], front);
     }
     public boolean removeStockItem(int barcode, int branchId){
         return getBranch(branchId).removeStockItem(barcode);
