@@ -1,13 +1,18 @@
 package SuperLi.src.Presentation;
 
 import SuperLi.src.BusinessLogic.AReport;
+import SuperLi.src.BusinessLogic.StockManagementFacade;
+
 import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.Collections;
 
 public class ReportViewer {
     static ReportViewer reportViewer = null;
-    private ReportViewer() {}
+    StockManagementFacade stockManagementFacade;
+    private ReportViewer() {
+        stockManagementFacade = StockManagementFacade.getInstance();
+    }
     public static ReportViewer getInstance(){
         if(reportViewer == null)
             reportViewer = new ReportViewer();

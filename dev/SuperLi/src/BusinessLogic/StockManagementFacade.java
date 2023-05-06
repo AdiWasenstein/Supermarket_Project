@@ -126,16 +126,19 @@ public class StockManagementFacade {
         catalogItem.setSellPrice(sellPrice);
         return true;
     }
-    public boolean setCostumerDiscount(int id, CostumerDiscount costumerDiscount){
+    public boolean setCostumerDiscount(int id, LocalDate expirationDate, double value, boolean isPercentage, int minCapacity){
         CatalogItem catalogItem = getCatalogItem(id);
         if(catalogItem == null)
             return false;
-        catalogItem.setCostumerDiscount(costumerDiscount);
+        CostumerDiscount discount = new CostumerDiscount(expirationDate, value, isPercentage, minCapacity);
+        catalogItem.setCostumerDiscount(discount);
         return true;
     }
-    public void setCategoryDiscount(Category category, CostumerDiscount costumerDiscount){
+    public void setCategoryDiscount(LinkedList<String> categories, double size, MeasureUnit measureUnit, LocalDate expirationDate, double value, boolean isPercentage, int minCapacity){
+        CostumerDiscount discount = new CostumerDiscount(expirationDate, value, isPercentage, minCapacity);
+        Category category = new Category(categories, new Size(size, measureUnit));
         for(CatalogItem catalogItem : catalogItemDataMapper.findAllFromCategory(category))
-            catalogItem.setCostumerDiscount(costumerDiscount);
+            catalogItem.setCostumerDiscount(discount);
     }
     public boolean setMinCapacity(int id, int amount){
         CatalogItem catalogItem = getCatalogItem(id);
