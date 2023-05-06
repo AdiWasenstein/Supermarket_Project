@@ -223,4 +223,11 @@ public class StockManagementFacade {
                 report.addToReport(stockItem);
         return report;
     }
+    public boolean createShortageOrder(int branchId){
+        RequiredStockReport report = generateRequiredStockReport(branchId);
+        if(report.getReportData().size() == 0)
+            return false;
+        // TO SEND TO ORDER CONTROLLER
+        return true;
+    }
 }
