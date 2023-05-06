@@ -40,10 +40,10 @@ public class StockManagementFacade {
         Optional<Branch> branch = branchDataMapper.find(Integer.toString(branchId));
         return branch.orElse(null);
     }
-    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, MeasureUnit measureUnit) {
+    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, int measureUnit) {
         if (getCatalogItem(id) != null)
             return false;
-        Category category = new Category(categories, new Size(size, measureUnit));
+        Category category = new Category(categories, new Size(size, MeasureUnit.values()[measureUnit]));
         Random rnd = new Random();
         int shelvesLocation = rnd.nextInt(Branch.BACKSTART);
         int backLocation = rnd.nextInt(Branch.BACKSTART, Branch.BACKEND + 1);
@@ -51,11 +51,11 @@ public class StockManagementFacade {
         catalogItemDataMapper.insert(catalogItem);
         return true;
     }
-    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, MeasureUnit measureUnit, int shelfLife) {
+    public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, int measureUnit, int shelfLife) {
         if (getCatalogItem(id) != null)
             return false;
         Random rnd = new Random();
-        Category category = new Category(categories, new Size(size, measureUnit));
+        Category category = new Category(categories, new Size(size, MeasureUnit.values()[measureUnit]));
         int shelvesLocation = rnd.nextInt(Branch.BACKSTART);
         int backLocation = rnd.nextInt(Branch.BACKSTART, Branch.BACKEND + 1);
         CatalogItem catalogItem = new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation, shelfLife);

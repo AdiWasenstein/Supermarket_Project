@@ -104,7 +104,7 @@ public class SupplierMenu extends AMenu {
         Supplier supplier = findSupplierUser(scan);
         if (supplier == null)
             return;
-        LinkedList<String> addedManufacturers = AdminMenu.getManufacturers(scan);//NEED TO CHANGE!
+        LinkedList<String> addedManufacturers = AdminMenu.getInstance().getManufacturers(scan);//NEED TO CHANGE!
         if (addedManufacturers.isEmpty())
             System.out.println("No manufacturers added.");
         else
