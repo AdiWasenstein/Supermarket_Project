@@ -5,50 +5,99 @@ import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.time.LocalDate;
 
 public class AdminMenu extends AMenu {
 
     private static AdminMenu adminMenu = null;
     StockManagementFacade stockManagementFacade;
-
+    AdminController adminController;
+    private static final int adminPassword = 123;
     private AdminMenu() {
         stockManagementFacade = StockManagementFacade.getInstance();
+        adminController = AdminController.getInstance();
     }
-
     public static AdminMenu getInstance() {
         if (adminMenu == null)
             adminMenu = new AdminMenu();
         return adminMenu;
     }
-
-    public void communicate() {
-        // TO DO
+    public void printMenu() {
+        System.out.println("Dear admin, what would you like to do?");
+        System.out.println("1. Add new branch to system.");
+        System.out.println("2. Add new catalog item to system.");
+        System.out.println("3. Add new supplier to system.");
+        System.out.println("4. Remove catalog item from the system.");
+        System.out.println("5. Change catalog item's details.");
+        System.out.println("6. Print catalog items' reports");
+        System.out.println("7. Print all suppliers in the system.");
+        System.out.println("8. Print all orders were made.");
+        System.out.println("9. Print all orders were made for specific branch.");
+        System.out.println("0. Actually, I would like to exit menu.");
     }
-
-    private AdminController adminCon;
-
-    private static int adminPassword = 123;
-    private static AdminMenu instance = new AdminMenu();
-
-    //    private AdminMenu()
-//    {
-//        this.adminCon = AdminController.getInstance();
-//    }
-    private int GetId(Scanner scan) {
+    public void communicate() {
+        System.out.print("Hello, to make sure you are the admin, please enter the admin password: ");
+        int password = inputNumber();
+        if (password != AdminMenu.adminPassword) {
+            System.out.println("Password incorrect, you are not allowed to have access to admin menu.");
+            return;
+        }
+        boolean run = true;
+        while (run) {
+            printMenu();
+            int option = inputNumber();
+            switch (option) {
+                case 1 -> addNewBranchToSystem();
+                case 2 -> addCatalogItem();
+                case 3 -> addNewSupplierToSystem();
+                case 4 -> removeCatalogItem();
+                case 5 -> changeCatalogItemDetails();
+                case 6 -> getCatalogItemCategories();
+                case 7 -> printAllSuppliersInSystem();
+                case 8 -> printAllOrdersInSystem();
+                case 9 -> printAllBranchOrders();
+                case 0 -> run = false;
+                default -> System.out.println("Please enter a number between 0-5.");
+            }
+        }
+    }
+    public void changeCatalogItemDetails() {
+        System.out.println("What would you like to change about the catalog item?");
+        System.out.println("1. Sell price.");
+        System.out.println("2. Minimum capacity required in a branch.");
+        System.out.println("3. Set costumer discount (For specific item / for category).");
+        System.out.println("0. Actually, I would like to exit this menu.");
+        System.out.print("Please enter your choice: ");
+        int choice = inputNumber();
+        if (choice == 1 || choice == 2) {
+            System.out.print("Enter the item ID: ");
+            int id = inputNumber();
+            if (id < 0) {
+                System.out.println("Invalid ID. Returning to menu...");
+                return;
+            }
+            if (choice == 1)
+                changeCostumerPrice(id);
+            else
+                changeCatalogItemMinCapacity(id);
+        } else if (choice == 3)
+            setCostumerDiscount();
+        else
+            System.out.println((choice == 0 ? "" : "Invalid option. ") + "Returning to menu...");
+    }
+    private int getSupplierId() {
         while (true) {
             try {
                 System.out.println("Enter supplier id");
-                int id = scan.nextInt();
-                scan.nextLine();
+                int id = input.nextInt();
+                input.nextLine();
                 if (id < 0)
                     throw new InvalidParameterException("Supplier id must be a number");
-                if (adminCon.isSupplierIdExists(id))
+                if (adminController.isSupplierIdExists(id))
                     throw new InvalidParameterException("Supplier id already exists in system, please try again.");
                 return id;
             } catch (InputMismatchException e) {
-                scan.nextLine();
+                input.nextLine();
                 System.out.println("Supplier id must be a positive number");
             } catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
@@ -56,11 +105,11 @@ public class AdminMenu extends AMenu {
         }
     }
 
-    public String getBankAccount(Scanner scan) {
+    public String getSupplierBankAccount() {
         while (true) {
             try {
                 System.out.println("Enter bank account");
-                String account = scan.nextLine();
+                String account = input.nextLine();
                 if (!(account.matches("[0-9]+")))
                     throw new InvalidParameterException();
                 return account;
@@ -69,12 +118,11 @@ public class AdminMenu extends AMenu {
             }
         }
     }
-
-    private String getName(Scanner scan) {
+    private String getSupplierName() {
         while (true) {
             try {
                 System.out.println("Enter name");
-                String name = scan.nextLine();
+                String name = input.nextLine();
                 if (!(name.matches("[a-zA-Z]+")))
                     throw new InvalidParameterException();
                 return name;
@@ -83,12 +131,11 @@ public class AdminMenu extends AMenu {
             }
         }
     }
-
-    public String getAddress(Scanner scan) {
+    public String getSupplierAddress() {
         while (true) {
             try {
                 System.out.println("Enter address");
-                String address = scan.nextLine();
+                String address = input.nextLine();
                 if (address.equals(""))
                     throw new InvalidParameterException();
                 return address;
@@ -97,16 +144,15 @@ public class AdminMenu extends AMenu {
             }
         }
     }
-
-    public PaymentsWays getPaymentWays(Scanner scan) {
+    public PaymentsWays getSupplierPaymentWays() {
         while (true) {
             try {
                 System.out.println("Please choose Payment way:");
                 System.out.println("1. direct");
                 System.out.println("2. plus30");
                 System.out.println("3. plus60");
-                int pay = scan.nextInt();
-                scan.nextLine();
+                int pay = input.nextInt();
+                input.nextLine();
                 if (pay == 1) {
                     return PaymentsWays.direct;
                 } else if (pay == 2) {
@@ -118,26 +164,25 @@ public class AdminMenu extends AMenu {
                     continue;
                 }
             } catch (InputMismatchException e) {
-                scan.nextLine();
+                input.nextLine();
                 System.out.println("please enter a number between 1-3");
             }
         }
     }
-
-    public LinkedList<String> getCategory(Scanner scan) {
+    public LinkedList<String> getSupplierCategory() {
         LinkedList<String> categories = new LinkedList<String>();
         while (true) {
             try {
                 System.out.println("Enter category");
-                String category = scan.nextLine();
+                String category = input.nextLine();
                 if (!(category.matches("[a-zA-Z]+")))
                     throw new InvalidParameterException("category is not valid");
                 if (categories.contains(category))
                     throw new InvalidParameterException("impossible to add the same category twice.");
                 categories.add(category);
                 System.out.println("if you want to stop entering categories, please enter 1. else, press anything to continue");
-                String choise = scan.nextLine();
-                if (choise.equals("1"))
+                String choice = input.nextLine();
+                if (choice.equals("1"))
                     break;
             } catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
@@ -145,21 +190,20 @@ public class AdminMenu extends AMenu {
         }
         return categories;
     }
-
-    public LinkedList<String> getManufacturers(Scanner scan) {
+    public LinkedList<String> getSupplierManufacturers() {
         LinkedList<String> manufacturers = new LinkedList<String>();
         while (true) {
             try {
                 System.out.println("Enter manufacturer");
-                String manufacturer = scan.nextLine();
+                String manufacturer = input.nextLine();
                 if (!(manufacturer.matches("[a-zA-Z]+")))
                     throw new InvalidParameterException("manufacturer is not valid");
                 if (manufacturers.contains(manufacturer))
                     throw new InvalidParameterException("impossible to add the same manufacturer twice.");
                 manufacturers.add(manufacturer);
                 System.out.println("if you want to stop entering manufacturers, please enter 1. else, press anything to continue");
-                String choise = scan.nextLine();
-                if (choise.equals("1"))
+                String choice = input.nextLine();
+                if (choice.equals("1"))
                     break;
             } catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
@@ -167,51 +211,48 @@ public class AdminMenu extends AMenu {
         }
         return manufacturers;
     }
-
-    private boolean isDelivering(Scanner scan) {
+    private boolean isSupplierDelivering() {
         System.out.println("Are you delivering or not?");
         System.out.println("1 - yes, i'm delivering");
         System.out.println("2 - no, i'm not delivering");
         while (true) {
             try {
-                int choise = scan.nextInt();
-                scan.nextLine();
-                if (choise == 1) {
+                int choice = input.nextInt();
+                input.nextLine();
+                if (choice == 1) {
                     return true;
-                } else if (choise == 2) {
+                } else if (choice == 2) {
                     return false;
                 } else {
                     System.out.println("please choose a number between 1-2");
                 }
             } catch (InputMismatchException e) {
-                scan.nextLine();
+                input.nextLine();
                 System.out.println("please enter a number between 1-2");
             }
         }
     }
-
-    private boolean isRegularDelivering(Scanner scan) {
+    private boolean isSupplierRegularDelivering() {
         System.out.println("Do you supply on regular days?");
         System.out.println("1 - yes");
         System.out.println("2 - no");
         while (true) {
             try {
-                int choise = scan.nextInt();
-                scan.nextLine();
-                if (choise == 1) {
+                int choice = input.nextInt();
+                input.nextLine();
+                if (choice == 1) {
                     return true;
-                } else if (choise == 2) {
+                } else if (choice == 2) {
                     return false;
                 } else {
                     System.out.println("please choose a number between 1-2");
                 }
             } catch (InputMismatchException e) {
-                scan.nextLine();
+                input.nextLine();
                 System.out.println("please enter a number between 1-2");
             }
         }
     }
-
     private Day matchStringToDay(String s_day) {
         if (s_day.equalsIgnoreCase("sunday"))
             return Day.sunday;
@@ -228,13 +269,12 @@ public class AdminMenu extends AMenu {
         else
             return Day.saturday;
     }
-
-    private LinkedList<Day> ChooseDays(Scanner scan) {
+    private LinkedList<Day> chooseDeliveryDays() {
         LinkedList<Day> days = new LinkedList<>();
         LinkedList<String> daysOfTheWeek = new LinkedList<>(Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
         while (true) {
             System.out.println("Please enter day for delivering:");
-            String chosenDay = scan.nextLine();
+            String chosenDay = input.nextLine();
             int index = -1;
             for (int i = 0; i < daysOfTheWeek.size(); i++) {
                 if (daysOfTheWeek.get(i).equalsIgnoreCase(chosenDay)) {
@@ -255,25 +295,25 @@ public class AdminMenu extends AMenu {
                 days.add(day);
                 daysOfTheWeek.remove(index);
                 System.out.println("if you want to stop entering days of delivering, please enter 1. else, press anything to continue");
-                String choise = scan.nextLine();
-                if (choise.equals("1"))
+                String choice = input.nextLine();
+                if (choice.equals("1"))
                     break;
             }
         }
         return days;
     }
 
-    private int getNumberOfDaysToDeliver(Scanner scan) {
+    private int getNumberOfDaysToDeliver() {
         while (true) {
             try {
                 System.out.println("Enter how many days after ordering you will deliver");
-                int numDaysToDeliver = scan.nextInt();
-                scan.nextLine();
+                int numDaysToDeliver = input.nextInt();
+                input.nextLine();
                 if (numDaysToDeliver < 0)
                     throw new InvalidParameterException();
                 return numDaysToDeliver;
             } catch (InputMismatchException e) {
-                scan.nextLine();
+                input.nextLine();
                 System.out.println("number of days must be a number");
             } catch (InvalidParameterException e) {
                 System.out.println("number of days until supplier delivers must be positive");
@@ -281,161 +321,93 @@ public class AdminMenu extends AMenu {
         }
     }
 
-    private String getContactName(Scanner scan) {
+    private String getSupplierContactName() {
         System.out.println("Please enter contact's details:");
         System.out.println("Enter contact's name");
-        String name = scan.nextLine();
+        String name = input.nextLine();
         return name;
     }
 
-    private String getContactPhone(Scanner scan) {
+    private String getSupplierContactPhone() {
         System.out.println("Enter contact's phone number");
-        String phone = scan.nextLine();
+        String phone = input.nextLine();
         return phone;
-
     }
 
-    private String getContactEmail(Scanner scan) {
-
+    private String getSupplierContactEmail() {
         System.out.println("Enter contact's email address");
-        String email = scan.nextLine();
+        String email = input.nextLine();
         return email;
     }
 
-    public void AddNewSupplierToSystem() {
-        Scanner scan = new Scanner(System.in);
+    public void addNewSupplierToSystem() {
         System.out.println("Please enter the next details:");
-        int id = GetId(scan);
-        String bankAcc = getBankAccount(scan);
-        String name = getName(scan);
-        String address = getAddress(scan);
-        PaymentsWays payment = getPaymentWays(scan);
-        String contactName = getContactName(scan);
-        String contactPhone = getContactPhone(scan);
-        String contactEmail = getContactEmail(scan);
-        LinkedList<String> categories = getCategories(scan);
-        LinkedList<String> manufacturers = getManufacturers(scan);
+        int id = getSupplierId();
+        String bankAcc = getSupplierBankAccount();
+        String name = getSupplierName();
+        String address = getSupplierAddress();
+        PaymentsWays payment = getSupplierPaymentWays();
+        String contactName = getSupplierContactName();
+        String contactPhone = getSupplierContactPhone();
+        String contactEmail = getSupplierContactEmail();
+        LinkedList<String> categories = getCatalogItemCategories();
+        LinkedList<String> manufacturers = getSupplierManufacturers();
         LinkedList<Day> days = null;
         int numDaysToDeliver = -1;
-        if (isDelivering(scan))//delivering
+        if (isSupplierDelivering())//delivering
         {
-            if (isRegularDelivering(scan))//delivers regularly
+            if (isSupplierRegularDelivering())//delivers regularly
             {
-                days = ChooseDays(scan);
+                days = chooseDeliveryDays();
             } else //doesn't deliver regularly
             {
-                numDaysToDeliver = getNumberOfDaysToDeliver(scan);
+                numDaysToDeliver = getNumberOfDaysToDeliver();
             }
         }
         try {
             SupplierCard supCard;
-            adminCon.addNewSupplier(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail, categories, manufacturers, supCard, days, numDaysToDeliver);
+            // Commented line to compile
+//            adminController.addNewSupplier(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail, categories, manufacturers, supCard, days, numDaysToDeliver);
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
             System.out.println("Details are incorrect, no supplier was added. please try again next time.");
         }
     }
 
-    public void AddNewBranchToSystem() {
-        Scanner scan = new Scanner(System.in);
-        while (true) {
-            System.out.println("Please enter the new branch's address:");
-            String address = scan.nextLine();
-            if (address.equals("")) {
-                System.out.println("please enter valid address.");
-                continue;
-            } else {
-                adminCon.addNewBranch(address);
-                break;
-            }
-        }
-    }
-
-    public void adminMenu() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Hello, to make sure you are the admin, please enter the admin's password:");
-        try {
-            int password = scan.nextInt();
-            scan.nextLine();
-            if (password != AdminMenu.adminPassword) {
-                System.out.println("Password incorrect, you are not allowed to have access to admin's menu.");
-                return;
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Password incorrect, you are not allowed to have access to admin's menu.");
+    public void addNewBranchToSystem() {
+        System.out.println("Please enter the new branch's address:");
+        String address = input.nextLine();
+        if(address.equals("")) {
+            System.out.println("Invalid Address");
             return;
         }
-        boolean flag = true;
-        while (flag) {
-            System.out.println("Dear admin, what would you like to do?");
-            System.out.println("1. Add new supplier to system.");
-            System.out.println("2. Add new branch to system.");
-            System.out.println("3. Print all orders were made.");
-            System.out.println("4. Print all suppliers in the system.");
-            System.out.println("5. Print all orders were made for specific branch.");
-            System.out.println("6. Return to main menu.");
-            int option = 0;
-            try {
-                option = scan.nextInt();
-                scan.nextLine();
-                while (option < 1 || option > 6) {
-                    System.out.println("Please enter a number between 1-6.");
-                    option = scan.nextInt();
-                    scan.nextLine();
-                }
-            } catch (InputMismatchException e) {
-                scan.nextLine();
-                System.out.println("option number must be only digits, please try again.");
-                continue;
-            }
-            switch (option) {
-                case 1:
-                    AddNewSupplierToSystem();
-                    break;
-                case 2:
-                    AddNewBranchToSystem();
-                    break;
-                case 3:
-                    printAllOrdersInSystem();
-                    break;
-                case 4:
-                    printAllSuppliersInSystem();
-                    break;
-                case 5:
-                    printAllBranchOrders();
-                    break;
-                case 6:
-                    flag = false;
-                    break;
-            }
-        }
+        if(stockManagementFacade.addBranch(address))
+            System.out.format("%s branch was added successfully. Returning to menu...\n", address);
+        else
+            System.out.println("Failed to add the new branch to the system. Returning to main menu...");
     }
-
     public void printAllOrdersInSystem() {
-        LinkedList<Order> allOrders = adminCon.getAllOrdersInSystem();
+        LinkedList<Order> allOrders = adminController.getAllOrdersInSystem();
         for (Order order : allOrders) {
             System.out.println(order.toString());
         }
     }
-
     public void printAllSuppliersInSystem() {
-        LinkedList<Supplier> allSuppliers = adminCon.getAllSuppliersInSystem();
+        LinkedList<Supplier> allSuppliers = adminController.getAllSuppliersInSystem();
         for (Supplier supplier : allSuppliers)
             System.out.println(supplier.allDataOfSupplier());
     }
-
     public void printAllBranchOrders() {
-        Scanner scan = new Scanner(System.in);
         //NEED TO PRINT ALL BRANCHES
         System.out.println("Please enter number of branch.");
         int branchNumber;
         try {
-            branchNumber = scan.nextInt();
-            scan.nextLine();
+            branchNumber = input.nextInt();
+            input.nextLine();
 //            if(branchNumber <= 0 || branchNumber > SuperLi.src.Presentation.MainMenu.allBranches.size())
 //                throw new InvalidParameterException("Business.Branch number must be in range of 1 - " + SuperLi.src.Presentation.MainMenu.allBranches.size());
         } catch (InputMismatchException e) {
-            scan.nextLine();
+            input.nextLine();
             System.out.println("Business.Branch number must be only digits.");
             return;
         }
@@ -445,23 +417,12 @@ public class AdminMenu extends AMenu {
 //            return;
 //        }
         try {
-            LinkedList<Order> allBranchOrders = adminCon.getAllOrdersOfBranch(branchNumber);
+            LinkedList<Order> allBranchOrders = adminController.getAllOrdersOfBranch(branchNumber);
             //PRINT ALL ORDERS.
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
         }
     }
-
-    //admin menu of Stock
-//    static AdminMenu adminMenu = null;
-//    private AdminMenu(){}
-//    public static AdminMenu getInstance(){
-//        if(adminMenu == null)
-//            adminMenu = new AdminMenu();
-//        return adminMenu;
-//    }
-//    public void addBranch(){}
-//    public void removeBranch(){}
     public void addCatalogItem() {
         System.out.println("Enter the item's details:");
         System.out.print("ID: ");
@@ -472,7 +433,7 @@ public class AdminMenu extends AMenu {
         }
         System.out.print("Name: ");
         String name = input.nextLine();
-        LinkedList<String> categories = getCategories();
+        LinkedList<String> categories = getCatalogItemCategories();
         if (categories.size() == 0) {
             System.out.println("Item required to have at least one category. Returning to menu...");
             return;
@@ -516,7 +477,6 @@ public class AdminMenu extends AMenu {
         else
             System.out.println("Adding to the catalog completed successfully. Returning to menu...");
     }
-
     public void removeCatalogItem() {
         System.out.print("Enter the item ID: ");
         int id = inputNumber();
@@ -525,14 +485,7 @@ public class AdminMenu extends AMenu {
         else
             System.out.println("Removing item from the catalog completed successfully. Returning to the menu...");
     }
-
-    public void changeCostumerPrice() {
-        System.out.print("Enter the item ID: ");
-        int id = inputNumber();
-        if (id < 0) {
-            System.out.println("Invalid ID. Returning to menu...");
-            return;
-        }
+    public void changeCostumerPrice(int catalogId) {
         System.out.print("Enter the new sell price: ");
         double costumerPrice = inputDouble();
         if (costumerPrice < 0) {
@@ -544,24 +497,17 @@ public class AdminMenu extends AMenu {
         }
         System.out.format("Catalog item %s's sell price changed to %.1fILS successfully. Returning to menu...\n", stockManagementFacade.getCatalogIdName(id), costumerPrice);
     }
-
-    public void changeMinCapacity() {
-        System.out.print("Enter the item ID: ");
-        int id = inputNumber();
-        if (id < 0) {
-            System.out.println("Invalid ID. Returning to menu...");
-            return;
-        }
-        System.out.print("Enter the new minimum capactiy: ");
+    public void changeCatalogItemMinCapacity(int catalogId) {
+        System.out.print("Enter the new minimum capacity: ");
         int minCapacity = inputNumber();
         if (minCapacity < 0) {
             System.out.println("Invalid capacity. Returning to menu...");
             return;
         }
-        if (!stockManagementFacade.setMinCapacity(id, minCapacity)) {
+        if (!stockManagementFacade.setMinCapacity(catalogId, minCapacity)) {
             System.out.print("Invalid item ID. Returning to menu...");
         }
-        System.out.format("Catalog item %s's minimum capacity changed to %d successfully. Returning to menu...\n", stockManagementFacade.getCatalogIdName(id), minCapacity);
+        System.out.format("Catalog item %s's minimum capacity changed to %d successfully. Returning to menu...\n", stockManagementFacade.getCatalogIdName(catalogId), minCapacity);
     }
 
     public void setCostumerDiscount() {
@@ -604,7 +550,7 @@ public class AdminMenu extends AMenu {
             }
             case (2) -> {
                 System.out.println("Please enter category details:");
-                LinkedList<String> categories = getCategories();
+                LinkedList<String> categories = getCatalogItemCategories();
                 if (categories.size() == 0) {
                     System.out.println("Item required to have at least one category. Returning to menu...");
                     return;
@@ -628,8 +574,7 @@ public class AdminMenu extends AMenu {
             default -> System.out.println("Invalid option. Returning to main menu...");
         }
     }
-
-    public LinkedList<String> getCategories() {
+    public LinkedList<String> getCatalogItemCategories() {
         String category;
         LinkedList<String> categories = new LinkedList<>();
         while (true) {
@@ -641,14 +586,12 @@ public class AdminMenu extends AMenu {
         }
         return categories;
     }
-
     public int getReport() {
         System.out.println("1. Category Report");
         System.out.println("2. Catalog Report");
         System.out.print("Please enter your option: ");
         return inputNumber();
     }
-
     public void generateReport() {
         ReportViewer reportViewer = ReportViewer.getInstance();
         switch (getReport()) {
@@ -656,7 +599,7 @@ public class AdminMenu extends AMenu {
                 LinkedList<LinkedList<String>> categoriesList = new LinkedList<>();
                 while (true){
                     System.out.format("Category %d's details:\n", categoriesList.size() + 1);
-                    LinkedList<String> categories = getCategories();
+                    LinkedList<String> categories = getCatalogItemCategories();
                     if (categories.size() == 0)
                         break;
                     categoriesList.add(categories);

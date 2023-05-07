@@ -1,8 +1,8 @@
 package SuperLi.src.BusinessLogic;
 
 import SuperLi.src.DataAccess.OrderDataMapper;
-import org.graalvm.collections.Pair;
-
+import SuperLi.src.BusinessLogic.Pair;
+import SuperLi.src.DataAccess.SupplierDataMapper;
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -527,17 +527,26 @@ public class OrderManagment {
             return null;
         // TODO - need to ad somewhere calling the time method
         LinkedList<Order> orders = new LinkedList<>();
-        HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder = OrderManagment.startOrderProcess(missingItems, SystemManagment.allSuppliers);
+        // Change by Yoav - switch SystemManagement to AdminController - to verify
+        HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder = OrderManagment.startOrderProcess(missingItems, AdminController.getInstance().getAllSuppliersInSystem());
+        // Original
+//        HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder = OrderManagment.startOrderProcess(missingItems, SystemManagment.allSuppliers);
         orders = getOrdersForCombi(combinationToOrder, branchNumber);
         return orders;
     }
 
     public static void confirmOrders(LinkedList<Order> orders, int branchNumber) {
-        // updates all the relevent databases with the new order
+        // updates all the relevant databases with the new order
         for (Order order : orders) {
-            SystemManagment.allOrders.add(order);
+            // Changes by Yoav - Confirm
+            AdminController.getInstance().getAllOrdersInSystem().add(order);
+            AdminController.getInstance().getAllOrdersOfBranch(branchNumber).add(order);
+            // END
+
+            // Original Code - Commented to compile
+//            SystemManagment.allOrders.add(order);
             order.getOrderSupplier().addOrder(order);
-            SystemManagment.allBranches.get(branchNumber).addOrder(order);
+//            SystemManagment.allBranches.get(branchNumber).addOrder(order);
         }
     }
 

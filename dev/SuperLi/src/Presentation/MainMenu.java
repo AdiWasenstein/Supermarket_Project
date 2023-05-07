@@ -47,46 +47,6 @@ public class MainMenu extends AMenu{
                 default -> System.out.println("Invalid option");
             }
         }
-    }
-        public static void startSystem () {
-            Scanner scan = new Scanner(System.in);
-            int choise;
-            boolean flag = true;
-            while (flag) {
-                System.out.println("Welcome to Super - li market!");
-                System.out.println("Please tell us who you are.");
-                System.out.println("1. I'm a supplier manager.");
-                System.out.println("2. I'm the admin.");
-                System.out.println("3. I'm the order manager.");
-                System.out.println("4. Actually, i would like to exit menu.");
-                try {
-                    choise = scan.nextInt();
-                    scan.nextLine();
-                    while (choise < 1 || choise > 4) {
-                        System.out.println("Please enter a number between 1-4.");
-                        choise = scan.nextInt();
-                        scan.nextLine();
-                    }
-                } catch (InputMismatchException e) {
-                    scan.nextLine();
-                    System.out.println("Please enter a number between 1-4.");
-                    continue;
-                }
-                switch (choise) {
-                    case 1:
-                        SupplierMenu.supplierMenu();
-                        break;
-                    case 2:
-                        AdminMenu.getInstance().adminMenu();
-                        break;
-                    case 3:
-                        OrderMenu.getInstance().ordersrMenu();
-                        break;
-                    case 4:
-                        System.out.println("Thank you for using Super - li system, we hope to see you soon.");
-                        flag = false;
-                        break;
-            }
-        }
+        System.out.println("Thank you for using Super - li system, we hope to see you soon.");
     }
 }

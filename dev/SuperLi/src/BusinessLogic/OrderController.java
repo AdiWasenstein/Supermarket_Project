@@ -1,7 +1,9 @@
 package SuperLi.src.BusinessLogic;
 
 import SuperLi.src.DataAccess.OrderDataMapper;
-import org.graalvm.collections.Pair;
+//import org.graalvm.collections.Pair;
+import SuperLi.src.BusinessLogic.Pair;
+
 
 import java.util.LinkedList;
 
@@ -57,5 +59,6 @@ public class OrderController {
     {
         // check if there is report with that number and item
         // check if amount ok
+        return true;
     }
 }

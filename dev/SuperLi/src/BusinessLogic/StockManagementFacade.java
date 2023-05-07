@@ -23,14 +23,9 @@ public class StockManagementFacade {
     public int getBranchCount(){
         return branchDataMapper.findAll().size();
     }
-    public boolean addBranch(int id, String address){
-        if(getBranch(id) != null)
-            return false;
-        branchDataMapper.insert(new Branch(address, id));
-        return true;
-    }
     public boolean addBranch(String address){
-        return addBranch(branchDataMapper.findAll().size() + 1, address);
+        branchDataMapper.insert(new Branch(address, branchDataMapper.findAll().size() + 1));
+        return true;
     }
     public CatalogItem getCatalogItem(int id) {
         Optional<CatalogItem> catalogItem = catalogItemDataMapper.find(Integer.toString(id));

@@ -22,10 +22,15 @@ public class OrderMenu extends AMenu{
         // then ask for creating new order
     }
 
+    @Override
+    public void communicate() {
+        // TODO
+    }
+    @Override
+    public void printMenu(){
 
-
-
-//    public void makeOrder()// Need to change- paremeter report!
+    }
+    //    public void makeOrder()// Need to change- paremeter report!
 //    {
 //        Scanner scan = new Scanner(System.in);
 ////        LinkedList<Pair<Integer, Integer>> missingItems = getAllMissingItems(scan);

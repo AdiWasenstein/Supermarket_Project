@@ -18,6 +18,12 @@ public class SupplierMenu extends AMenu {
     {
         return instance;
     }
+    public void printMenu(){
+        // TODO
+    }
+    public void communicate() {
+        // TODO
+    }
     public void addNewContact()
     {
         Scanner scan = new Scanner(System.in);
@@ -89,7 +95,7 @@ public class SupplierMenu extends AMenu {
        Supplier supplier = findSupplierUser(scan);
        if (supplier == null)
            return;
-       LinkedList<String> addedCategories = AdminMenu.getInstance().getCategory(scan);//NEED TO CHANGE!
+       LinkedList<String> addedCategories = AdminMenu.getInstance().getSupplierCategory();//NEED TO CHANGE!
        if (addedCategories.isEmpty())
            System.out.println("No catagories added.");
        else
@@ -104,7 +110,7 @@ public class SupplierMenu extends AMenu {
         Supplier supplier = findSupplierUser(scan);
         if (supplier == null)
             return;
-        LinkedList<String> addedManufacturers = AdminMenu.getInstance().getManufacturers(scan);//NEED TO CHANGE!
+        LinkedList<String> addedManufacturers = AdminMenu.getInstance().getSupplierManufacturers();//NEED TO CHANGE!
         if (addedManufacturers.isEmpty())
             System.out.println("No manufacturers added.");
         else
@@ -125,7 +131,7 @@ public class SupplierMenu extends AMenu {
 
     public void updatePaymentWay(Scanner scan, Supplier sup)
     {
-        PaymentsWays newPayment = AdminMenu.getPaymentWays(scan);//NEED TO CHANGE!
+        PaymentsWays newPayment = AdminMenu.getInstance().getSupplierPaymentWays();//NEED TO CHANGE!
         if (newPayment == null)
         {
             System.out.println("No update was made.");
@@ -139,7 +145,7 @@ public class SupplierMenu extends AMenu {
 
     public void updateBankAccount(Scanner scan, Supplier sup)
     {
-        String newBank = AdminMenu.getBankAccount(scan);//NEED TO CHANGE!
+        String newBank = AdminMenu.getInstance().getSupplierBankAccount();//NEED TO CHANGE!
         if (newBank.equals(""))
             System.out.println("No update was made.");
         else {
@@ -150,7 +156,7 @@ public class SupplierMenu extends AMenu {
 
     public void updateAddress(Scanner scan, Supplier sup)
     {
-        String newAddress = AdminMenu.getAddress(scan);//NEED TO CHANGE!
+        String newAddress = AdminMenu.getInstance().getSupplierAddress();//NEED TO CHANGE!
         if (newAddress.equals(""))
             System.out.println("No update was made.");
         else {
@@ -852,7 +858,7 @@ public class SupplierMenu extends AMenu {
                     break;
             }
         }
-    public static void supplierMenu()
+    public void supplierMenu()
     {
         Scanner scan = new Scanner(System.in);
         int choise;

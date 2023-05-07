@@ -75,7 +75,7 @@ public class AdminController {
     //this func creates and adds new supplier to system. if impossible, throws InvalidParameterException.
     public void addNewSupplier(String name, String address, int id, String bankAcc, PaymentsWays payment, String contactName, String contactPhone, String contactEmail, LinkedList<String> categories, LinkedList<String> manufacturers, SupplierCard supCard, LinkedList<Day> days,int numDaysToDeliver)throws InvalidParameterException
     {
-        SupplierCard supCard = createNewSupplierCard(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail);
+//        SupplierCard supCard = createNewSupplierCard(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail);
         Supplier sup;
         if(days != null)
         {

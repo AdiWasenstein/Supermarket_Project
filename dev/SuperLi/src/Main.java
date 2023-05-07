@@ -1,5 +1,8 @@
 package SuperLi.src;
 
+
+import SuperLi.src.Presentation.MainMenu;
+
 public class Main {
 //    static Category milk1000 = new Category("Dairy", "Milk", new Size(1000,MeasureUnit.ML));
 //    static Category milk1500 = new Category("Dairy", "Milk", new Size(1500, MeasureUnit.ML));
@@ -22,6 +25,7 @@ public class Main {
 //    static Category cake_mold21 = new Category("Baking", "Disposable", new Size(21, MeasureUnit.CM));
 
     public static void main(String[] args) {
+        MainMenu.getInstance().communicate();
 //        UserMenu us = new UserMenu();
 //        if (us.initialize_data() == 1) {
 //            initialize_Catalog(us);
