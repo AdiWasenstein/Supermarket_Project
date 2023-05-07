@@ -4,6 +4,8 @@ import SuperLi.src.DataAccess.OrderDataMapper;
 import SuperLi.src.BusinessLogic.Pair;
 import SuperLi.src.DataAccess.SupplierDataMapper;
 import java.security.InvalidParameterException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 public class OrderManagment {
@@ -43,6 +45,7 @@ public class OrderManagment {
         combinationsForFullItems(suppliers, itemsCompletely, listCombinationsFullItems, new HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>());
         if (itemsSeperateToUnits.isEmpty())//meaning there is no item we need to separate to units. therefore we would like to check maybe there is a supplier that can supply all ordered items.
         {
+            // TODO maybe need to change
             LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> listOfoneSupplierSuppliesAll = isOneSupplierCanSupplyAllExists(listCombinationsFullItems);
             if (!listOfoneSupplierSuppliesAll.isEmpty()) {
                 return findCheappestCombination(listOfoneSupplierSuppliesAll);
@@ -524,7 +527,7 @@ public class OrderManagment {
     public static LinkedList<Order> creatOrder(LinkedList<Pair<Integer, Integer>> missingItems, int branchNumber) throws Exception {
         if (missingItems.isEmpty())
             return null;
-        // TODO - need to ad somewhere calling the time method
+        // TODO - need to aad somewhere calling the time method
         LinkedList<Order> orders = new LinkedList<>();
         // Change by Yoav - switch SystemManagement to AdminController - to verify
         HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder = OrderManagment.startOrderProcess(missingItems, AdminController.getInstance().getAllSuppliersInSystem());
@@ -549,7 +552,7 @@ public class OrderManagment {
         }
     }
 
-    // TODO - ALL NEXT SIGNATURE ARE FOR THE NEW HANFAZOT
+    //TODO - ALL NEXT SIGNATURE ARE FOR THE NEW HANFAZOT
 
     // this method receives all combinations and filter to only combinations with minimal arriving time
     // TODO - need to check this method!
@@ -559,12 +562,14 @@ public class OrderManagment {
         LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> result = new LinkedList<>();
         int minTimeOfArrival = Integer.MAX_VALUE;
 
+        // finding the fastest time
         for (HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combination : allCombis) {
              int curr = findArrivalTimeOfCombo(combination);
              if (curr < minTimeOfArrival)
                  minTimeOfArrival = curr;
         }
 
+        // filter to all fastest combinations
         for (HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combination : allCombis)
         {
             int curr = findArrivalTimeOfCombo(combination);
@@ -573,8 +578,8 @@ public class OrderManagment {
         }
 
         return result;
-        // finding the fastest time
-        // filter to all fastest combinations
+
+
 
     }
 
@@ -584,12 +589,15 @@ public class OrderManagment {
     {
         int time = 0;
         // need to find the day today
-        //for (Supplier sup : combination.keySet())
-            //if (sup.daysTillArrives(today) > time)
-            // time = sup.daysTill...
-
-            
-
+        LocalDate now = LocalDate.now();
+        DayOfWeek dayOfWeek = now.getDayOfWeek();
+        String dayName = dayOfWeek.toString().toLowerCase();
+        Day today = Day.valueOf(dayName);
+        // find time till all order arrives by max time supplier
+        for (Supplier sup : combination.keySet())
+            if (sup.daysTillArrives(today) > time)
+                time = sup.daysTillArrives(today);
+       // return time till all combination arrives
         return time;
     }
 
@@ -597,9 +605,10 @@ public class OrderManagment {
     // TODO - ALL NEXT SIGNATURES ARE FOR PERIODIC REPORT!
 
     // creating report- logic part
-    public PeriodicReport createPeriodicReport(int suppId, LinkedList<Pair<Integer, Integer>> items) //TODO parameter
+    public boolean canCreatePeriodicReport(PeriodicReport report) //TODO parameter
     {
-        return null;
+
+        return false;
     }
 
     // creating order- logic part
