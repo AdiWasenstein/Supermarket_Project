@@ -58,6 +58,7 @@ public class OrderController {
     public boolean updateReport (int reportNumber, int catalogNumber, int newAmount)
     {
         // check if there is report with that number and item
+
         // check if amount ok
         return true;
     }
