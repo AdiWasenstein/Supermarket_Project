@@ -94,8 +94,9 @@ public class AdminController {
     }
 
     //this func creates and adds new branch to system.
-    public void addNewBranch(String address)
+    public void addNewBranch(int id, String address)
     {
+
 //        Branch newB = new Branch(address);
 //        SuperLi.src.Presentation.MainMenu.allBranches.add(newB);
         //MAYBE NEED TO THROW AN EXCEPTION.

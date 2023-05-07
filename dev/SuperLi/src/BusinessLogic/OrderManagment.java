@@ -7,17 +7,16 @@ import java.security.InvalidParameterException;
 import java.util.*;
 
 public class OrderManagment {
-    private static OrderManagment instance = new OrderManagment();
+    private static OrderManagment instance = null;
     private OrderDataMapper orderDataMapper;
 
-    private OrderManagment() {
-        this.orderDataMapper = OrderDataMapper.getInstance();
-    }
+    private OrderManagment() {}
 
     public OrderManagment getInstance() {
+        if (instance == null)
+            instance = new OrderManagment();
         return instance;
     }
-
     private static Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<Pair<Integer, Integer>>> itemsSeperateOrCompletly(LinkedList<Pair<Integer, Integer>> orderedItems, LinkedList<Supplier> suppliers) {
         LinkedList<Pair<Integer, Integer>> itemsSeperateToUnits = new LinkedList<>();
         LinkedList<Pair<Integer, Integer>> itemsSuppliedCompletely = new LinkedList<>();

@@ -492,10 +492,10 @@ public class AdminMenu extends AMenu {
             System.out.println("Invalid sell price. Returning to menu...");
             return;
         }
-        if (!stockManagementFacade.setSellPrice(id, costumerPrice)) {
+        if (!stockManagementFacade.setSellPrice(catalogId, costumerPrice)) {
             System.out.print("Invalid item ID. Returning to menu...");
         }
-        System.out.format("Catalog item %s's sell price changed to %.1fILS successfully. Returning to menu...\n", stockManagementFacade.getCatalogIdName(id), costumerPrice);
+        System.out.format("Catalog item %s's sell price changed to %.1fILS successfully. Returning to menu...\n", stockManagementFacade.getCatalogIdName(catalogId), costumerPrice);
     }
     public void changeCatalogItemMinCapacity(int catalogId) {
         System.out.print("Enter the new minimum capacity: ");

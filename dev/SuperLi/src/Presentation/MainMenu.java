@@ -2,8 +2,6 @@ package SuperLi.src.Presentation;
 
 import SuperLi.src.BusinessLogic.StockManagementFacade;
 
-import java.util.*;
-
 
 public class MainMenu extends AMenu{
     private static MainMenu mainMenu = null;
