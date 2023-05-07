@@ -52,7 +52,7 @@ public class AdminMenu extends AMenu {
                 case 3 -> addNewSupplierToSystem();
                 case 4 -> removeCatalogItem();
                 case 5 -> changeCatalogItemDetails();
-                case 6 -> getCatalogItemCategories();
+                case 6 -> generateReport();
                 case 7 -> printAllSuppliersInSystem();
                 case 8 -> printAllOrdersInSystem();
                 case 9 -> printAllBranchOrders();
