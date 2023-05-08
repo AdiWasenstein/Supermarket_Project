@@ -37,11 +37,36 @@ public abstract class ADataMapper<T> {
     public void insert(T object){
         executeVoidQuery(insertQuery, object);
     }
-    void update(T object){
+    public void update(T object){
 		executeVoidQuery(updateQuery, object);
     }
-    void delete(T object){
+    public void delete(T object){
 		executeVoidQuery(deleteQuery, object);
     }
-    Optional<T> find(String param){return null;}
+    public ResultSet getMatching(String selectQuery){
+		Connection conn;
+        Statement stmt;
+		ResultSet matches = null;
+        try{
+            conn = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+            return matches;
+        }
+        try{
+            stmt = conn.createStatement();
+            matches = stmt.executeUpdate(selectQuery));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            conn.close();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+		return matches;
+	}
 }
