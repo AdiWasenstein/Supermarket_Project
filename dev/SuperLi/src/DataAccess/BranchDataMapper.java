@@ -20,9 +20,6 @@ public class BranchDataMapper extends ADataMapper<Branch> {
         branchIdentityMap.put(branch.getId(), branch);
         return String.format("INSERT INTO Branches(Id, Address) VALUES (%d, '%s')", branch.getId(), branch.getAddress());
     }
-    public String findQuery(String key){
-        return String.format("SELECT * FROM Branches WHERE id = '%s'", key);
-    }
     public String findAllQuery(){
         return "SELECT * FROM Branches";
     }
@@ -34,9 +31,14 @@ public class BranchDataMapper extends ADataMapper<Branch> {
         return String.format("UPDATE Branches SET Address = '%s' WHERE ID = '%s'", branch.getAddress(), branch.getId());
     }
 	public Optional<Branch> find(String key){
-		//TODO - Convert String to Integer
-		Integer id;
+		Integer id Integer.valueOf(key); //TODO - Convert String to Integer
 		if branchIdentityMap.contains(id);
 			return Optional.of(branchIdentityMap.get(id));
+		ResultSet matches = getMatching(String.format("SELECT * FROM Branches WHERE id = '%s'", key));
+		if(matches == null || !matches.next())
+			return Optional.empty(); //TODO - replace with empty optional
+		Branch branch = new Branch(matches.getInt("Id"), matches.getString("Address"));
+		branchIdentityMap.put(id, branch);
+		return Optional.of(Branch);
 	}
 }
