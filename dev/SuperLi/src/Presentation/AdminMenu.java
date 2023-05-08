@@ -57,7 +57,7 @@ public class AdminMenu extends AMenu {
                 case 8 -> printAllOrdersInSystem();
                 case 9 -> printAllBranchOrders();
                 case 0 -> run = false;
-                default -> System.out.println("Please enter a number between 0-5.");
+                default -> System.out.println("Invalid option");
             }
         }
     }

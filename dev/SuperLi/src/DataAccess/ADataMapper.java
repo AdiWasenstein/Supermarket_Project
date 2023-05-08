@@ -6,6 +6,24 @@ import java.util.Optional;
 import java.util.function.*;
 
 public abstract class ADataMapper<ObjectType> {
+    Connection connection;
+    public void openConnection(){
+        try{
+            connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+            connection = null;
+        }
+    }
+    public void closeConnection(){
+        try{
+            connection.close();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
     protected abstract String insertQuery(ObjectType object); // Including inserting to identityMap
     protected abstract String deleteQuery(ObjectType object); // Including deleting from identityMap
     protected abstract String updateQuery(ObjectType object);
@@ -21,49 +39,28 @@ public abstract class ADataMapper<ObjectType> {
         executeVoidQuery(this::deleteQuery, object);
     }
     public void executeVoidQuery(Function<ObjectType, String> queryFunc, ObjectType object){
-        Connection conn;
         Statement stmt;
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
+        openConnection();
+        if(connection == null)
             return;
-        }
         try{
-            stmt = conn.createStatement();
+            stmt = connection.createStatement();
             stmt.executeUpdate(queryFunc.apply(object));
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
         }
-        try{
-            conn.close();
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
+        closeConnection();
     }
     public ResultSet executeSelectQuery(String query){
-		Connection conn;
+        openConnection();
+        if(connection == null)
+            return null;
         Statement stmt;
-		ResultSet matches = null;
+        ResultSet matches = null;
         try{
-            conn = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-            return matches;
-        }
-        try{
-            stmt = conn.createStatement();
+            stmt = connection.createStatement();
             matches = stmt.executeQuery(query);
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
-        try{
-            conn.close();
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
@@ -75,29 +72,35 @@ public abstract class ADataMapper<ObjectType> {
         if(identityMapObject != null)
             return Optional.of(identityMapObject);
         ResultSet matches = executeSelectQuery(findQuery(key));
+        Optional<ObjectType> object = Optional.empty();
         try{
             if(matches == null)
-                throw new SQLException("SELECT query failed");
+                throw new SQLException("SELECT QUERY FAILED");
             if(matches.next())
-                return Optional.of(insertIdentityMap(matches));
+                object = Optional.of(insertIdentityMap(matches));
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
         }
-        return Optional.empty();
+        closeConnection();
+        return object;
     }
     public LinkedList<ObjectType> findAll(){
         LinkedList<ObjectType> objects = new LinkedList<>();
+        openConnection();
+        if(connection == null)
+            return objects;
         ResultSet matches = executeSelectQuery(findAllQuery());
         if(matches == null)
             return objects;
         try{
-            while (!matches.next())
+            while (matches.next())
                 objects.add(insertIdentityMap(matches));
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
         }
+        closeConnection();
         return objects;
     }
 }
