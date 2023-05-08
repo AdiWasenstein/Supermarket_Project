@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class OrderDataMapper implements IDataMapper<Order> {
+public class OrderDataMapper extends ADataMapper<Order> {
     private HashMap<Integer, Order> ordersIdentityMap;
     private static OrderDataMapper instance = new OrderDataMapper();
 

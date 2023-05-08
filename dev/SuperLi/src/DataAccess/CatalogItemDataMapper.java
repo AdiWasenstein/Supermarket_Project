@@ -5,7 +5,7 @@ import SuperLi.src.BusinessLogic.Category;
 
 import java.util.*;
 
-public class CatalogItemDataMapper implements IDataMapper<CatalogItem> {
+public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
     Map<Integer, CatalogItem> catalogItemsIdentitiyMap;
     static CatalogItemDataMapper catalogItemDataMapper = null;
     private CatalogItemDataMapper(){

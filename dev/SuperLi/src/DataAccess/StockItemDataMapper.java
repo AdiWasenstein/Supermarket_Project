@@ -3,7 +3,7 @@ package SuperLi.src.DataAccess;
 import SuperLi.src.BusinessLogic.StockItem;
 import java.util.*;
 
-public class StockItemDataMapper implements IDataMapper<StockItem> {
+public class StockItemDataMapper extends ADataMapper<StockItem> {
     Map<Integer, StockItem> stockItemsIdentitiyMap;
     static StockItemDataMapper stockItemDataMapper = null;
     private StockItemDataMapper(){

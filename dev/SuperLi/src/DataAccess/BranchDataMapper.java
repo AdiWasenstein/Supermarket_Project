@@ -1,14 +1,13 @@
 package SuperLi.src.DataAccess;
 import SuperLi.src.BusinessLogic.Branch;
+import com.sun.source.tree.BreakTree;
+
 import java.sql.*;
 import java.util.*;
 
-public class BranchDataMapper implements IDataMapper<Branch> {
+public class BranchDataMapper extends ADataMapper<Branch> {
     Map<Integer, Branch> branchIdentityMap;
     static BranchDataMapper branchDataMapper = null;
-    public String insertQuery(Branch b){
-        return String.format("INSERT INTO Branches(Id, Address) VALUES (%d, '%s')", b.getId(), b.getAddress());
-    }
     private BranchDataMapper(){
         branchIdentityMap = new HashMap<>();
     }
@@ -17,35 +16,15 @@ public class BranchDataMapper implements IDataMapper<Branch> {
             branchDataMapper = new BranchDataMapper();
         return branchDataMapper;
     }
-    public Optional<Branch> find(String param){
-        return Optional.empty();
+    public String insertQuery(Branch branch){
+        branchIdentityMap.put(branch.getId(), branch);
+        return String.format("INSERT INTO Branches(Id, Address) VALUES (%d, '%s')", branch.getId(), branch.getAddress());
     }
-    public LinkedList<Branch> findAll(){return new LinkedList<>();}
-    public void insert(Branch object){
-        Connection conn;
-        Statement stmt;
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
-            stmt = conn.createStatement();
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-            System.out.println("Cannot open the database");
-            return;
-        }
-        try {
-            stmt.executeUpdate(insertQuery(object));
-        }
-        catch (SQLException e){
-            System.out.println("Cannot insert the item");
-            System.out.println(e.getMessage());
-        }
-        try{
-            conn.close();
-        }
-        catch (SQLException e){
-            System.out.println("Failed to close the connection");
-        }
+    public String findQuery(String key){
+        return String.format("SELECT * FROM Branches WHERE id = '%s'", key);
+    }
+    public String findAllQuery(){
+        return "SELECT * FROM Branches";
     }
     public void update(Branch object) {}
     public void delete(Branch object) {}

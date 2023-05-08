@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class ContactDataMapper implements IDataMapper<Contact>{
+public class ContactDataMapper extends ADataMapper<Contact> {
     private HashMap<String,Contact> contactsIdentityMap;
     private static ContactDataMapper instance = new ContactDataMapper();
 

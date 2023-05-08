@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class SupplierDataMapper implements IDataMapper<Supplier> {
+public class SupplierDataMapper extends ADataMapper<Supplier> {
 
     private HashMap<Integer, Supplier> suppliersIdentityMap;
     private static SupplierDataMapper instance = new SupplierDataMapper();
