@@ -1,6 +1,7 @@
 package SuperLi.src.DataAccess;
 import java.sql.*;
 import java.util.*;
+import java.util.function.*;
 
 public abstract class ADataMapper<T> {
     public abstract String findQuery(String object);

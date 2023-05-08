@@ -26,6 +26,11 @@ public class BranchDataMapper extends ADataMapper<Branch> {
     public String findAllQuery(){
         return "SELECT * FROM Branches";
     }
-    public void update(Branch object) {}
-    public void delete(Branch object) {}
+    public String deleteQuery(Branch branch){
+        branchIdentityMap.remove(branch.getId());
+        return String.format("DELETE FROM Branches WHERE id = '%s'", branch.getId());
+    }
+    public String updateQuery(Branch branch){
+        return String.format("UPDATE Branches SET Address = '%s' WHERE ID = '%s'", branch.getAddress(), branch.getId());
+    }
 }
