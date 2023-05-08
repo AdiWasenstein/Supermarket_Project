@@ -1,16 +1,25 @@
 package SuperLi.src.DataAccess;
+
 import java.sql.*;
-import java.util.*;
+import java.util.Optional;
 import java.util.function.*;
 
-public abstract class ADataMapper<T> {
-    public abstract String findQuery(String object);
-    public abstract String findAllQuery();
-    public abstract String insertQuery(T object);
-    public abstract String deleteQuery(T object);
-    public abstract String updateQuery(T object);
-
-    public void executeVoidQuery(Function<T, String> queryFunc, T object){
+public abstract class ADataMapper<ObjectType> {
+    public abstract String insertQuery(ObjectType object);
+    public abstract String deleteQuery(ObjectType object);
+    public abstract String updateQuery(ObjectType object);
+    public abstract Optional<ObjectType> find(String key);
+    //TODO - Check if key needs to be generic (and if find needs to be included in the interface)
+    public void insert(ObjectType object){
+        executeVoidQuery(this::insertQuery, object);
+    }
+    public void update(ObjectType object){
+        executeVoidQuery(this::updateQuery, object);
+    }
+    public void delete(ObjectType object){
+        executeVoidQuery(this::deleteQuery, object);
+    }
+    public void executeVoidQuery(Function<ObjectType, String> queryFunc, ObjectType object){
 		Connection conn;
         Statement stmt;
         try{
@@ -22,7 +31,7 @@ public abstract class ADataMapper<T> {
         }
         try{
             stmt = conn.createStatement();
-            stmt.executeUpdate(queryFunc(object));
+            stmt.executeUpdate(queryFunc.apply(object));
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
@@ -34,16 +43,7 @@ public abstract class ADataMapper<T> {
             System.out.println(e.getMessage());
         }
     }
-    public void insert(T object){
-        executeVoidQuery(insertQuery, object);
-    }
-    public void update(T object){
-		executeVoidQuery(updateQuery, object);
-    }
-    public void delete(T object){
-		executeVoidQuery(deleteQuery, object);
-    }
-    public ResultSet getMatching(String selectQuery){
+    public ResultSet executeSelectQuery(String query){
 		Connection conn;
         Statement stmt;
 		ResultSet matches = null;
@@ -56,7 +56,7 @@ public abstract class ADataMapper<T> {
         }
         try{
             stmt = conn.createStatement();
-            matches = stmt.executeUpdate(selectQuery));
+            matches = stmt.executeQuery(query);
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
