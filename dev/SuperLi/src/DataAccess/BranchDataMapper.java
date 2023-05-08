@@ -33,4 +33,10 @@ public class BranchDataMapper extends ADataMapper<Branch> {
     public String updateQuery(Branch branch){
         return String.format("UPDATE Branches SET Address = '%s' WHERE ID = '%s'", branch.getAddress(), branch.getId());
     }
+	public Optional<Branch> find(String key){
+		//TODO - Convert String to Integer
+		Integer id;
+		if branchIdentityMap.contains(id);
+			return Optional.of(branchIdentityMap.get(id));
+	}
 }
