@@ -21,30 +21,26 @@ public class BranchDataMapper extends ADataMapper<Branch> {
     }
     public String deleteQuery(Branch branch){
         branchIdentityMap.remove(branch.getId());
-        return String.format("DELETE FROM Branches WHERE id = '%s'", branch.getId());
+        return String.format("DELETE FROM Branches WHERE Id = %d", branch.getId());
     }
     public String updateQuery(Branch branch){
-        return String.format("UPDATE Branches SET Address = '%s' WHERE ID = '%s'", branch.getAddress(), branch.getId());
+        return String.format("UPDATE Branches SET Address = '%s' WHERE Id = %d", branch.getAddress(), branch.getId());
     }
-//    public LinkedList<Branch> findAllQuery(){
-//        ResultSet matches = executeSelectQuery("SELECT * FROM Branches");
-//        return new LinkedList<>();
-//    }
-	public Optional<Branch> find(String key){
-		Integer id = Integer.valueOf(key);
-		if(branchIdentityMap.containsKey(id))
-			return Optional.of(branchIdentityMap.get(id));
-        ResultSet matches = executeSelectQuery(String.format("SELECT * FROM Branches WHERE id = '%s'", key));
-        Branch branch;
-        try{
-            if(matches == null || !matches.next())
-                throw new SQLException();
-            branch = new Branch(matches.getString("Address"), matches.getInt("Id"));
-        }
-        catch (SQLException e){
-            return Optional.empty();
-        }
-		branchIdentityMap.put(id, branch);
-		return Optional.of(branch);
-	}
+	public String findQuery(String ...key){
+        return String.format("SELECT * FROM Branches WHERE Id = '%s'", key[0]);
+    }
+    public String findAllQuery(){
+        return "SELECT * FROM Branches";
+    }
+    public Branch findInIdentityMap(String ...key){
+        return branchIdentityMap.get(Integer.valueOf(key[0]));
+    }
+    public Branch insertIdentityMap(ResultSet matches) throws SQLException{
+        Branch branch = branchIdentityMap.get(matches.getInt("Id"));
+        if(branch != null)
+            return branch;
+        branch = new Branch(matches.getString("Address"), matches.getInt("Id"));
+        branchIdentityMap.put(branch.getId(), branch);
+        return branch;
+    }
 }

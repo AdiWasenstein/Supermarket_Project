@@ -1,26 +1,27 @@
 package SuperLi.src.DataAccess;
 
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.*;
 
 public abstract class ADataMapper<ObjectType> {
-    public abstract String insertQuery(ObjectType object);
-    public abstract String deleteQuery(ObjectType object);
-    public abstract String updateQuery(ObjectType object);
-    public abstract Optional<ObjectType> find(String key);
-    //TODO - Check if key needs to be generic (and if find needs to be included in the interface)
+    protected abstract String insertQuery(ObjectType object); // Including inserting to identityMap
+    protected abstract String deleteQuery(ObjectType object); // Including deleting from identityMap
+    protected abstract String updateQuery(ObjectType object);
+    protected abstract String findQuery(String ...key);
+    protected abstract String findAllQuery();
+    protected abstract ObjectType findInIdentityMap(String ...key);
+    protected abstract ObjectType insertIdentityMap(ResultSet match) throws SQLException;
     public void insert(ObjectType object){
         executeVoidQuery(this::insertQuery, object);
     }
-    public void update(ObjectType object){
-        executeVoidQuery(this::updateQuery, object);
-    }
+    public void update(ObjectType object){executeVoidQuery(this::updateQuery, object);}
     public void delete(ObjectType object){
         executeVoidQuery(this::deleteQuery, object);
     }
     public void executeVoidQuery(Function<ObjectType, String> queryFunc, ObjectType object){
-		Connection conn;
+        Connection conn;
         Statement stmt;
         try{
             conn = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
@@ -69,4 +70,34 @@ public abstract class ADataMapper<ObjectType> {
         }
 		return matches;
 	}
+    public Optional<ObjectType> find(String ...key){
+        ObjectType identityMapObject = findInIdentityMap(key);
+        if(identityMapObject != null)
+            return Optional.of(identityMapObject);
+        ResultSet matches = executeSelectQuery(findQuery(key));
+        try{
+            if(matches == null)
+                throw new SQLException("SELECT query failed");
+            if(matches.next())
+                return Optional.of(insertIdentityMap(matches));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
+    }
+    public LinkedList<ObjectType> findAll(){
+        LinkedList<ObjectType> objects = new LinkedList<>();
+        ResultSet matches = executeSelectQuery(findAllQuery());
+        if(matches == null)
+            return objects;
+        try{
+            while (!matches.next())
+                objects.add(insertIdentityMap(matches));
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return objects;
+    }
 }
