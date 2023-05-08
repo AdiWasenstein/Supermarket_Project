@@ -2,6 +2,7 @@ package SuperLi.src.BusinessLogic;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class PeriodicReport {
     private int reportId;
@@ -45,10 +46,21 @@ public class PeriodicReport {
         return supplier;
     }
 
+    //this func returns all the items and quantities.
     public HashMap<SupplierItem, Integer> getItems() {
         return items;
     }
 
+    //this func returns only supplier items (without quantities)
+    public LinkedList<SupplierItem> getSupplierItems()
+    {
+        LinkedList<SupplierItem> supplierItems = new LinkedList<>();
+        for(SupplierItem s: this.items.keySet())
+        {
+            supplierItems.add(s);
+        }
+        return supplierItems;
+    }
     //this func updates the quantity of an item.
     public void setQuantityOfItem(int itemCatalogNumber, int newQuantity)throws InvalidParameterException
     {
@@ -57,11 +69,14 @@ public class PeriodicReport {
         boolean itemFound = false;
         for(SupplierItem item : items.keySet())
         {
-            if(item.getCatalogNumber() == itemCatalogNumber)
+            if(item.GetMarketId() == itemCatalogNumber)
             {
-                if(newQuantity > item.getNumberOfUnits())
-                    throw new InvalidParameterException("quantity of item must be smaller or equal to number of units supplier can supply from item.");
-                items.put(item,newQuantity);
+                if(newQuantity > item.getNumberOfUnits())//if requested amount is bigger than max number of units supplier can supply, update the new amount to the max amount possible.
+                    items.put(item,item.getNumberOfUnits());
+                else
+                {
+                    items.put(item, newQuantity);
+                }
                 itemFound = true;
                 break;
             }
