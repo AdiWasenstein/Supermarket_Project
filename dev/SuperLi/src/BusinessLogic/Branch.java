@@ -85,6 +85,7 @@ public class Branch {
         if(stockItem == null)
             return false;
         stockItem.setDamage(damage);
+        stockItemDataMapper.update(stockItem);
         return true;
     }
     public DamageType getStockItemDamage(int barcode){
@@ -113,6 +114,7 @@ public class Branch {
         if(stockItem == null)
             return false;
         stockItem.setLocation(stockItem.getCatalogItem().getBackLocation());
+        stockItemDataMapper.update(stockItem);
         return true;
     }
     public boolean transferBackToFront(int barcode){
@@ -120,6 +122,7 @@ public class Branch {
         if(stockItem == null)
             return false;
         stockItem.setLocation(stockItem.getCatalogItem().getShelvesLocation());
+        stockItemDataMapper.update(stockItem);
         return true;
     }
     public int barcodeToId(int barcode){
