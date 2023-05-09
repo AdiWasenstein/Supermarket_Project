@@ -6,23 +6,25 @@ import java.util.Optional;
 import java.util.function.*;
 
 public abstract class ADataMapper<ObjectType> {
-    Connection connection;
+    static Connection connection = null;
     public void openConnection(){
         try{
             connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
-            connection = null;
         }
     }
     public void closeConnection(){
+        if(connection == null)
+            return;
         try{
             connection.close();
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
         }
+        connection = null;
     }
     protected abstract String insertQuery(ObjectType object); // Including inserting to identityMap
     protected abstract String deleteQuery(ObjectType object); // Including deleting from identityMap

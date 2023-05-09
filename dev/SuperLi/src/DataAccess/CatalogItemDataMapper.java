@@ -87,7 +87,7 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
         int minCapacity = match.getInt("MinCapacity");
         int shelfLife = match.getInt("ShelfLife");
         int shelvesLocation = match.getInt("ShelvesLocation");
-        int backLocation = match.getInt("Location");
+        int backLocation = match.getInt("BackLocation");
         catalogItem = new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation, shelfLife);
         String expirationDate = match.getString("DiscountExpiration");
         if(expirationDate != null) {
