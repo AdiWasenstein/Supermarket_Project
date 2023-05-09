@@ -22,7 +22,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     }
     public String insertQuery(StockItem object) {
         stockItemsIdentitiyMap.put(object.getBarcode(), object);
-        return String.format("INSERT INTO StockItems(Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %.1f, '%s', %d, %d, %d)",
+        return String.format("INSERT INTO StockItems (Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %.1f, '%s', %d, %d, %d)",
                 object.getBarcode(), object.getCatalogItem().getId(), object.getCostPrice(), object.getExpirationString(), object.getDamage().ordinal(),
                 object.getBranchId(), object.getLocation());
     }
@@ -31,22 +31,22 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
         return String.format("DELETE FROM StockItems WHERE Barcode = %d", object.getBarcode());
     }
     public String updateQuery(StockItem object) {
-        return String.format("UPDATE StockItems SET DamageType = %d, Location = %d WHERE BarcodeId = %d", object.getDamage().ordinal(), object.getLocation(), object.getBarcode());
+        return String.format("UPDATE StockItems SET DamageType = %d, Location = %d WHERE Barcode = %d", object.getDamage().ordinal(), object.getLocation(), object.getBarcode());
     }
-    public String findQuery(String...key) {return String.format("SELECT * FROM StockItems WHERE BarcodeId = '%s'",key[0]);}
+    public String findQuery(String...key) {return String.format("SELECT * FROM StockItems WHERE Barcode = '%s'",key[0]);}
     public String findAllQuery() {return "SELECT * FROM StockItems";}
     public StockItem findInIdentityMap(String ...key) {return stockItemsIdentitiyMap.get(Integer.valueOf(key[0]));}
     public StockItem insertIdentityMap(ResultSet matches) throws SQLException{
         if (matches == null)
             return null;
-        StockItem stockItem = stockItemsIdentitiyMap.get(matches.getInt("BarcodeId"));
+        StockItem stockItem = stockItemsIdentitiyMap.get(matches.getInt("Barcode"));
         if (stockItem != null)
             return stockItem;
         Optional<CatalogItem> catalogItem = CatalogItemDataMapper.getInstance().find(String.valueOf(matches.getInt("CatalogItemId")));
         if (catalogItem.isEmpty())
             return null;
         LocalDate expiration = LocalDate.parse(matches.getString("Expiration"));
-        stockItem = new StockItem(catalogItem.get(), matches.getInt("BarcodeId"), matches.getDouble("CostPrice"), expiration, DamageType.valueOf(String.valueOf(matches.getInt("DamageType"))),matches.getInt("BranchId"), matches.getInt("Location"));
+        stockItem = new StockItem(catalogItem.get(), matches.getInt("Barcode"), matches.getDouble("CostPrice"), expiration, DamageType.valueOf(String.valueOf(matches.getInt("DamageType"))),matches.getInt("BranchId"), matches.getInt("Location"));
         stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
         return stockItem;
     }
