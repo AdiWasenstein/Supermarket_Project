@@ -106,4 +106,11 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
             categories.add(matches.getString("Category"));
         return categories;
     }
+    public LinkedList<CatalogItem> findAllFromCategory(Category category){
+        LinkedList<CatalogItem> catalogItems = new LinkedList<>();
+        for(CatalogItem catalogItem : findAll())
+            if(catalogItem.isFromCategory(category))
+                catalogItems.add(catalogItem);
+        return catalogItems;
+    }
 }
