@@ -10,9 +10,11 @@ import java.util.*;
 public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
     Map<Integer, CatalogItem> catalogItemsIdentitiyMap;
     static CatalogItemDataMapper catalogItemDataMapper = null;
-    private CatalogItemDataMapper(){
+
+    private CatalogItemDataMapper() {
         catalogItemsIdentitiyMap = new HashMap<>();
     }
+
     public static CatalogItemDataMapper getInstance() {
         if (catalogItemDataMapper == null)
             catalogItemDataMapper = new CatalogItemDataMapper();
