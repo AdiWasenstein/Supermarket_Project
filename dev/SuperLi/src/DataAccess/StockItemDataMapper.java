@@ -1,13 +1,11 @@
 package SuperLi.src.DataAccess;
 
-import SuperLi.src.BusinessLogic.Branch;
-import SuperLi.src.BusinessLogic.CatalogItem;
-import SuperLi.src.BusinessLogic.DamageType;
-import SuperLi.src.BusinessLogic.StockItem;
+import SuperLi.src.BusinessLogic.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class StockItemDataMapper extends ADataMapper<StockItem> {
@@ -46,8 +44,8 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
         Optional<CatalogItem> catalogItem = CatalogItemDataMapper.getInstance().find(String.valueOf(match.getInt("CatalogItemId")));
         if (catalogItem.isEmpty())
             return null;
-        LocalDate expiration = LocalDate.parse(match.getString("Expiration"));
-        stockItem = new StockItem(catalogItem.get(), match.getInt("Barcode"), match.getDouble("CostPrice"), expiration, DamageType.valueOf(String.valueOf(match.getInt("DamageType"))),match.getInt("BranchId"), match.getInt("Location"));
+        LocalDate expiration = LocalDate.parse(match.getString("Expiration"), DateTimeFormatter.ofPattern("d/M/yy"));
+        stockItem = new StockItem(catalogItem.get(), match.getInt("Barcode"), match.getDouble("CostPrice"), expiration, DamageType.values()[match.getInt("DamageType")],match.getInt("BranchId"), match.getInt("Location"));
         stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
         return stockItem;
     }
@@ -59,7 +57,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     public void deleteMatchingCatalog(int catalogId){
         for (StockItem stockItem : stockItemsIdentitiyMap.values())
             if (stockItem.getCatalogItem().getId() == catalogId)
-                stockItemsIdentitiyMap.remove(stockItem.getBarcode());
+                stockItemsIdentitiyMap.remove(catalogId);
     }
     private int getIdAmount(int branchId, int catalogId, boolean needsFront){
         LinkedList<StockItem> stockItems = findAllFromBranch(branchId);

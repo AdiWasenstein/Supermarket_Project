@@ -45,6 +45,7 @@ public abstract class ADataMapper<ObjectType> {
             return;
         try{
             stmt = connection.createStatement();
+            stmt.execute("PRAGMA foreign_keys = ON;");
             stmt.executeUpdate(query);
         }
         catch (SQLException e){
@@ -63,6 +64,7 @@ public abstract class ADataMapper<ObjectType> {
         ResultSet matches = null;
         try{
             stmt = connection.createStatement();
+            stmt.execute("PRAGMA foreign_keys = ON;");
             matches = stmt.executeQuery(query);
         }
         catch (SQLException e){
@@ -72,13 +74,17 @@ public abstract class ADataMapper<ObjectType> {
 	}
     public Optional<ObjectType> find(String ...key){
         ObjectType identityMapObject = findInIdentityMap(key);
-        if(identityMapObject != null)
+        if(identityMapObject != null) {
+//            closeConnection();
             return Optional.of(identityMapObject);
+        }
         ResultSet matches = executeSelectQuery(findQuery(key));
         Optional<ObjectType> object = Optional.empty();
         try{
-            if(matches == null)
+            if(matches == null) {
+                closeConnection();
                 throw new SQLException("SELECT QUERY FAILED");
+            }
             if(matches.next())
                 object = Optional.of(insertIdentityMap(matches));
         }
@@ -91,11 +97,14 @@ public abstract class ADataMapper<ObjectType> {
     public LinkedList<ObjectType> findAll(){
         LinkedList<ObjectType> objects = new LinkedList<>();
         openConnection();
-        if(connection == null)
+        if(connection == null) {
             return objects;
+        }
         ResultSet matches = executeSelectQuery(findAllQuery());
-        if(matches == null)
+        if(matches == null) {
+            closeConnection();
             return objects;
+        }
         try{
             while (matches.next())
                 objects.add(insertIdentityMap(matches));

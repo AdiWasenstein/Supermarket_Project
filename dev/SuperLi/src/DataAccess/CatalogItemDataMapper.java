@@ -56,8 +56,8 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
 
     protected String deleteQuery(CatalogItem catalogItem) {
         int id = catalogItem.getId();
-        catalogItemsIdentitiyMap.remove(id);
         StockItemDataMapper.getInstance().deleteMatchingCatalog(id);
+        catalogItemsIdentitiyMap.remove(id);
         return String.format("DELETE FROM CatalogItems WHERE Id = %d", id);
     }
 
