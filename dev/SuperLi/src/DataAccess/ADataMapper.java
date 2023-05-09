@@ -8,6 +8,8 @@ import java.util.function.*;
 public abstract class ADataMapper<ObjectType> {
     static Connection connection = null;
     public void openConnection(){
+        if(connection != null)
+            return;
         try{
             connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
         }
