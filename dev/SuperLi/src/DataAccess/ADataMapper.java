@@ -38,19 +38,22 @@ public abstract class ADataMapper<ObjectType> {
     public void delete(ObjectType object){
         executeVoidQuery(this::deleteQuery, object);
     }
-    public void executeVoidQuery(Function<ObjectType, String> queryFunc, ObjectType object){
+    public void executeVoidQuery(String query){
         Statement stmt;
         openConnection();
         if(connection == null)
             return;
         try{
             stmt = connection.createStatement();
-            stmt.executeUpdate(queryFunc.apply(object));
+            stmt.executeUpdate(query);
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
         }
         closeConnection();
+    }
+    public void executeVoidQuery(Function<ObjectType, String> queryFunc, ObjectType object){
+        executeVoidQuery(queryFunc.apply(object));
     }
     public ResultSet executeSelectQuery(String query){
         openConnection();
