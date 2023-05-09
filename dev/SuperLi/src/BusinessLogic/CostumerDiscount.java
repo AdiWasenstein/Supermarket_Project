@@ -15,9 +15,10 @@ public class CostumerDiscount {
         this.isPercentage = isPercentage;
         this.minCapacity = minCapacity;
     }
-
+    public double getValue(){return this.value;}
+    public boolean isPercentage(){return this.isPercentage;}
     public int getMinCapacity(){return this.minCapacity;}
-
+    public LocalDate getExpirationDate(){return this.expirationDate;}
     public double generateDiscount(double originPrice, int amount){
         if(discountValid(amount)) {
             if (isPercentage)
