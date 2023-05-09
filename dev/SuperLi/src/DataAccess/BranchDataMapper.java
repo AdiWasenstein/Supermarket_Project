@@ -23,9 +23,7 @@ public class BranchDataMapper extends ADataMapper<Branch> {
         branchIdentityMap.remove(branch.getId());
         return String.format("DELETE FROM Branches WHERE Id = %d", branch.getId());
     }
-    public String updateQuery(Branch branch){
-        return String.format("UPDATE Branches SET Address = '%s' WHERE Id = %d", branch.getAddress(), branch.getId());
-    }
+    public String updateQuery(Branch branch){return String.format("UPDATE Branches SET Address = '%s' WHERE Id = %d", branch.getAddress(), branch.getId());}
 	public String findQuery(String ...key){
         return String.format("SELECT * FROM Branches WHERE Id = '%s'", key[0]);
     }
@@ -36,6 +34,8 @@ public class BranchDataMapper extends ADataMapper<Branch> {
         return branchIdentityMap.get(Integer.valueOf(key[0]));
     }
     public Branch insertIdentityMap(ResultSet matches) throws SQLException{
+        if (matches == null)
+            return null;
         Branch branch = branchIdentityMap.get(matches.getInt("Id"));
         if(branch != null)
             return branch;

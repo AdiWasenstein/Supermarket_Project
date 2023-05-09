@@ -1,9 +1,12 @@
 package SuperLi.src.DataAccess;
 
+import SuperLi.src.BusinessLogic.CatalogItem;
+import SuperLi.src.BusinessLogic.DamageType;
 import SuperLi.src.BusinessLogic.StockItem;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class StockItemDataMapper extends ADataMapper<StockItem> {
@@ -18,33 +21,41 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
         return stockItemDataMapper;
     }
     public String insertQuery(StockItem object) {
-        return "";
+        stockItemsIdentitiyMap.put(object.getBarcode(), object);
+        return String.format("INSERT INTO StockItems(Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %.1f, '%s', %d, %d, %d)",
+                object.getBarcode(), object.getCatalogItem().getId(), object.getCostPrice(), object.getExpirationString(), object.getDamage().ordinal(),
+                object.getBranchId(), object.getLocation());
     }
     public String deleteQuery(StockItem object) {
-        return "";
+        stockItemsIdentitiyMap.remove(object.getBarcode());
+        return String.format("DELETE FROM StockItems WHERE Barcode = %d", object.getBarcode());
     }
     public String updateQuery(StockItem object) {
-        return "";
+        return String.format("UPDATE StockItems SET DamageType = %d, Location = %d WHERE BarcodeId = %d", object.getDamage().ordinal(), object.getLocation(), object.getBarcode());
     }
-    public String findQuery(String ...key) {
-        return "";
-    }
-    public String findAllQuery() {
-        return "";
-    }
-    public StockItem findInIdentityMap(String ...key) {
-        return null;
-    }
-    public StockItem insertIdentityMap(ResultSet match) throws SQLException{
-        if (match == null)
+    public String findQuery(String...key) {return String.format("SELECT * FROM StockItems WHERE BarcodeId = '%s'",key[0]);}
+    public String findAllQuery() {return "SELECT * FROM StockItems";}
+    public StockItem findInIdentityMap(String ...key) {return stockItemsIdentitiyMap.get(Integer.valueOf(key[0]));}
+    public StockItem insertIdentityMap(ResultSet matches) throws SQLException{
+        if (matches == null)
             return null;
-        throw new SQLException();
+        StockItem stockItem = stockItemsIdentitiyMap.get(matches.getInt("BarcodeId"));
+        if (stockItem != null)
+            return stockItem;
+        Optional<CatalogItem> catalogItem = CatalogItemDataMapper.getInstance().find(String.valueOf(matches.getInt("CatalogItemId")));
+        if (catalogItem.isEmpty())
+            return null;
+        LocalDate expiration = LocalDate.parse(matches.getString("Expiration"));
+        stockItem = new StockItem(catalogItem.get(), matches.getInt("BarcodeId"), matches.getDouble("CostPrice"), expiration, DamageType.valueOf(String.valueOf(matches.getInt("DamageType"))),matches.getInt("BranchId"), matches.getInt("Location"));
+        stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
+        return stockItem;
     }
     public LinkedList<StockItem> findAllFromBranch(int branchId){
-        if(branchId == 0)
-            return null;
-        return new LinkedList<>();
+        LinkedList<StockItem> objects = findAll();
+        objects.removeIf(stockItem -> stockItem.getBranchId() != branchId);
+        return objects;
     }
+
     public int getShelvesIdAmount(int branchId, int catalogId){
         return branchId + catalogId;
     }

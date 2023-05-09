@@ -12,7 +12,7 @@ public class MainMenu extends AMenu{
         return mainMenu;
     }
     public void printMenu(){
-        System.out.println("Welcome to Super - li market!\nPlease tell us who you are.");
+        System.out.println("Welcome to Super-Li market!\nPlease tell us who you are.");
         System.out.println("1. I'm the admin.");
         System.out.println("2. I'm a branch stock manager.");
         System.out.println("3. I'm a stock-keeper.");
