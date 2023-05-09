@@ -33,13 +33,13 @@ public class BranchDataMapper extends ADataMapper<Branch> {
     public Branch findInIdentityMap(String ...key){
         return branchIdentityMap.get(Integer.valueOf(key[0]));
     }
-    public Branch insertIdentityMap(ResultSet matches) throws SQLException{
-        if (matches == null)
+    public Branch insertIdentityMap(ResultSet match) throws SQLException{
+        if (match == null)
             return null;
-        Branch branch = branchIdentityMap.get(matches.getInt("Id"));
+        Branch branch = branchIdentityMap.get(match.getInt("Id"));
         if(branch != null)
             return branch;
-        branch = new Branch(matches.getString("Address"), matches.getInt("Id"));
+        branch = new Branch(match.getString("Address"), match.getInt("Id"));
         branchIdentityMap.put(branch.getId(), branch);
         return branch;
     }
