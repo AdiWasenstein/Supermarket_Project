@@ -31,9 +31,7 @@ public abstract class ADataMapper<ObjectType> {
     protected abstract String findAllQuery();
     protected abstract ObjectType findInIdentityMap(String ...key);
     protected abstract ObjectType insertIdentityMap(ResultSet match) throws SQLException;
-    public void insert(ObjectType object){
-        executeVoidQuery(this::insertQuery, object);
-    }
+    public void insert(ObjectType object){executeVoidQuery(this::insertQuery, object);}
     public void update(ObjectType object){executeVoidQuery(this::updateQuery, object);}
     public void delete(ObjectType object){
         executeVoidQuery(this::deleteQuery, object);
