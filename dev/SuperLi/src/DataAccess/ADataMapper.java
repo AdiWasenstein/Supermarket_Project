@@ -15,7 +15,7 @@ public abstract class ADataMapper<ObjectType> {
             connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
     }
     public void closeConnection(){
@@ -25,7 +25,7 @@ public abstract class ADataMapper<ObjectType> {
             connection.close();
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         connection = null;
     }
@@ -49,7 +49,7 @@ public abstract class ADataMapper<ObjectType> {
             stmt.executeUpdate(query);
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         closeConnection();
     }
@@ -67,7 +67,7 @@ public abstract class ADataMapper<ObjectType> {
             matches = stmt.executeQuery(query);
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
 		return matches;
 	}
@@ -89,7 +89,7 @@ public abstract class ADataMapper<ObjectType> {
             }
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         closeConnection();
         return result;
@@ -113,7 +113,7 @@ public abstract class ADataMapper<ObjectType> {
             }
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         closeConnection();
         return objects;
