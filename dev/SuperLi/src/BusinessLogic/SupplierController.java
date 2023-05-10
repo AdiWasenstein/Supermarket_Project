@@ -2,6 +2,8 @@ package SuperLi.src.BusinessLogic;
 
 
 import SuperLi.src.DataAccess.SupplierDataMapper;
+import SuperLi.src.DataAccess.SupplierItemDataMapper;
+import com.sun.source.tree.TryTree;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
@@ -9,10 +11,13 @@ import java.util.LinkedList;
 public class SupplierController {
     private static SupplierController instance = new SupplierController();
     private SupplierDataMapper supplierDataMapper;
+    private SupplierItemDataMapper supplierItemDataMapper;
 
     private SupplierController()
     {
+
         this.supplierDataMapper = SupplierDataMapper.getInstance();
+        this.supplierItemDataMapper = SupplierItemDataMapper.getInstance();
     }
 
     public static SupplierController getInstance()
@@ -103,19 +108,28 @@ public class SupplierController {
         return false;
     }
 
-    //this func gets a new supplier item details, and returns the id of the fitting catalog item in market.
-    //throws Exception if there is no fitting catalog item.
-    public int getCatalogItemId(String itemName, String manufacturer, String category)throws Exception//CHANGE!
-    {
-//        MarketItem itemM = SuperLi.src.Presentation.MainMenu.marketStock.getMarketItem(itemName,manufacturer);
-        return 0;
-    }
 
     //this func adds new supplier item to supplier if possible. else, throws EXCEPTION.
-    public void addSupplierItemToSupplier(Supplier sup, int catalogNumber, String itemName, String manufacturer, double unitPrice, double unitWeight, int numberOfUnits, String category, int marketId)throws Exception //CHANGE!
+    public void addSupplierItemToSupplier(Supplier sup, int catalogNumber, String itemName, String manufacturer, double unitPrice, double unitWeight, int numberOfUnits, String category)throws Exception
     {
-//        if(supplier.getSupplierContract().addItem(catalogNumber,itemName,manufacturer,unitPrice,unitWeight,numberOfUnits,category,marketId))
-
+        if(sup == null)
+            return;
+        SupplierContract contract = sup.getSupplierContract();
+        if(!contract.canAddItem(catalogNumber,manufacturer,category))
+            throw new Exception("Adding new Item is impossible.");
+        int marketId = StockManagementFacade.getInstance().catalogIdAccordingToNameManufacturerCategory(itemName, manufacturer, category);
+        SupplierItem sItem = null;
+        try
+        {
+            sItem = new SupplierItem(catalogNumber,itemName,manufacturer,unitPrice,unitWeight,numberOfUnits,category,marketId);
+        }
+        catch (InvalidParameterException e)
+        {
+            String message = e.getMessage();
+            throw new Exception(message);
+        }
+        contract.addItem(sItem);
+        this.supplierItemDataMapper.insert(sItem,sup.getSupplierId());
     }
 
     //this func adds new itemUnitsDiscount to suppliers discount document, or throws Exception if impossible.
@@ -176,6 +190,11 @@ public class SupplierController {
 
     public boolean removeItem(Supplier sup, int catalogNumber)
     {
+        SupplierContract contract = sup.getSupplierContract();
+        //removing from contract
+        contract.removeItem();
+        //removing from periodic reports
+        //removing from itemUnitsDiscounts
 //        supplier.getSupplierContract().removeItem(catalogNumber);
 //        System.out.println("Item was removed successfully.");
             return false;

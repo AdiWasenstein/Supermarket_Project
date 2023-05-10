@@ -11,7 +11,7 @@ public class SupplierItem{
     private String catagory;
     private int marketId;
 
-    public SupplierItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits,String catagory,int marketId)
+    public SupplierItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits,String catagory,int marketId)throws InvalidParameterException
     {
         if(catalogNumber <= 0 )
             throw new InvalidParameterException("catalog number must be a positive number");

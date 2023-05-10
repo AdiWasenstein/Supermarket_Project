@@ -172,7 +172,7 @@ public class SupplierMenu extends AMenu {
         Supplier supplier = findSupplierUser(scan);
         if (supplier == null)
             return;
-        int catalogNumber, numberOfUnits, marketId;
+        int catalogNumber, numberOfUnits;
         double unitPrice, unitWeight;
         String itemName,manufacturer, category;
         while (true)
@@ -268,16 +268,7 @@ public class SupplierMenu extends AMenu {
             }
             try
             {
-                marketId = supplierCon.getCatalogItemId(itemName, manufacturer, category);
-            }
-            catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-                break;
-            }
-            try
-            {
-                supplierCon.addSupplierItemToSupplier(supplier,catalogNumber,itemName,manufacturer,unitPrice,unitWeight,numberOfUnits,category,marketId);
+                supplierCon.addSupplierItemToSupplier(supplier,catalogNumber,itemName,manufacturer,unitPrice,unitWeight,numberOfUnits,category);
                 System.out.println("Item added successfully");
             }
             catch (Exception e)

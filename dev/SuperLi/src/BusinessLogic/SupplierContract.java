@@ -123,17 +123,17 @@ public class SupplierContract {
     }
 
     // add item with given parameters
-    public boolean addItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits, String category, int marketId)
-    {
-        if(!canAddItem(catalogNumber,manufacturer,category))
-        {
-            return false;
-        }
-        //else, if possible:
-        SupplierItem newItem = new SupplierItem(catalogNumber, itemName, manufacturer, unitPrice, unitWeight, numberOfUnits, category, marketId);
-        this.supplierItems.add(newItem);
-        return true;
-    }
+//    public boolean addItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits, String category, int marketId)
+//    {
+//        if(!canAddItem(catalogNumber,manufacturer,category))
+//        {
+//            return false;
+//        }
+//        //else, if possible:
+//        SupplierItem newItem = new SupplierItem(catalogNumber, itemName, manufacturer, unitPrice, unitWeight, numberOfUnits, category, marketId);
+//        this.supplierItems.add(newItem);
+//        return true;
+//    }
 
     // add item with given item
     public void addItem(SupplierItem newItem)
@@ -144,7 +144,7 @@ public class SupplierContract {
     {
         int index = checkIfItemExists(catalogNumber);
         if(index == -1)
-            throw new Exception("SuperLi.src.BusinessLogic.Supplier not supplying an item with given catalog number.");
+            throw new Exception("Supplier not supplying an item with given catalog number.");
         this.supplierItems.remove(index);
         this.getDiscountDocument().removeAllDiscountsOfItem(catalogNumber);
     }
