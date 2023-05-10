@@ -10,7 +10,7 @@ public class Category{
         this.size = size;
     }
     public String toString(){
-        String categoriesStr = this.categories.toString().substring(1, this.categories.toString().length() - 2);
+        String categoriesStr = this.categories.toString().substring(1, this.categories.toString().length() - 1);
         return String.format("%s, %.1f %ss", categoriesStr, this.size.get_amount(), this.size.get_measureunit().name());
     }
     public LinkedList<String> getCategories(){ return this.categories;}

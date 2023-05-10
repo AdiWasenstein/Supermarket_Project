@@ -19,6 +19,8 @@ public class StockKeeperMenu extends AMenu{
         return stockKeeperMenu;
     }
     public void printMenu(){
+        System.out.format("Welcome %s's stock-keeper!\n", stockManagementFacade.getBranchAddress(branchId));
+        System.out.println("What would you like to do?");
         System.out.println("1. Add Stock Item");
         System.out.println("2. Remove Stock Item.");
         System.out.println("3. Adding Damage to Item.");

@@ -35,6 +35,10 @@ public class StockManagementFacade {
         Optional<Branch> branch = branchDataMapper.find(Integer.toString(branchId));
         return branch.orElse(null);
     }
+    public String getBranchAddress(int branchId) {
+        Branch branch = getBranch(branchId);
+        return branch == null ? "" : branch.getAddress();
+    }
     public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, int measureUnit) {
         if (getCatalogItem(id) != null)
             return false;
