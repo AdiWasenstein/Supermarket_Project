@@ -5,7 +5,6 @@ import SuperLi.src.BusinessLogic.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
@@ -95,17 +94,23 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
             double value = match.getDouble("DiscountValue");
             boolean isPercentage = match.getInt("DiscountPercentage") == 1;
             int capacity = match.getInt("DiscountCapacity");
-            catalogItem.setCostumerDiscount(new CostumerDiscount(LocalDate.parse(expirationDate, DateTimeFormatter.ofPattern("d/M/yy")), value, isPercentage, capacity));
+            catalogItem.setCostumerDiscount(new CostumerDiscount(LocalDate.parse(expirationDate), value, isPercentage, capacity));
         }
         catalogItemsIdentitiyMap.put(catalogItem.getId(), catalogItem);
         return catalogItem;
     }
 
     public LinkedList<String> getCatalogItemCategories(int id) throws SQLException{
-        ResultSet matches = executeSelectQuery(String.format("SELECT Category FROM CatalogItemsCategories WHERE CatalogItemId=%d", id));
+        ResultSet matches;
         LinkedList<String> categories = new LinkedList<>();
-        while(matches.next())
-            categories.add(matches.getString("Category"));
+        try{
+            matches = executeSelectQuery(String.format("SELECT Category FROM CatalogItemsCategories WHERE CatalogItemId=%d", id));
+            while(matches.next())
+                categories.add(matches.getString("Category"));
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
         return categories;
     }
     public LinkedList<CatalogItem> findAllFromCategory(Category category){

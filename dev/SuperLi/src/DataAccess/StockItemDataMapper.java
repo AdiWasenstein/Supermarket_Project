@@ -4,7 +4,6 @@ import SuperLi.src.BusinessLogic.*;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class StockItemDataMapper extends ADataMapper<StockItem> {
@@ -21,7 +20,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     protected String insertQuery(StockItem stockItem) {
         stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
         return String.format("INSERT INTO StockItems (Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %f, '%s', %d, %d, %d)",
-                stockItem.getBarcode(), stockItem.getCatalogItem().getId(), stockItem.getCostPrice(), stockItem.getExpirationString(), stockItem.getDamage().ordinal(),
+                stockItem.getBarcode(), stockItem.getCatalogItem().getId(), stockItem.getCostPrice(), stockItem.getExpiration(), stockItem.getDamage().ordinal(),
                 stockItem.getBranchId(), stockItem.getLocation());
     }
     protected String deleteQuery(StockItem object) {
@@ -40,7 +39,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
         StockItem stockItem = stockItemsIdentitiyMap.get(match.getInt("Barcode"));
         if (stockItem != null)
             return stockItem;
-        LocalDate expiration = LocalDate.parse(match.getString("Expiration"), DateTimeFormatter.ofPattern("d/M/yy"));
+        LocalDate expiration = LocalDate.parse(match.getString("Expiration"));
         int barcode = match.getInt("Barcode");
         double costPrice = match.getDouble("CostPrice");
         DamageType damageType = DamageType.values()[match.getInt("DamageType")];
