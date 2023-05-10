@@ -40,6 +40,7 @@ public class StockItem {
     }
     public boolean isExpired(){ return dateDifference() > 0;}
     public String getExpirationString(){return this.expirationDate.format(DateTimeFormatter.ofPattern("d/M/yy"));}
+    public LocalDate getExpiration(){return this.expirationDate;}
     public DamageType getDamage(){return this.damageType;}
     public void setDamage(DamageType type){
         this.damageType = type;

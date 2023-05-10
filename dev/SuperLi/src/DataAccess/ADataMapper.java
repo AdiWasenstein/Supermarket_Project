@@ -7,6 +7,7 @@ import java.util.function.*;
 
 public abstract class ADataMapper<ObjectType> {
     static Connection connection = null;
+    static Statement stmt;
     public void openConnection(){
         if(connection != null)
             return;
@@ -14,7 +15,7 @@ public abstract class ADataMapper<ObjectType> {
             connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
     }
     public void closeConnection(){
@@ -24,7 +25,7 @@ public abstract class ADataMapper<ObjectType> {
             connection.close();
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         connection = null;
     }
@@ -39,7 +40,6 @@ public abstract class ADataMapper<ObjectType> {
     public void update(ObjectType object){executeVoidQuery(this::updateQuery, object);}
     public void delete(ObjectType object){executeVoidQuery(this::deleteQuery, object);}
     public void executeVoidQuery(String query){
-        Statement stmt;
         openConnection();
         if(connection == null)
             return;
@@ -49,7 +49,7 @@ public abstract class ADataMapper<ObjectType> {
             stmt.executeUpdate(query);
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         closeConnection();
     }
@@ -60,7 +60,6 @@ public abstract class ADataMapper<ObjectType> {
         openConnection();
         if(connection == null)
             return null;
-        Statement stmt;
         ResultSet matches = null;
         try{
             stmt = connection.createStatement();
@@ -68,7 +67,7 @@ public abstract class ADataMapper<ObjectType> {
             matches = stmt.executeQuery(query);
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
 		return matches;
 	}
@@ -78,19 +77,21 @@ public abstract class ADataMapper<ObjectType> {
             return Optional.of(identityMapObject);
         }
         ResultSet matches = executeSelectQuery(findQuery(key));
-        Optional<ObjectType> object = Optional.empty();
+        Optional<ObjectType> result = Optional.empty();
         try{
             if(matches == null) {
                 throw new SQLException("SELECT QUERY FAILED");
             }
-            if(matches.next())
-                object = Optional.of(insertIdentityMap(matches));
+            if(matches.next()){
+                ObjectType object = insertIdentityMap(matches);
+                if(object != null)
+                    result = Optional.of(object);
+            }
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
-        closeConnection();
-        return object;
+        return result;
     }
     public LinkedList<ObjectType> findAll(){
         LinkedList<ObjectType> objects = new LinkedList<>();
@@ -104,11 +105,14 @@ public abstract class ADataMapper<ObjectType> {
             return objects;
         }
         try{
-            while (matches.next())
-                objects.add(insertIdentityMap(matches));
+            while (matches.next()) {
+                ObjectType object = insertIdentityMap(matches);
+                if(object != null)
+                    objects.add(object);
+            }
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
         closeConnection();
         return objects;

@@ -2,6 +2,7 @@ package SuperLi.src;
 
 
 import SuperLi.src.Presentation.MainMenu;
+import SuperLi.src.Presentation.ReportViewer;
 
 public class Main {
 //    static Category milk1000 = new Category("Dairy", "Milk", new Size(1000,MeasureUnit.ML));
@@ -25,6 +26,8 @@ public class Main {
 //    static Category cake_mold21 = new Category("Baking", "Disposable", new Size(21, MeasureUnit.CM));
 
     public static void main(String[] args) {
+//        ReportViewer.getInstance().generateStockItemReport(1);
+//        ReportViewer.getInstance().generateStockItemReport(1);
         MainMenu.getInstance().communicate();
 //        UserMenu us = new UserMenu();
 //        if (us.initialize_data() == 1) {

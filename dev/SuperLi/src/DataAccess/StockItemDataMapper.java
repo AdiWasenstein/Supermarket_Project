@@ -2,10 +2,8 @@ package SuperLi.src.DataAccess;
 
 import SuperLi.src.BusinessLogic.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class StockItemDataMapper extends ADataMapper<StockItem> {
@@ -21,8 +19,8 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     }
     protected String insertQuery(StockItem stockItem) {
         stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
-        return String.format("INSERT INTO StockItems (Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %.1f, '%s', %d, %d, %d)",
-                stockItem.getBarcode(), stockItem.getCatalogItem().getId(), stockItem.getCostPrice(), stockItem.getExpirationString(), stockItem.getDamage().ordinal(),
+        return String.format("INSERT INTO StockItems (Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %f, '%s', %d, %d, %d)",
+                stockItem.getBarcode(), stockItem.getCatalogItem().getId(), stockItem.getCostPrice(), stockItem.getExpiration(), stockItem.getDamage().ordinal(),
                 stockItem.getBranchId(), stockItem.getLocation());
     }
     protected String deleteQuery(StockItem object) {
@@ -41,12 +39,17 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
         StockItem stockItem = stockItemsIdentitiyMap.get(match.getInt("Barcode"));
         if (stockItem != null)
             return stockItem;
+        LocalDate expiration = LocalDate.parse(match.getString("Expiration"));
+        int barcode = match.getInt("Barcode");
+        double costPrice = match.getDouble("CostPrice");
+        DamageType damageType = DamageType.values()[match.getInt("DamageType")];
+        int branchId = match.getInt("BranchId");
+        int location = match.getInt("Location");
         Optional<CatalogItem> catalogItem = CatalogItemDataMapper.getInstance().find(String.valueOf(match.getInt("CatalogItemId")));
         if (catalogItem.isEmpty())
             return null;
-        LocalDate expiration = LocalDate.parse(match.getString("Expiration"), DateTimeFormatter.ofPattern("d/M/yy"));
-        stockItem = new StockItem(catalogItem.get(), match.getInt("Barcode"), match.getDouble("CostPrice"), expiration, DamageType.values()[match.getInt("DamageType")],match.getInt("BranchId"), match.getInt("Location"));
-        stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
+        stockItem = new StockItem(catalogItem.get(), barcode, costPrice, expiration, damageType, branchId, location);
+        stockItemsIdentitiyMap.put(barcode, stockItem);
         return stockItem;
     }
     public LinkedList<StockItem> findAllFromBranch(int branchId){
