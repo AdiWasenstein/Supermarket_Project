@@ -100,16 +100,14 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
         return catalogItem;
     }
 
-    public LinkedList<String> getCatalogItemCategories(int id) throws SQLException{
-        ResultSet matches;
+    public LinkedList<String> getCatalogItemCategories(int id){
         LinkedList<String> categories = new LinkedList<>();
-        try{
-            matches = executeSelectQuery(String.format("SELECT Category FROM CatalogItemsCategories WHERE CatalogItemId=%d", id));
+        try(ResultSet matches = executeSelectQuery(String.format("SELECT Category FROM CatalogItemsCategories WHERE CatalogItemId=%d", id))){
             while(matches.next())
                 categories.add(matches.getString("Category"));
         }
-        catch (Exception e){
-            System.out.println(e);
+        catch (SQLException e){
+            e.printStackTrace();
         }
         return categories;
     }
