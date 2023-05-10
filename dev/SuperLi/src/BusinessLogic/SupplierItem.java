@@ -75,6 +75,7 @@ public class SupplierItem{
 
     public int getNumberOfUnits() {return numberOfUnits;}
 
+    public String getCatagory() {return catagory;}
     public String toString()
     {
         return "Catalog number: " + catalogNumber + ", Market Id: " + marketId + ", Item name: " + itemName;

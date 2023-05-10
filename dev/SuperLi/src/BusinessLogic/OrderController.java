@@ -8,12 +8,13 @@ import SuperLi.src.DataAccess.SupplierItemDataMapper;
 
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Optional;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.*;
 
 public class OrderController {
-    private static OrderController instance = new OrderController();
+    private static OrderController instance = null;
+    private OrderManagment orderManagment;
     private OrderDataMapper orderDataMapper;
     private SupplierItemDataMapper supplierItemDataMapper;
     private PeriodicReportDataMapper periodicReportDataMapper;
@@ -23,9 +24,17 @@ public class OrderController {
         this.orderDataMapper = OrderDataMapper.getInstance();
         this.periodicReportDataMapper = PeriodicReportDataMapper.getInstance();
         this.supplierItemDataMapper = SupplierItemDataMapper.getInstance();
+        this.orderManagment = OrderManagment.getInstance();
+        this.branchDataMapper = BranchDataMapper.getInstance();
+        this.supplierDataMapper = SupplierDataMapper.getInstance();
     }
 
-    public static OrderController getInstance(){return instance;}
+    public static OrderController getInstance()
+    {
+        if (instance == null)
+            instance = new OrderController();
+        return instance;
+    }
 
 
 
@@ -84,8 +93,40 @@ public class OrderController {
         return true;
     }
 
+    private boolean canUpdateReport(PeriodicReport report)
+    {
+        //get the day of week of today
+        LocalDate date = LocalDate.now();
+        DayOfWeek currentDayOfWeek = date.getDayOfWeek();
+        String dayOfWeekString = currentDayOfWeek.toString();
+        //get the day to order
+        Day dayToOrder = report.getDayToOrder();
+        String dayToOrderString = dayToOrder.toString();
+        // Get the current time and calculate the delay until the constant hour to make periodic orders.
+        long delay = this.delayBetweenTimes();
+        //if today is also the day to create an order
+        if(dayToOrderString.equalsIgnoreCase(dayOfWeekString))//meaning the day to order is today
+        {
+            if(delay < 0)//meaning the order was already created, it is possible to update the report for next week.
+                return true;
+            else
+                return false;
+        }
+        //if today is one day before the order is created
+        else if(report.oneDayBeforeOrderDay().toString().equalsIgnoreCase((dayOfWeekString))) {
+            //if there is less than 24 hours
+            if (delay < 0)
+                return false;
+            return true;
+        }
+        else {
+            return true;
+        }
+    }
+
     //this func gets a branch number and a report id, and returns a list of all the items in the report- represented by the market id they fit to.
-    public LinkedList<Integer> allItemsInPeriodicReport(int reportId, int branchNumber)
+    //throws Exception if can't update the report it's id was given.
+    public LinkedList<Integer> allItemsInPeriodicReport(int reportId, int branchNumber)throws Exception
     {
         LinkedList<Integer> itemsAccordingToMarketId = new LinkedList<>();
         Optional<PeriodicReport> resultReport = this.periodicReportDataMapper.find(Integer.toString(reportId));
@@ -94,6 +135,9 @@ public class OrderController {
         PeriodicReport report = resultReport.get();
         if(report.getBranchNumber() != branchNumber)//report with given id isn't for the branch with the branch id given.
             return null;
+        //check if it's possible to update the report (more than 24 hours before creating an order)
+        if(!this.canUpdateReport(report))
+            throw new Exception("Only allowed to update report if there are more than 24 hours left to creating order.");
         //else - if report with given id and given branch number was found.
         for(SupplierItem supplierItem : report.getSupplierItems())
         {

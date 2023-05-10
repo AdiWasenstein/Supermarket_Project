@@ -2,6 +2,8 @@ package SuperLi.src.Presentation;
 
 import SuperLi.src.BusinessLogic.AReport;
 import SuperLi.src.BusinessLogic.StockManagementFacade;
+import SuperLi.src.BusinessLogic.PeriodicReport;
+import SuperLi.src.BusinessLogic.OrderController;
 
 import java.util.LinkedList;
 import java.util.Arrays;
@@ -17,6 +19,24 @@ public class ReportViewer {
         if(reportViewer == null)
             reportViewer = new ReportViewer();
         return reportViewer;
+    }
+    public void generatePeriodicReportsAccordingToBrunch(int branchId)
+    {
+        LinkedList<PeriodicReport> reportsOfBranch = OrderController.getInstance().findReportsOfBranch(branchId);
+        if(reportsOfBranch == null || reportsOfBranch.isEmpty())
+        {
+            System.out.println("There are no periodic reports of branch with given number.");
+            return;
+        }
+        else
+        {
+            System.out.println("Periodic Reports of branch " + branchId);
+            for(PeriodicReport report : reportsOfBranch)
+            {
+                System.out.println("Report id: " + report.getReportId() + "\nDay to order: " + report.getDayToOrder().toString() + "\nSupplier: " + report.getSupplier().getSupplierCard().getSupplierName());
+                viewReport(report);
+            }
+        }
     }
     public void generateAllCatalogReport(){
         viewReport(stockManagementFacade.generateAllCatalogReport());

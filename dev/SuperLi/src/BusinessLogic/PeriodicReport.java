@@ -85,6 +85,48 @@ public class PeriodicReport {
             throw new InvalidParameterException("an item with given catalog number does not exist in periodic report.");
     }
 
+    public Day oneDayBeforeOrderDay()
+    {
+        //getting the index of day to order
+        int indexDayToOrder = this.dayToOrder.ordinal();
+        if(indexDayToOrder==0)//if day is sunday
+            return Day.values()[6];//then previous day is Saturday.
+        return Day.values()[indexDayToOrder-1];
+    }
+
+    public String toString()
+    {
+        return "";
+    }
+
+    public String[] getRecordData(SupplierItem supplierItem)
+    {
+        String catalogNumber = Integer.toString(supplierItem.getCatalogNumber());
+        String MarketId = Integer.toString(supplierItem.GetMarketId());
+        String name = supplierItem.getItemName();
+        String manufacturer = supplierItem.getManufacturer();
+        String category = supplierItem.getCatagory();
+        String numberOfUnits = Integer.toString(supplierItem.getNumberOfUnits());
+        String unitPrice = Double.toString(supplierItem.getUnitPrice());
+        String unitWeight = Double.toString(supplierItem.getUnitWeight());
+        return new String[]{catalogNumber, MarketId, name, manufacturer, category,numberOfUnits,unitPrice,unitWeight};
+    }
+
+    public LinkedList<String[]> initializeRecords()
+    {
+        LinkedList<String[]> records = new LinkedList<>();
+        for(SupplierItem supplierItem : this.items.keySet())
+            records.add(getRecordData(supplierItem));
+        return records;
+    }
+
+
+    public String[] getHeaders()
+    {
+        return new String[]{"Catalog Number", "Market Id", "Name", "Manufacturer", "Category","Number Of Units","Unit Price","Unit Weight"};
+
+    }
+
 
 
 
