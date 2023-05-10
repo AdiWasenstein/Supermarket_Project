@@ -75,7 +75,6 @@ public abstract class ADataMapper<ObjectType> {
     public Optional<ObjectType> find(String ...key){
         ObjectType identityMapObject = findInIdentityMap(key);
         if(identityMapObject != null) {
-//            closeConnection();
             return Optional.of(identityMapObject);
         }
         ResultSet matches = executeSelectQuery(findQuery(key));

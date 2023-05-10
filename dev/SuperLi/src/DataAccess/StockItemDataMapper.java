@@ -50,8 +50,10 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
         return stockItem;
     }
     public LinkedList<StockItem> findAllFromBranch(int branchId){
-        LinkedList<StockItem> stockItems = findAll();
-        stockItems.removeIf(stockItem -> stockItem.getBranchId() != branchId);
+        LinkedList<StockItem> stockItems = new LinkedList<>();
+        for (StockItem stock : findAll())
+            if (stock.getBranchId() == branchId)
+                stockItems.add(stock);
         return stockItems;
     }
     public void deleteMatchingCatalog(int catalogId){
