@@ -81,7 +81,6 @@ public abstract class ADataMapper<ObjectType> {
         Optional<ObjectType> object = Optional.empty();
         try{
             if(matches == null) {
-                closeConnection();
                 throw new SQLException("SELECT QUERY FAILED");
             }
             if(matches.next())

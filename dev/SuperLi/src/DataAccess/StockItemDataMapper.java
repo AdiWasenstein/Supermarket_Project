@@ -59,7 +59,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     public void deleteMatchingCatalog(int catalogId){
         for (StockItem stockItem : stockItemsIdentitiyMap.values())
             if (stockItem.getCatalogItem().getId() == catalogId)
-                stockItemsIdentitiyMap.remove(catalogId);
+                stockItemsIdentitiyMap.remove(stockItem.getBarcode());
     }
     private int getIdAmount(int branchId, int catalogId, boolean needsFront){
         LinkedList<StockItem> stockItems = findAllFromBranch(branchId);
