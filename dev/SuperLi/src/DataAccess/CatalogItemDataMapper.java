@@ -70,7 +70,7 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
                         discount.getValue(), discount.isPercentage() ? 1 : 0, discount.getMinCapacity(), discount.getExpirationDate().toString())) +
                 String.format("WHERE Id=%d", catalogItem.getId());
     }
-    protected String findQuery(String... key) {return String.format("SELECT * FROM CatalogItems WHERE Id=%s" ,key[0]);}
+    protected String findQuery(String...key) {return String.format("SELECT * FROM CatalogItems WHERE Id=%s" ,key[0]);}
     protected String findAllQuery(){return "SELECT * FROM CatalogItems";}
     protected CatalogItem findInIdentityMap(String ...key){return catalogItemsIdentitiyMap.get(Integer.valueOf(key[0]));}
     protected CatalogItem insertIdentityMap(ResultSet match) throws SQLException{
@@ -100,6 +100,7 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
         catalogItemsIdentitiyMap.put(catalogItem.getId(), catalogItem);
         return catalogItem;
     }
+
     public LinkedList<String> getCatalogItemCategories(int id) throws SQLException{
         ResultSet matches = executeSelectQuery(String.format("SELECT Category FROM CatalogItemsCategories WHERE CatalogItemId=%d", id));
         LinkedList<String> categories = new LinkedList<>();
@@ -121,4 +122,18 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
                 catalogItems.add(catalogItem);
         return catalogItems;
     }
+
+    public Optional<CatalogItem> findAccordingToNameManufacturerCategory(String name, String manufacturer, String category)
+    {
+        LinkedList<String> categories = new LinkedList<>();
+        categories.add(category);
+        LinkedList<CatalogItem> itemsOfCategory = this.findAllFromCategory(categories);
+        for(CatalogItem cItem : itemsOfCategory)
+        {
+            if(cItem.getName().equalsIgnoreCase(name) && cItem.getManufacturer().equalsIgnoreCase(manufacturer))
+                return Optional.of(cItem);
+        }
+        return Optional.empty();
+    }
+
 }

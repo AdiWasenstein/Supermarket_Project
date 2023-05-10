@@ -234,4 +234,13 @@ public class StockManagementFacade {
         // TO SEND TO ORDER CONTROLLER
         return true;
     }
+
+    public int catalogIdAccordingToNameManufacturerCategory(String name, String manufacturer, String category)throws Exception
+    {
+        Optional<CatalogItem> catalogItemOpt = this.catalogItemDataMapper.findAccordingToNameManufacturerCategory(name, manufacturer, category);
+        if(catalogItemOpt.isEmpty())
+            throw new Exception("No item in stock fits to given details.");
+        CatalogItem cItem = catalogItemOpt.get();
+        return cItem.getId();
+    }
 }
