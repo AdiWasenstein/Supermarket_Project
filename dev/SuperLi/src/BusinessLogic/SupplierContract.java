@@ -24,7 +24,7 @@ public class SupplierContract {
         this.supplierItems = new LinkedList<SupplierItem>();
     }
 
-    public boolean isMarketIdExists(Pair<Integer, Integer> pairMarketIdAndQuantity)
+    public boolean checkItemIDandAmount(Pair<Integer, Integer> pairMarketIdAndQuantity)
     {
         for(int i=0;i<this.supplierItems.size();i++)
         {

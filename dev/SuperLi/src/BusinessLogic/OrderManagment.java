@@ -535,6 +535,7 @@ public class OrderManagment {
             double costAfterDiscount = bestOrderDiscount.GetPriceAfterDiscount(order.getCostOfOrder());
             order.setCostOfOrder(costAfterDiscount);
         }
+
         return order;
     }
 
@@ -568,13 +569,13 @@ public class OrderManagment {
         // updates all the relevant databases with the new order
         for (Order order : orders) {
             // Changes by Yoav - Confirm
-            AdminController.getInstance().getAllOrdersInSystem().add(order);
-            AdminController.getInstance().getAllOrdersOfBranch(branchNumber).add(order);
+//            AdminController.getInstance().getAllOrdersInSystem().add(order);
+//            AdminController.getInstance().getAllOrdersOfBranch(branchNumber).add(order);
             // END
 
             // Original Code - Commented to compile
 //            SystemManagment.allOrders.add(order);
-            order.getOrderSupplier().addOrder(order);
+           // order.getOrderSupplier().addOrder(order);
 //            SystemManagment.allBranches.get(branchNumber).addOrder(order);
         }
     }
@@ -605,9 +606,6 @@ public class OrderManagment {
         }
 
         return result;
-
-
-
     }
 
 
@@ -631,17 +629,50 @@ public class OrderManagment {
 
     // TODO - ALL NEXT SIGNATURES ARE FOR PERIODIC REPORT!
 
-    // creating report- logic part
-    public boolean canCreatePeriodicReport(PeriodicReport report) //TODO parameter
-    {
 
-        return false;
+    // this method creates new periodic report and returns it
+    public PeriodicReport createPeriodicReport(int branchNumber, Supplier supp,  Day day, HashMap<Integer,Integer> items)
+    {
+        if (branchNumber <0 || supp == null || items.isEmpty())
+            return null;
+
+        HashMap<SupplierItem, Integer> itemsInReport = new HashMap<>();
+        // for each item in the list given, find the match to supplier item and insert to the hash map
+        for (Integer marketID : items.keySet())
+        {
+            itemsInReport.put(supp.findMatchToMarketItem(marketID), items.get(marketID));
+        }
+        PeriodicReport report = new PeriodicReport(branchNumber, day, supp,  itemsInReport);
+        // update supplier
+        supp.addPeriodicReport(report);
+        return report;
     }
 
-    // creating order- logic part
+
+    // this method create new order based on given periodic report
     public Order createPeriodicOrder(PeriodicReport report)
     {
-        return null;
+        // Supplier orderSupplier, LinkedList<OrderItem> orderItems, int branchNumber
+        if (report == null)
+            return null;
+        // extract the supplioer from the report
+        Supplier supp = report.getSupplier();
+        // extract items
+        HashMap<SupplierItem, Integer> items = report.getItems();
+        // extract branch number
+        int branchNumber = report.getBranchNumber();
+        // first, create list of pairs of market id and amount from each item
+        LinkedList<Pair<Integer, Integer>> itemsList = new LinkedList<Pair<Integer, Integer>>();
+
+        for (Map.Entry<SupplierItem, Integer> entry : items.entrySet()) {
+            Integer marketId = entry.getKey().GetMarketId();
+            Integer quantity = entry.getValue();
+            Pair<Integer, Integer> supAndItem = new Pair<Integer, Integer>(marketId, quantity);
+            itemsList.add(supAndItem);
+        }
+        Pair<Supplier, LinkedList<Pair<Integer, Integer>>> supAndItems = Pair.create(supp, itemsList);
+        // creating the order
+        return makeOrderForSupplier(supAndItems, branchNumber);
     }
 
 

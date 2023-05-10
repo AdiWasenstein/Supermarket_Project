@@ -4,17 +4,16 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class PeriodicReport {
+public class PeriodicReport extends AReport{
+    private static int reportCounter = 1;
     private int reportId;
     private int branchNumber;
     private Day dayToOrder;
     private Supplier supplier;
     private HashMap<SupplierItem,Integer> items;
 
-    public PeriodicReport(int reportId, int branchNumber, Day dayToOrder, Supplier supplier, HashMap<SupplierItem,Integer> items)
+    public PeriodicReport(int branchNumber, Day dayToOrder, Supplier supplier, HashMap<SupplierItem,Integer> items)
     {
-        if(reportId<=0)
-            throw new InvalidParameterException("report id must be positive number.");
         if(branchNumber<=0)
             throw new InvalidParameterException("branch number must be positive number.");
         if(dayToOrder == null)
@@ -23,7 +22,7 @@ public class PeriodicReport {
             throw new InvalidParameterException("periodic report must have a supplier.");
         if(items == null)
             throw new InvalidParameterException("periodic report must have items to order.");
-        this.reportId = reportId;
+        this.reportId = reportCounter++;
         this.branchNumber = branchNumber;
         this.dayToOrder = dayToOrder;
         this.supplier = supplier;
@@ -71,7 +70,7 @@ public class PeriodicReport {
         {
             if(item.GetMarketId() == itemCatalogNumber)
             {
-                if(newQuantity > item.getNumberOfUnits())//if requested amount is bigger than max number of units supplier can supply, update the new amount to the max amount possible.
+                if(newQuantity > item.getNumberOfUnits()) //if requested amount is bigger than max number of units supplier can supply, update the new amount to the max amount possible.
                     items.put(item,item.getNumberOfUnits());
                 else
                 {

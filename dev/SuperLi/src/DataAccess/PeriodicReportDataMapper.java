@@ -1,8 +1,10 @@
 package SuperLi.src.DataAccess;
 
+import SuperLi.src.BusinessLogic.CatalogItem;
 import SuperLi.src.BusinessLogic.PeriodicReport;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class PeriodicReportDataMapper extends ADataMapper{
@@ -16,4 +18,8 @@ public class PeriodicReportDataMapper extends ADataMapper{
             periodicReportDataMapper = new PeriodicReportDataMapper();
         return periodicReportDataMapper;
     }
+
+    // TODO implement
+    public LinkedList<PeriodicReport> findAll(){return new LinkedList<>();}
+    public LinkedList<PeriodicReport> findAllByBranch(String branchID){return new LinkedList<>();}
 }

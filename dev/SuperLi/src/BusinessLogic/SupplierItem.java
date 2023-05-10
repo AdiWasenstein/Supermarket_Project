@@ -78,7 +78,7 @@ public class SupplierItem{
     public String getCatagory() {return catagory;}
     public String toString()
     {
-        return "Catalog number: " + catalogNumber + ", Market Id: " + marketId + ", Item name: " + itemName;
+        return "Catalog number: " + catalogNumber + ", Market Id: " + marketId + ", Item name: " + itemName + ", Max amount to supply: " + numberOfUnits + " \n";
     }
 
 }

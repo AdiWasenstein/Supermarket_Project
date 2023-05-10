@@ -12,6 +12,7 @@ public abstract class Supplier {
     SupplierCard supplierCard;
     SupplierContract supplierContract;
     LinkedList<Order> orders;
+    LinkedList<PeriodicReport> supplierPeriodicReports;
 
     public abstract boolean needDelivery();
 //    public abstract Date arrivalTime(Date dateOfOrder);
@@ -19,16 +20,17 @@ public abstract class Supplier {
 
     public Supplier(LinkedList<String> supplierCatagories, LinkedList<String> supplierManufacturers, SupplierCard supplierCard, SupplierContract supplierContract) {
         if (supplierCatagories.isEmpty())
-            throw new InvalidParameterException("SuperLi.src.BusinessLogic.Supplier must supply items of at least one catagory");
+            throw new InvalidParameterException("Supplier must supply items of at least one catagory");
         if (supplierManufacturers.isEmpty())
-            throw new InvalidParameterException("SuperLi.src.BusinessLogic.Supplier must supply items of at least one manufacturer");
+            throw new InvalidParameterException("Supplier must supply items of at least one manufacturer");
         if (supplierCard == null)
-            throw new InvalidParameterException("SuperLi.src.BusinessLogic.Supplier must have supplier card");
+            throw new InvalidParameterException("Supplier must have supplier card");
         this.supplierCatagories = supplierCatagories;
         this.supplierManufacturers = supplierManufacturers;
         this.supplierCard = supplierCard;
         this.supplierContract = supplierContract;
         this.orders = new LinkedList<>();
+        this.supplierPeriodicReports = new LinkedList<>();
     }
 
     public boolean isContactExist(String phone, LinkedList<Contact> contacts)
@@ -60,6 +62,7 @@ public abstract class Supplier {
     {
         return this.supplierCard.getSupplierId();
     }
+
     public SupplierContract getSupplierContract()
     {
         return this.supplierContract;
@@ -110,7 +113,7 @@ public abstract class Supplier {
 
     public boolean canSupplyMarketItem(Pair<Integer, Integer> pairMarketIdAndQuantity)
     {
-        return this.supplierContract.isMarketIdExists(pairMarketIdAndQuantity);
+        return this.supplierContract.checkItemIDandAmount(pairMarketIdAndQuantity);
     }
 
     public int getNumberOfItemUnitsCanSupply(int marketId)
@@ -182,15 +185,26 @@ public abstract class Supplier {
             this.orders.add(order);
     }
 
+    public void addPeriodicReport (PeriodicReport report)
+    {
+        if (report != null)
+            supplierPeriodicReports.add(report);
+    }
+
+    public LinkedList<SupplierItem> getAllSuppItem()
+    {
+        return this.supplierContract.getSupplierItems();
+    }
+
     public String allDataOfSupplier()
     {
         return "SuperLi.src.BusinessLogic.Supplier Name: " + this + "\n" +  supplierCard + "\n Catagories: " + supplierCatagories + "\n Manufacturers: " + supplierManufacturers
-                +" \n Items: " + supplierContract.getSupplierItems() + "\n Supply information: " + printSupplyTimeData();
+                +" \n Items: " + getAllSuppItem() + "\n Supply information: " + printSupplyTimeData();
     }
     @Override
     public String toString()
     {
-        return this.getSupplierCard().getSupplierName()+" ";
+        return "Supplier's id: " + this.supplierCard.getSupplierId()+ " , supplier's name: " + this.getSupplierCard().getSupplierName()+" \n";
     }
     public abstract int daysTillArrives(Day dayOfOrder);
 }

@@ -5,6 +5,8 @@ import SuperLi.src.DataAccess.OrderDataMapper;
 import SuperLi.src.BusinessLogic.Pair;
 import SuperLi.src.DataAccess.PeriodicReportDataMapper;
 import SuperLi.src.DataAccess.SupplierItemDataMapper;
+import SuperLi.src.DataAccess.BranchDataMapper;
+import SuperLi.src.DataAccess.SupplierDataMapper;
 
 
 import java.security.InvalidParameterException;
@@ -18,6 +20,8 @@ public class OrderController {
     private OrderDataMapper orderDataMapper;
     private SupplierItemDataMapper supplierItemDataMapper;
     private PeriodicReportDataMapper periodicReportDataMapper;
+    private BranchDataMapper branchDataMapper;
+    private SupplierDataMapper supplierDataMapper;
 
     private OrderController()
     {
@@ -39,28 +43,41 @@ public class OrderController {
 
 
 
-    // this methood called by stock modoul and with given valid branch number and missing item report will make new order
-    // the methood will return list of order that matches the report
+    // this method called by stock modoul and with given valid branch number and missing item report will make new order
+    // the method will return list of order that matches the report
     public LinkedList<Order> createNewMissingItemsOrder() //TODO parameter report, number of branch
     {
         // calls the methood creatOrder in orderManagment
         return null;
     }
 
-    // this methood receive supplier id and list of catalog numbers and amount and create report accordingly
-    private PeriodicReport createNewPeriodicReport(int suppId, LinkedList<Pair<Integer, Integer>> items) //TODO parameter
+    // this method receive supplier id and list of catalog numbers and amount and create report accordingly
+    public boolean createNewPeriodicReport(int branchNumber, Supplier supp, Day day, HashMap<Integer,Integer> items) //TODO parameter
     {
-        return null;
+        PeriodicReport report = this.orderManagment.createPeriodicReport(branchNumber, supp, day, items);
+         // check if repord eas created successfully
+          if (report == null)
+              return false;
+          // update report data mapper
+        this.periodicReportDataMapper.insert(report);
+        // if the day the report need to be sent is the day today, make a new order
+        Order orderFromNewReport = this.orderManagment.createOrderOfNewPeriodic(report);
+//        if (orderFromNewReport != null)
+//            this.orderDataMapper.insert(orderFromNewReport);
+        if (orderFromNewReport != null)
+            addOrderToSystemData(orderFromNewReport);
+        return true;
     }
 
-    // thi methood will recieve periodic report and return order accordingly
-    public Order createNewPeriodicOrder(int suppId, LinkedList<Pair<Integer, Integer>> items) //TODO parameter
-    {
-        // need to decide if accessing data mapper and finds the object or data managment
-        // first calling the report methood
-        // than creating new order
-        return null;
-    }
+//    // this methood will recieve periodic report and return order accordingly
+//    public Order createNewPeriodicOrder(PeriodicReport report) //TODO parameter
+//    {
+//
+//        // need to decide if accessing data mapper and finds the object or data managment
+//        // first calling the report method
+//        // than creating new order
+//        return null;
+//    }
 
 
     public LinkedList<PeriodicReport> getAllPeriodicReports()
@@ -68,17 +85,16 @@ public class OrderController {
         return null;
     }
 
-    public PeriodicReport getReportById (int reportNumber)
-    {
-        // need to check that exist
-        // need to check the time
-        return null;
-    }
+//    public PeriodicReport getReportById (int reportNumber)
+//    {
+//        // need to check that exist
+//        // need to check the time
+//        return null;
+//    }
 
     //this func gets reportId and HashMap of items according to their market id, and their quantities to update.
     public boolean updateReport (int reportId, HashMap<Integer,Integer> itemsWithUpdatedQuantities)throws InvalidParameterException
     {
-        // check if there is report with that number
         if(itemsWithUpdatedQuantities.isEmpty())
             return true;
         Optional<PeriodicReport> resultReport = this.periodicReportDataMapper.find(Integer.toString(reportId));
@@ -144,6 +160,110 @@ public class OrderController {
             itemsAccordingToMarketId.add(supplierItem.GetMarketId());
         }
         return itemsAccordingToMarketId;
+    }
+
+    public LinkedList<PeriodicReport> findReportsOfBranch(int branchID)
+    {
+        if (branchID <= 0)
+            return null;
+//       Optional<Branch> branchFound = this.branchDataMapper.find(branchID.toString());
+//       // check if branch with the given id is found. If not returns null, else get it.
+//       if (branchFound.isEmpty())
+//           return null;
+
+        LinkedList<PeriodicReport> reportsFound = this.periodicReportDataMapper.findAllByBranch(Integer.toString(branchID));
+        return reportsFound;
+//        for (PeriodicReport currReport : reportsFound)
+//            System.out.println(currReport.toString());
+    }
+
+
+
+    public void makeOrdersOfToday()
+    {
+        LinkedList<PeriodicReport> allPeriodicReports = this.getAllPeriodicReports();
+        if(allPeriodicReports.isEmpty())
+            return;
+        LinkedList<Order> newPeriodicOrders = this.orderManagment.createAllPeriodicOrdersOfToday(allPeriodicReports);
+        for(int i=0;i<newPeriodicOrders.size();i++)
+        {
+            this.orderDataMapper.insert(newPeriodicOrders.get(i));
+        }
+    }
+
+    private long delayBetweenTimes()
+    {
+        // Get the current time and calculate the delay until the constant hour to make periodic orders.
+        Calendar now = Calendar.getInstance();
+        Calendar scheduledTime = Calendar.getInstance();
+        scheduledTime.set(Calendar.HOUR_OF_DAY, this.orderManagment.getHourToRunEveryDay());
+        scheduledTime.set(Calendar.MINUTE, this.orderManagment.getMinuteToRunEveryDay());
+        scheduledTime.set(Calendar.SECOND, this.orderManagment.getSecondToRunEveryDay());
+        scheduledTime.set(Calendar.MILLISECOND, this.orderManagment.getMilliSecondToRunEveryDay());
+        long delay = scheduledTime.getTimeInMillis() - now.getTimeInMillis();
+        return delay;
+    }
+    //this function runs every day at the same constant time.
+    public void runEveryDayToMakeOrders() {
+        // Create a Timer object
+        Timer timer = new Timer();
+        // Get the current time and calculate the delay until the constant hour to make periodic orders.
+        long delay = this.delayBetweenTimes();
+        if (delay < 0) {
+            // If the scheduled time has already passed today, schedule for tomorrow instead
+            delay += 24 * 60 * 60 * 1000;
+        }
+        // Schedule the task to run every day at constant hour.
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                // Call the function you want to run at the scheduled time
+                makeOrdersOfToday();
+            }
+        }, delay, 24 * 60 * 60 * 1000);
+    }
+
+    public Branch getBranchByID(int branchID)
+    {
+        Optional<Branch> res = this.branchDataMapper.find(Integer.toString(branchID));
+        if (res.isEmpty())
+            return null;
+        return res.get();
+    }
+
+    public Supplier getSuppByID(int suppID)
+    {
+        Optional<Supplier> res = this.supplierItemDataMapper.find(Integer.toString(suppID));
+        if (res.isEmpty())
+            return null;
+        return res.get();
+    }
+
+    public LinkedList<Supplier> getAllSuppliers()
+    {
+        return this.supplierDataMapper.findAll();
+    }
+
+    public LinkedList<SupplierItem> getAllItemsOfSupplier(int suppID)
+    {
+        Supplier supp = getSuppByID(suppID);
+        if (supp != null)
+            return supp.getAllSuppItem();
+        return null;
+    }
+
+    private void addOrderToSystemData(Order order)
+    {
+        if (order == null)
+            return;
+        Supplier suppOfOrder = order.getOrderSupplier();
+        Branch branchOfOrder = this.branchDataMapper.find(Integer.toString(order.branchNumber)).get();
+        // adding to the objects in cash
+        suppOfOrder.addOrder(order);
+        branchOfOrder.addOrder(order);
+        // insert to DB
+        this.orderDataMapper.insert(order);
+
     }
 
 
