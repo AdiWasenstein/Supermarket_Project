@@ -20,7 +20,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     }
     protected String insertQuery(StockItem stockItem) {
         stockItemsIdentitiyMap.put(stockItem.getBarcode(), stockItem);
-        return String.format("INSERT INTO StockItems (Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %.1f, '%s', %d, %d, %d)",
+        return String.format("INSERT INTO StockItems (Barcode, CatalogItemId, CostPrice, Expiration, DamageType, BranchId, Location) VALUES (%d, %d, %f, '%s', %d, %d, %d)",
                 stockItem.getBarcode(), stockItem.getCatalogItem().getId(), stockItem.getCostPrice(), stockItem.getExpirationString(), stockItem.getDamage().ordinal(),
                 stockItem.getBranchId(), stockItem.getLocation());
     }

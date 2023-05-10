@@ -46,12 +46,12 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
         CostumerDiscount costumerDiscount = catalogItem.getCostumerDiscount();
         String queryFields = String.format("INSERT INTO CatalogItems(Id, Name, Manufacturer, SellPrice, MinCapacity, ShelfLife, SizeAmount, MeasureUnit, ShelvesLocation, BackLocation%s)",
                 costumerDiscount == null ? "" : ", DiscountValue, DiscountPercentage, DiscountCapacity, DiscountExpiration");
-        String discountValues = costumerDiscount == null ? "" : String.format(", %.1f, %d, %d, '%s'",
+        String discountValues = costumerDiscount == null ? "" : String.format(", %f, %d, %d, '%s'",
                 costumerDiscount.getValue(),
                 costumerDiscount.isPercentage() ? 1 : 0,
                 costumerDiscount.getMinCapacity(),
                 costumerDiscount.getExpirationDate().toString());
-        return queryFields + String.format("VALUES(%d, '%s', '%s', %.1f, %d, %d, %.1f, %d, %d, %d%s)",
+        return queryFields + String.format("VALUES(%d, '%s', '%s', %f, %d, %d, %f, %d, %d, %d%s)",
                 id, name, manufacturer, sellPrice, minCapacity, shelfLife, sizeAmount, measureUnit, shelvesLocation, backLocation, discountValues);
     }
 
@@ -63,12 +63,12 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
     }
 
     protected String updateQuery(CatalogItem catalogItem) {
-        String queryFields = String.format("UPDATE CatalogItems SET SellPrice = %.1f,MinCapacity = %d", catalogItem.getSellPrice(), catalogItem.getMinCapacity());
+        String queryFields = String.format("UPDATE CatalogItems SET SellPrice = %f,MinCapacity = %d", catalogItem.getSellPrice(), catalogItem.getMinCapacity());
         CostumerDiscount discount = catalogItem.getCostumerDiscount();
         return queryFields +
-                (discount == null ? "" : String.format(", DiscountValue=%.1f, DiscountPercentage=%d, DiscountCapacity=%d, DiscountExpiration='%s'",
+                (discount == null ? "" : String.format(", DiscountValue=%f, DiscountPercentage=%d, DiscountCapacity=%d, DiscountExpiration='%s'",
                         discount.getValue(), discount.isPercentage() ? 1 : 0, discount.getMinCapacity(), discount.getExpirationDate().toString())) +
-                String.format("WHERE Id=%d", catalogItem.getId());
+                String.format(" WHERE Id=%d", catalogItem.getId());
     }
     protected String findQuery(String...key) {return String.format("SELECT * FROM CatalogItems WHERE Id=%s" ,key[0]);}
     protected String findAllQuery(){return "SELECT * FROM CatalogItems";}
