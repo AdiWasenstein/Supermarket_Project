@@ -5,7 +5,7 @@ import SuperLi.src.BusinessLogic.SupplierItem;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SupplierItemDataMapper extends ADataMapper{
+public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
     Map<Integer, SupplierItem> supplierItemIdentityMap;
     static SupplierItemDataMapper supplierItemDataMapper = null;
     private SupplierItemDataMapper()
