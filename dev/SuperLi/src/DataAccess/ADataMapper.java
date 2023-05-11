@@ -34,6 +34,7 @@ public abstract class ADataMapper<ObjectType> {
     protected abstract String updateQuery(ObjectType object);
     protected abstract String findQuery(String ...key);
     protected abstract String findAllQuery();
+    protected String findAllQueryByKey(String ...key){return "";};
     protected abstract ObjectType findInIdentityMap(String ...key);
     protected abstract ObjectType insertIdentityMap(ResultSet match) throws SQLException;
     public void insert(ObjectType object){executeVoidQuery(this::insertQuery, object);}
@@ -100,6 +101,30 @@ public abstract class ADataMapper<ObjectType> {
             return objects;
         }
         ResultSet matches = executeSelectQuery(findAllQuery());
+        if(matches == null) {
+            closeConnection();
+            return objects;
+        }
+        try{
+            while (matches.next()) {
+                ObjectType object = insertIdentityMap(matches);
+                if(object != null)
+                    objects.add(object);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        closeConnection();
+        return objects;
+    }
+    public LinkedList<ObjectType> findAllByKey(){
+        LinkedList<ObjectType> objects = new LinkedList<>();
+        openConnection();
+        if(connection == null) {
+            return objects;
+        }
+        ResultSet matches = executeSelectQuery(findAllQueryByKey());
         if(matches == null) {
             closeConnection();
             return objects;
