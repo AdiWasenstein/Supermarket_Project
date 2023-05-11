@@ -9,37 +9,51 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ContactDataMapper extends ADataMapper<Contact> {
-    private HashMap<String,Contact> contactsIdentityMap;
-    private static ContactDataMapper instance = new ContactDataMapper();
-
-    private ContactDataMapper()
+    Map<String, Contact> contactIdentityMap;
+    static ContactDataMapper contactDataMapper = null;
+    private ContactDataMapper(){
+        contactIdentityMap = new HashMap<>();
+    }
+    public static ContactDataMapper getInstance(){
+        if(contactDataMapper == null)
+            contactDataMapper = new ContactDataMapper();
+        return contactDataMapper;
+    }
+    public String insertQuery(Contact contact)
     {
-        this.contactsIdentityMap = new HashMap<>();
+        contactIdentityMap.put(contact.GetPhoneNumber(), contact);
+        return String.format("INSERT INTO Contacts(phoneNumber, name, email) VALUES ('%s', '%s', '%s')", contact.GetPhoneNumber(),
+                contact.GetName(), contact.GetEmail());
+    }
+    public String deleteQuery(Contact contact)
+    {
+        contactIdentityMap.remove(contact.GetPhoneNumber());
+        return String.format("DELETE FROM Branches WHERE phoneNumber = '%s'", contact.GetPhoneNumber());
     }
 
-    public static ContactDataMapper getInstance()
+    public String updateQuery(Contact contact)
     {
-        return instance;
+        return String.format("UPDATE Branches SET email = '%s' WHERE phoneNumber = '%s'", contact.GetEmail(), contact.GetPhoneNumber());
+    }
+    public String findQuery(String ...key){
+        return String.format("SELECT * FROM Contacts WHERE phoneNumber = '%s'", key[0]);
+    }
+    public String findAllQuery(){
+        return "SELECT * FROM Contacts";
+    }
+    public Contact findInIdentityMap(String ...key){
+        return contactIdentityMap.get((key[0]));
+    }
+    public Contact insertIdentityMap(ResultSet match) throws SQLException {
+        if (match == null)
+            return null;
+        Contact contact = contactIdentityMap.get(match.getString("phoneNumber"));
+        if(contact != null)
+            return contact;
+        contact = new Contact(match.getString("name"), match.getString("phoneNumber"), match.getString("email"));
+        contactIdentityMap.put(contact.GetPhoneNumber(), contact);
+        return contact;
     }
 
-    public Optional<Contact> find(String phoneNumber)
-    {
-        return null;//REMOVE
-    }
-    public LinkedList<Contact> findAll(String phoneNumber)//NOT SURE WE NEED THIS HERE
-    {
-        return null;//REMOVE
-    }
-    public void insert(Contact con)
-    {
 
-    }
-    public void update(Contact con)
-    {
-
-    }
-    public void delete(Contact con)
-    {
-
-    }
 }

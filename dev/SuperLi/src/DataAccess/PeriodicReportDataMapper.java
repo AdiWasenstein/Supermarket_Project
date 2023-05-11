@@ -1,10 +1,13 @@
 package SuperLi.src.DataAccess;
 
+
 import SuperLi.src.BusinessLogic.CatalogItem;
 import SuperLi.src.BusinessLogic.PeriodicReport;
 import SuperLi.src.BusinessLogic.Supplier;
 import SuperLi.src.BusinessLogic.SupplierItem;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;

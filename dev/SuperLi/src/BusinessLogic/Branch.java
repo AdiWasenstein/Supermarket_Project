@@ -12,6 +12,7 @@ public class Branch {
     LinkedList<Order> branchOrders;
 
     StockItemDataMapper stockItemDataMapper;
+
     public Branch(String address, int id){
         this.address = address;
         this.id = id;
