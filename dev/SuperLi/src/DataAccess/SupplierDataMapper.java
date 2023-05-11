@@ -1,34 +1,80 @@
 package SuperLi.src.DataAccess;
 
 import SuperLi.src.BusinessLogic.Supplier;
+import SuperLi.src.BusinessLogic.SupplierItem;
+import SuperLi.src.BusinessLogic.SupplierContract;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 
 public class SupplierDataMapper extends ADataMapper<Supplier> {
 
-    private HashMap<Integer, Supplier> suppliersIdentityMap;
-    private static SupplierDataMapper instance = new SupplierDataMapper();
-
+    Map<Integer, Supplier> supplierIdentityMap;
+    static SupplierDataMapper supplierDataMapper = null;
     private SupplierDataMapper()
     {
-        this.suppliersIdentityMap = new HashMap<>();
+        supplierIdentityMap = new HashMap<>();
     }
-
     public static SupplierDataMapper getInstance()
     {
-        return instance;
+        if(supplierDataMapper == null)
+            supplierDataMapper = new SupplierDataMapper();
+        return supplierDataMapper;
     }
 
-    public Optional<Supplier> find(String param)//get from db the first record that fits the parameters given
+    //THE NEXT FUNCTIONS TAKE CARE OF SUPPLIER ITEMS
+
+    //insert new Supplier Item
+    public void insertSupplierItem(SupplierItem supplierItem, int supplierId)
     {
-        return null;
+        SupplierItemDataMapper.getInstance().insert(supplierItem,supplierId);
     }
-    public LinkedList<Supplier> findAll(String param){//get from db all records that fit the parameters given
-        return null;
+
+    //this func is called by stock. whenever a catalog item is deleted, all fitting supplier items have to be deleted too.
+    public void deleteMatchingCatalog(int catalogId)
+    {
+        HashMap<Integer,SupplierItem> supplierItemsFitToCatalogItem = SupplierItemDataMapper.getInstance().findAllFitToCatalogItemInIdMap(catalogId);
+        // need to remove from supp item map
+        for(Integer supplierId : supplierItemsFitToCatalogItem.keySet())
+        {
+            SupplierItem sItem = supplierItemsFitToCatalogItem.get(supplierId);
+            this.deleteAccordingToSupplierItem(supplierId, sItem);
+        }
+        //remove supplier items
+        SupplierItemDataMapper.getInstance().removeSupplierItemsFitToCatalogItemInIdMap(supplierItemsFitToCatalogItem);
     }
-    public void insert(Supplier sup){}
-    public void update(Supplier sup){}
-    public void delete(Supplier sup){}
+
+    //I STOPPED HERE
+    private void deleteAccordingToSupplierItem(int supplierId, SupplierItem sItem)
+    {
+        Supplier sup = this.supplierIdentityMap.get(supplierId);
+        if(sup == null)
+            return;//TO DO
+        //remove supplierItem from supplier
+        SupplierContract contract = sup.getSupplierContract();
+        try
+        {
+            contract.removeItem(sItem.getCatalogNumber());
+        }
+        catch (Exception e)
+        {
+
+        }
+        //remove item units discounts that are related to supplier item
+        DiscountDataMapper.getInstance().removeFromIdentityMap(supplierId,sItem.getCatalogNumber());
+        //remove supplier item from periodic reports that contain it.
+        PeriodicReportDataMapper.getInstance().removeSupplierItemFromPeriodicReports(sItem,supplierId);
+    }
+    public void deleteSupplierItem(SupplierItem sItem, int supplierId)
+    {
+        SupplierItemDataMapper.getInstance().delete(sItem, supplierId);
+
+    }
+
+
+
+
+
 }

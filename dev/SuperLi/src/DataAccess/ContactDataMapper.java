@@ -1,8 +1,11 @@
 package SuperLi.src.DataAccess;
 import SuperLi.src.BusinessLogic.Contact;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 
 public class ContactDataMapper extends ADataMapper<Contact> {

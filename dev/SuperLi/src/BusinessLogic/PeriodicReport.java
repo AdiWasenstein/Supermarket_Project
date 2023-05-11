@@ -126,6 +126,16 @@ public class PeriodicReport extends AReport{
 
     }
 
+    public void removeItem(SupplierItem sItem)throws Exception
+    {
+        if(this.items.containsKey(sItem))
+        {
+            this.items.remove(sItem);
+        }
+        else
+            throw new Exception("supplier item doesn't exist in report.");
+    }
+
 
 
 

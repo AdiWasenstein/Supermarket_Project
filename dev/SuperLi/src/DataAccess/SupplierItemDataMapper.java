@@ -9,9 +9,43 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 
 public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
-    Map<Integer, SupplierItem> supplierItemIdentityMap;
+    private static class MyKey {
+        private int supplierId;
+        private int catalogNumber;
+
+        public MyKey(int supplierId, int catalogNumber) {
+            this.supplierId = supplierId;
+            this.catalogNumber = catalogNumber;
+        }
+
+        public int getSupplierId() {
+            return this.supplierId;
+        }
+
+        public int getCatalogNumber() {
+            return this.catalogNumber;
+        }
+
+
+        // Implement the equals() and hashCode() methods
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof MyKey)) return false;
+            MyKey myKey = (MyKey) o;
+            return supplierId == myKey.supplierId &&
+                    catalogNumber == myKey.catalogNumber;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(supplierId, catalogNumber);
+        }
+    }
+    Map<MyKey, SupplierItem> supplierItemIdentityMap;//key: supplierId + catalog number, value: supplierItem
     static SupplierItemDataMapper supplierItemDataMapper = null;
     private SupplierItemDataMapper()
     {
@@ -22,13 +56,6 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         if(supplierItemDataMapper == null)
             supplierItemDataMapper = new SupplierItemDataMapper();
         return supplierItemDataMapper;
-    }
-
-
-
-    public LinkedList<Supplier> findAll()
-    {
-        return new LinkedList<>();
     }
 
     //PASTING FROM STOCK
@@ -43,7 +70,7 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
     }
 
     protected String insertQuery(SupplierItem supplierItem, int supplierId) {
-        this.supplierItemIdentityMap.put(supplierItem.getCatalogNumber(), supplierItem);
+        this.supplierItemIdentityMap.put(new MyKey(supplierId,supplierItem.getCatalogNumber()), supplierItem);
         int catalogNum = supplierItem.getCatalogNumber();
         String itemName = supplierItem.getItemName();
         String manufacturer = supplierItem.getManufacturer();
@@ -57,17 +84,43 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         return queryFields;
     }
 
-    public void deleteMatchingCatalog(int catalogId)
+
+    //this func returns all supplier items *in identity map* that fit to catalog item it's id is given.
+    public HashMap<Integer,SupplierItem> findAllFitToCatalogItemInIdMap(int catalogId)
     {
-        for (SupplierItem supplierItem : supplierItemIdentityMap.values())
-            if (supplierItem.GetMarketId()== catalogId)
-                supplierItemIdentityMap.remove(supplierItem.getCatalogNumber());
+        HashMap<Integer,SupplierItem> resultList = new HashMap<>();
+        for(MyKey key : this.supplierItemIdentityMap.keySet())
+        {
+            SupplierItem currentSupplierItem = supplierItemIdentityMap.get(key);
+            if(currentSupplierItem.GetMarketId() == catalogId)
+                resultList.put(key.getSupplierId(),currentSupplierItem);
+        }
+        return resultList;
     }
-    protected String deleteQuery(SupplierItem supplierItem) {
+
+    //this func deletes all supplier items *in identity map* (that fit to catalog item it's id is given.).
+    public void removeSupplierItemsFitToCatalogItemInIdMap(HashMap<Integer,SupplierItem> itemsToRemove)
+    {
+        for(Integer supplierId : itemsToRemove.keySet())
+        {
+            SupplierItem sItem = itemsToRemove.get(supplierId);
+            MyKey temp = new MyKey(supplierId,sItem.getCatalogNumber());
+            this.supplierItemIdentityMap.remove(temp);
+        }
+    }
+
+
+    protected String deleteQuery(SupplierItem supplierItem, int supplierId)
+    {
         int catalogNumber = supplierItem.getCatalogNumber();
-        StockItemDataMapper.getInstance().deleteMatchingCatalog(id);
-        catalogItemsIdentitiyMap.remove(id);
-        return String.format("DELETE FROM CatalogItems WHERE Id = %d", id);
+        MyKey temp = new MyKey(supplierId,catalogNumber);
+        this.supplierItemIdentityMap.remove(temp);
+        return String.format("DELETE FROM SuppliersItems WHERE supplierId = %d AND catalogNumber = %d", supplierId, catalogNumber);
+    }
+
+    public void delete(SupplierItem sItem, int supplierId)
+    {
+        executeVoidQuery(deleteQuery(sItem,supplierId));
     }
 
     protected String updateQuery(CatalogItem catalogItem) {
@@ -122,4 +175,6 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
                 catalogItems.add(catalogItem);
         return catalogItems;
     }
+
+
 }

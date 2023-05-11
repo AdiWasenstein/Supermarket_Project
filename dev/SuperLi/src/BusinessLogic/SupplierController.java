@@ -17,7 +17,6 @@ public class SupplierController {
     {
 
         this.supplierDataMapper = SupplierDataMapper.getInstance();
-        this.supplierItemDataMapper = SupplierItemDataMapper.getInstance();
     }
 
     public static SupplierController getInstance()
@@ -129,7 +128,7 @@ public class SupplierController {
             throw new Exception(message);
         }
         contract.addItem(sItem);
-        this.supplierItemDataMapper.insert(sItem,sup.getSupplierId());
+        this.supplierDataMapper.insertSupplierItem(sItem,sup.getSupplierId());
     }
 
     //this func adds new itemUnitsDiscount to suppliers discount document, or throws Exception if impossible.

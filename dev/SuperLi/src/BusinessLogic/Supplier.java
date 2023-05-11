@@ -12,7 +12,6 @@ public abstract class Supplier {
     SupplierCard supplierCard;
     SupplierContract supplierContract;
     LinkedList<Order> orders;
-    LinkedList<PeriodicReport> supplierPeriodicReports;
 
     public abstract boolean needDelivery();
 //    public abstract Date arrivalTime(Date dateOfOrder);
@@ -30,7 +29,6 @@ public abstract class Supplier {
         this.supplierCard = supplierCard;
         this.supplierContract = supplierContract;
         this.orders = new LinkedList<>();
-        this.supplierPeriodicReports = new LinkedList<>();
     }
 
     public boolean isContactExist(String phone, LinkedList<Contact> contacts)
@@ -185,11 +183,6 @@ public abstract class Supplier {
             this.orders.add(order);
     }
 
-    public void addPeriodicReport (PeriodicReport report)
-    {
-        if (report != null)
-            supplierPeriodicReports.add(report);
-    }
 
     public LinkedList<SupplierItem> getAllSuppItem()
     {
@@ -206,5 +199,7 @@ public abstract class Supplier {
     {
         return "Supplier's id: " + this.supplierCard.getSupplierId()+ " , supplier's name: " + this.getSupplierCard().getSupplierName()+" \n";
     }
+
+
     public abstract int daysTillArrives(Day dayOfOrder);
 }
