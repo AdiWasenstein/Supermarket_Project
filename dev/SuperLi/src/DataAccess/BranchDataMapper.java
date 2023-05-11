@@ -19,8 +19,7 @@ public class BranchDataMapper extends ADataMapper<Branch> {
         return String.format("INSERT INTO Branches(Id, Address) VALUES (%d, '%s')", branch.getId(), branch.getAddress());
     }
     public String deleteQuery(Branch branch){
-        branchIdentityMap.remove(branch.getId());
-        return String.format("DELETE FROM Branches WHERE Id = %d", branch.getId());
+        return null;
     }
     public String updateQuery(Branch branch){return String.format("UPDATE Branches SET Address = '%s' WHERE Id = %d", branch.getAddress(), branch.getId());}
 	public String findQuery(String ...key){
