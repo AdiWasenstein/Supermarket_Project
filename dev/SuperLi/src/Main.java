@@ -1,24 +1,25 @@
 package SuperLi.src;
-import SuperLi.src.Presentation.MainMenu;
-
-//import SuperLi.src.BusinessLogic.*;
+//import SuperLi.src.BusinessLogic.CatalogItem;
+//import SuperLi.src.BusinessLogic.StockItem;
 //import SuperLi.src.DataAccess.CatalogItemDataMapper;
 //import SuperLi.src.DataAccess.StockItemDataMapper;
+import SuperLi.src.Presentation.MainMenu;
 //import SuperLi.src.Presentation.UserMenu;
-//import java.time.LocalDate;
 //import java.util.LinkedList;
-
+//import SuperLi.src.BusinessLogic.*;
+//import java.time.LocalDate;
+//
 public class Main {
 //    static int counter = 1;
 //     static Category milk1000 = new Category(convert(new String[]{"Dairy Products", "Milk"}), new Size(1000, MeasureUnit.ML));
-//    static Category milk1500 = new Category(convert(new String[]{"Dairy", "Milk"}), new Size(1500, MeasureUnit.ML));
-//    static Category cottage250 = new Category(convert(new String[]{"Dairy", "Cheese"}), new Size(250, MeasureUnit.GM));
-//    static Category gouda100 = new Category(convert(new String[]{"Dairy", "Cheese"}), new Size(100, MeasureUnit.GM));
-//    static Category pudding250 = new Category(convert(new String[]{"Dairy", "Puddings"}), new Size(250, MeasureUnit.GM));
+//    static Category milk1500 = new Category(convert(new String[]{"Dairy Products", "Milk"}), new Size(1500, MeasureUnit.ML));
+//    static Category cottage250 = new Category(convert(new String[]{"Dairy Products", "Cheese"}), new Size(250, MeasureUnit.GM));
+//    static Category gouda100 = new Category(convert(new String[]{"Dairy Products", "Cheese"}), new Size(100, MeasureUnit.GM));
+//    static Category pudding250 = new Category(convert(new String[]{"Dairy Products", "Puddings"}), new Size(250, MeasureUnit.GM));
 //    static Category shampoo750 = new Category(convert(new String[]{"Toiletries", "Shampoo"}), new Size(750, MeasureUnit.ML));
 //    static  Category hand_soap500 = new Category(convert(new String[]{"Toiletries", "Hand Soap"}), new Size(500, MeasureUnit.ML));
-//    static  Category pan50 = new Category(convert(new String[]{"Kitchen", "Kitchen Tools"}), new Size(50, MeasureUnit.CM));
-//    static  Category fork100 = new Category(convert(new String[]{"Kitchen", "Cutlery"}), new Size(100, MeasureUnit.UNIT));
+//    static  Category pan50 = new Category(convert(new String[]{"Kitchenware", "Kitchen Tools"}), new Size(50, MeasureUnit.CM));
+//    static  Category fork100 = new Category(convert(new String[]{"Kitchenware", "Cutlery"}), new Size(100, MeasureUnit.UNIT));
 //    static   Category cap100 = new Category(convert(new String[]{"Kitchenware", "Caps"}), new Size(100, MeasureUnit.UNIT));
 //    static Category plate50 = new Category(convert(new String[]{"Kitchenware", "Plates"}), new Size(50, MeasureUnit.UNIT));
 //    static Category rice1000 = new Category(convert(new String[]{"Legumes", "Rice"}), new Size(1000, MeasureUnit.GM));
@@ -29,20 +30,20 @@ public class Main {
 //    static  Category red_wine750 = new Category(convert(new String[]{"Beverage", "Alcohol"}), new Size(750, MeasureUnit.ML));
 //    static  Category soft_drink1500 = new Category(convert(new String[]{"Beverage", "Soft Drinks"}), new Size(1500, MeasureUnit.ML));
 //    static Category cake_mold21 = new Category(convert(new String[]{"Baking", "Disposable"}), new Size(21, MeasureUnit.CM));
-
+//
     public static void main(String[] args) {
-//        OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main so it will run every day automatically.
+////        OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main so it will run every day automatically.
         MainMenu.getInstance().communicate();
 //        UserMenu us = new UserMenu();
-//        if (us.initialize_data() == 1) {
+////        if (us.initialize_data() == 1) {
 //        initialize_Catalog(us);
 //            for (int i = 0; i < 15; i++)
 //                initialize_Items(us, i);
 //            initialize_discount(us);
-//        }
-//        us.communicate();// Labohen
+////        }
+////        us.communicate();// Labohen
     }
-
+//
 //    public static void initialize_Catalog(UserMenu us){
 //    CatalogItemDataMapper catalogItemDataMapper = CatalogItemDataMapper.getInstance();
 //    LinkedList<CatalogItem> all = new LinkedList<>();
