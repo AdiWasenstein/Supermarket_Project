@@ -72,7 +72,7 @@ public class CatalogItemDataMapper extends ADataMapper<CatalogItem> {
     }
     protected String findQuery(String...key) {return String.format("SELECT * FROM CatalogItems WHERE Id=%s" ,key[0]);}
     protected String findAllQuery(){return "SELECT * FROM CatalogItems";}
-    protected CatalogItem findInIdentityMap(String ...key){return catalogItemsIdentitiyMap.get(Integer.valueOf(key[0]));}
+    public CatalogItem findInIdentityMap(String ...key){return catalogItemsIdentitiyMap.get(Integer.valueOf(key[0]));}
     protected CatalogItem insertIdentityMap(ResultSet match) throws SQLException{
         if(match == null)
             return null;

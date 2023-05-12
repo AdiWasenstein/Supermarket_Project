@@ -32,7 +32,7 @@ public class StockItemDataMapper extends ADataMapper<StockItem> {
     }
     protected String findQuery(String...key) {return String.format("SELECT * FROM StockItems WHERE Barcode = %s",key[0]);}
     protected String findAllQuery() {return "SELECT * FROM StockItems";}
-    protected StockItem findInIdentityMap(String ...key) {return stockItemsIdentitiyMap.get(Integer.parseInt(key[0]));}
+    public StockItem findInIdentityMap(String... key) {return stockItemsIdentitiyMap.get(Integer.parseInt(key[0]));}
     protected StockItem insertIdentityMap(ResultSet match) throws SQLException{
         if (match == null)
             return null;
