@@ -19,10 +19,42 @@ public class SupplierMenu extends AMenu {
         return instance;
     }
     public void printMenu(){
-        // TODO
+        System.out.println("What would you like to do?");
+        System.out.println("1.Add new contact.");
+        System.out.println("2.Remove contact.");
+        System.out.println("3.Add new category.");
+        System.out.println("4.Add new manufacturer.");
+        System.out.println("5.Show order history.");
+        System.out.println("6.Update details.");
+        System.out.println("7.Add new item to contract.");
+        System.out.println("8.Remove item from contract.");
+        System.out.println("9.Add new discount.");
+        System.out.println("10.Remove discount.");
+        System.out.println("11.Update item's details.");
+        System.out.println("12.Return to main menu.");
     }
     public void communicate() {
-        // TODO
+        boolean run = true;
+        while (run) {
+            printMenu();
+            int option = inputNumber();
+            switch (option) {
+                case 1 -> addNewContact();
+                case 2 -> removeContact();
+                case 3 -> addCategory();
+                case 4 -> addManufacturer();
+                case 5 -> showOrderHistory();
+                case 6 -> UpdateSupplierDetails();
+                case 7 -> addItem();
+                case 8 -> removeItem();
+                case 9 -> addDiscount();
+                case 10 -> removeDiscount();
+                case 11 -> UpdateItemDetails();
+                case 12 -> run = false;
+                default -> System.out.println("Invalid option");
+            }
+        }
+        System.out.println("Thank you for using supplier menu, we hope to see you soon.");
     }
     public void addNewContact()
     {
@@ -97,7 +129,7 @@ public class SupplierMenu extends AMenu {
        Supplier supplier = findSupplierUser(scan);
        if (supplier == null)
            return;
-       LinkedList<String> addedCategories = AdminMenu.getInstance().getSupplierCategory();//NEED TO CHANGE!
+       LinkedList<String> addedCategories = AdminMenu.getInstance().getSupplierCategory();
        if (addedCategories.isEmpty())
            System.out.println("No catagories added.");
        else
@@ -398,11 +430,11 @@ public class SupplierMenu extends AMenu {
                 return size;
             } catch (InputMismatchException e) {
                 scan.nextLine();
-                System.out.println("SuperLi.src.BusinessLogic.Discount size must be a number");
+                System.out.println("Discount size must be a number");
             }
             catch(InvalidParameterException e)
             {
-                System.out.println("SuperLi.src.BusinessLogic.Discount size must be a positive number");
+                System.out.println("Discount size must be a positive number");
             }
         }
     }
@@ -432,8 +464,8 @@ public class SupplierMenu extends AMenu {
     private int getOrderDiscountKind(Scanner scan)//V
     {
         System.out.println("Choose the discount kind:");
-        System.out.println("1 - Order Units SuperLi.src.BusinessLogic.Discount - according to total number of units in order.");
-        System.out.println("2 - Order Cost SuperLi.src.BusinessLogic.Discount - according to total cost of order.");
+        System.out.println("1 - Order Units Discount - according to total number of units in order.");
+        System.out.println("2 - Order Cost Discount - according to total cost of order.");
         int discountKind = 0;
         while (true)
         {
@@ -465,9 +497,9 @@ public class SupplierMenu extends AMenu {
             int discountKind = getOrderDiscountKind(scan);
             String discKind;
             if (discountKind == 1)
-                discKind = "SuperLi.src.BusinessLogic.OrderUnitsDiscount";
+                discKind = "OrderUnitsDiscount";
             else
-                discKind = "SuperLi.src.BusinessLogic.OrderCostDiscount";
+                discKind = "OrderCostDiscount";
             String discountType = getDiscountType(scan);
             double discountSize = getDiscountSize(scan);
             double numberOfUnits = getValue(scan);
@@ -851,83 +883,83 @@ public class SupplierMenu extends AMenu {
                     break;
             }
         }
-    public void supplierMenu()
-    {
-        Scanner scan = new Scanner(System.in);
-        int choise;
-        boolean flag = true;
-        while (flag)
-        {
-            System.out.println("What would you like to do?");
-            System.out.println("1.Add new contact.");
-            System.out.println("2.Remove contact.");
-            System.out.println("3.Add new category.");
-            System.out.println("4.Add new manufacturer.");
-            System.out.println("5.Show order history.");
-            System.out.println("6.Update details.");
-            System.out.println("7.Add new item to contract.");
-            System.out.println("8.Remove item from contract.");
-            System.out.println("9.Add new discount.");
-            System.out.println("10.Remove discount.");
-            System.out.println("11.Update item's details.");
-            System.out.println("12.Return to main menu.");
-            try
-            {
-                choise = scan.nextInt();
-                scan.nextLine();
-                while (choise < 1 || choise > 12)
-                {
-                    System.out.println("Please enter a number between 1-12.");
-                    choise = scan.nextInt();
-                    scan.nextLine();
-                }
-            }
-            catch(InputMismatchException e)
-            {
-                scan.nextLine();
-                System.out.println("You must enter a number between 1-12, please try again.");
-                continue;
-            }
-            switch (choise)
-            {
-                case 1:
-                    addNewContact();
-                    break;
-                case 2:
-                    removeContact();
-                    break;
-                case 3:
-                    addCategory();
-                    break;
-                case 4:
-                    addManufacturer();
-                    break;
-                case 5:
-                    showOrderHistory();
-                    break;
-                case 6:
-                    UpdateSupplierDetails();
-                    break;
-                case 7:
-                    addItem();
-                    break;
-                case 8:
-                    removeItem();
-                    break;
-                case 9:
-                    addDiscount();
-                    break;
-                case 10:
-                    removeDiscount();
-                    break;
-                case 11:
-                    UpdateItemDetails();
-                    break;
-                case 12:
-                    System.out.println("Thank you for using supplier menu, we hope to see you soon.");
-                    flag = false;
-                    break;
-            }
-        }
-    }
+//    public void supplierMenu()
+//    {
+//        Scanner scan = new Scanner(System.in);
+//        int choise;
+//        boolean flag = true;
+//        while (flag)
+//        {
+//            System.out.println("What would you like to do?");
+//            System.out.println("1.Add new contact.");
+//            System.out.println("2.Remove contact.");
+//            System.out.println("3.Add new category.");
+//            System.out.println("4.Add new manufacturer.");
+//            System.out.println("5.Show order history.");
+//            System.out.println("6.Update details.");
+//            System.out.println("7.Add new item to contract.");
+//            System.out.println("8.Remove item from contract.");
+//            System.out.println("9.Add new discount.");
+//            System.out.println("10.Remove discount.");
+//            System.out.println("11.Update item's details.");
+//            System.out.println("12.Return to main menu.");
+//            try
+//            {
+//                choise = scan.nextInt();
+//                scan.nextLine();
+//                while (choise < 1 || choise > 12)
+//                {
+//                    System.out.println("Please enter a number between 1-12.");
+//                    choise = scan.nextInt();
+//                    scan.nextLine();
+//                }
+//            }
+//            catch(InputMismatchException e)
+//            {
+//                scan.nextLine();
+//                System.out.println("You must enter a number between 1-12, please try again.");
+//                continue;
+//            }
+//            switch (choise)
+//            {
+//                case 1:
+//                    addNewContact();
+//                    break;
+//                case 2:
+//                    removeContact();
+//                    break;
+//                case 3:
+//                    addCategory();
+//                    break;
+//                case 4:
+//                    addManufacturer();
+//                    break;
+//                case 5:
+//                    showOrderHistory();
+//                    break;
+//                case 6:
+//                    UpdateSupplierDetails();
+//                    break;
+//                case 7:
+//                    addItem();
+//                    break;
+//                case 8:
+//                    removeItem();
+//                    break;
+//                case 9:
+//                    addDiscount();
+//                    break;
+//                case 10:
+//                    removeDiscount();
+//                    break;
+//                case 11:
+//                    UpdateItemDetails();
+//                    break;
+//                case 12:
+//                    System.out.println("Thank you for using supplier menu, we hope to see you soon.");
+//                    flag = false;
+//                    break;
+//            }
+//        }
+//    }
 }

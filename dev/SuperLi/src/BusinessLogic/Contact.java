@@ -61,7 +61,7 @@ public class Contact {
 
     public String toString()
     {
-        return "SuperLi.src.BusinessLogic.Contact name: " + name + ", Phone: " + phoneNumber + ", Email: " + email;
+        return "Contact name: " + name + ", Phone: " + phoneNumber + ", Email: " + email;
     }
 
 }

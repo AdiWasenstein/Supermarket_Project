@@ -77,8 +77,8 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         double unitWeight = supplierItem.getUnitWeight();
         int numOfUnits = supplierItem.getNumberOfUnits();
         int marketId = supplierItem.GetMarketId();
-        String queryFields = String.format("INSERT INTO SuppliersItems(catalogNumber,itemName, manufacturer, catagory, unitPrice, unitWeight, numberOfUnits, marketId, supplierId)" +
-                "VALUES (%d,%s,%s,%s,%f,%f,%d,%d,%d)",catalogNum,itemName,manufacturer,category,unitPrice,unitWeight,numOfUnits,marketId,supplierId);
+        String queryFields = String.format("INSERT INTO `SuppliersItems`(catalogNumber,itemName, manufacturer, catagory, unitPrice, unitWeight, numberOfUnits, marketId, supplierId)" +
+                "VALUES (%d,'%s','%s','%s',%f,%f,%d,%d,%d)",catalogNum,itemName,manufacturer,category,unitPrice,unitWeight,numOfUnits,marketId,supplierId);
         return queryFields;
     }
 
@@ -117,7 +117,7 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         int catalogNumber = supplierItem.getCatalogNumber();
         MyKey temp = new MyKey(supplierId,catalogNumber);
         this.supplierItemIdentityMap.remove(temp);
-        return String.format("DELETE FROM SuppliersItems WHERE supplierId = %d AND catalogNumber = %d", supplierId, catalogNumber);
+        return String.format("DELETE FROM `SuppliersItems` WHERE supplierId = %d AND catalogNumber = %d", supplierId, catalogNumber);
     }
 
     public void delete(SupplierItem sItem, int supplierId)
@@ -131,11 +131,11 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
     }
 
     protected String updateQuery(SupplierItem sItem, int supplierId) {
-        String queryFields = String.format("UPDATE SuppliersItems SET catalogNumber = %d , itemName = %s, manufacturer = %s," +
-                "catagory = %s, unitPrice = %f, unitWeight = %f, numberOfUnits = %d, marketId = %d, supplierId = %d " +
-                "WHERE supplierId = %d AND catalogNumber = %d", sItem.getCatalogNumber(),sItem.getItemName(),
+        String queryFields = String.format("UPDATE `SuppliersItems` SET itemName = '%s', manufacturer = '%s'," +
+                "catagory = '%s', unitPrice = %f, unitWeight = %f, numberOfUnits = %d, marketId = %d " +
+                "WHERE supplierId = %d AND catalogNumber = %d",sItem.getItemName(),
                 sItem.getManufacturer(),sItem.getCatagory(),sItem.getUnitPrice(),sItem.getUnitWeight(),sItem.getNumberOfUnits(),
-                sItem.GetMarketId(),supplierId,supplierId,sItem.getCatalogNumber());
+                sItem.GetMarketId(),supplierId,sItem.getCatalogNumber());
         return queryFields;
     }
 
@@ -146,10 +146,10 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
 
     protected String findQuery(String ... key)
     {
-        return String.format("SELECT * FROM SuppliersItems WHERE catalogNumber = %s AND supplierId = %s" ,key[1],key[0]);
+        return String.format("SELECT * FROM `SuppliersItems` WHERE catalogNumber = '%s' AND supplierId = '%s'" ,key[1],key[0]);
     }
 
-    protected String findAllQuery(){return "SELECT * FROM SuppliersItems";}
+    protected String findAllQuery(){return "SELECT * FROM `SuppliersItems`";}
     protected SupplierItem findInIdentityMap(String ...key)
     {
         return this.supplierItemIdentityMap.get(new MyKey(Integer.valueOf(key[0]),Integer.valueOf(key[1])));}
@@ -176,7 +176,7 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
     //find all suppliers items of given supplier
     protected String findAllQueryByKey(String ... key)
     {
-        return String.format("SELECT * FROM SuppliersItems WHERE supplierId = %s", key[0]);
+        return String.format("SELECT * FROM `SuppliersItems` WHERE supplierId = '%s'", key[0]);
     }
 
 

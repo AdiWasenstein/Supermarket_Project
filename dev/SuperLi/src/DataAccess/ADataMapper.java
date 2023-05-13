@@ -11,7 +11,8 @@ public abstract class ADataMapper<ObjectType> {
     public void openConnection(){
         if(connection != null)
             return;
-        try{
+        try
+        {
             connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
         }
         catch (SQLException e){
@@ -49,6 +50,12 @@ public abstract class ADataMapper<ObjectType> {
         try{
             stmt = connection.createStatement();
             stmt.execute("PRAGMA foreign_keys = ON;");
+//            System.out.println(stmt.execute("PRAGMA lock_status;"));
+//            ResultSet rs = stmt.executeQuery("PRAGMA locking_mode;");
+//            if (rs.next()) {
+//                String lockingMode = rs.getString(1);
+//                System.out.println(lockingMode);
+//            }
             stmt.executeUpdate(query);
         }
         catch (SQLException e){
@@ -95,6 +102,7 @@ public abstract class ADataMapper<ObjectType> {
         catch (SQLException e){
             System.out.println(this.getClass().toString() + e.getMessage());
         }
+//        closeConnection();
         return result;
     }
 

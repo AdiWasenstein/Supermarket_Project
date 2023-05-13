@@ -96,6 +96,8 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
     private DiscountDataMapper()
     {
         itemUnitsDiscountIdentityMap = new HashMap<>();
+        orderUnitsDiscountIdentityMap = new HashMap<>();
+        orderCostDiscountIdentityMap = new HashMap<>();
     }
     public static DiscountDataMapper getInstance()
     {
@@ -121,7 +123,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
 //        if(connection == null) {
 //            return itemUnitsDiscounts;
 //        }
-        String query = String.format("SELECT * FROM ItemUnitsDiscounts WHERE supplierId=%s", key[0]);
+        String query = String.format("SELECT * FROM ItemUnitsDiscounts WHERE supplierId='%s'", key[0]);
         ResultSet matches = executeSelectQuery(query);
         if (matches == null)
         {
@@ -163,7 +165,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
 //        if(connection == null) {
 //            return itemUnitsDiscounts;
 //        }
-        String query1 = String.format("SELECT * FROM OrderCostDiscounts WHERE supplierId=%s", key[0]);
+        String query1 = String.format("SELECT * FROM OrderCostDiscounts WHERE supplierId='%s'", key[0]);
         ResultSet matches = executeSelectQuery(query1);
         if (matches != null) {
             try {
@@ -181,7 +183,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
         }
         closeConnection();
         //orderUnitsDiscounts
-        String query2 = String.format("SELECT * FROM OrderUnitsDiscounts WHERE supplierId=%s", key[0]);
+        String query2 = String.format("SELECT * FROM OrderUnitsDiscounts WHERE supplierId='%s'", key[0]);
         ResultSet matches2 = executeSelectQuery(query2);
         if (matches2 != null) {
             try {
@@ -262,7 +264,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
     {
         this.itemUnitsDiscountIdentityMap.put(new MyKey(supplierId,catalogNumber,discount.getNumberOfUnitsOfItem()),discount);
         String queryFields = String.format("INSERT INTO ItemUnitsDiscounts(discountSize,discountType, numberOfUnitsOfItem, supplierId, supplierCatalogNumber)" +
-                "VALUES (%f,%s,%d,%d,%d)",discount.getDiscountSize(),discount.getDiscountType().toString(),discount.getNumberOfUnitsOfItem(),supplierId,catalogNumber);
+                "VALUES (%f,'%s',%d,%d,%d)",discount.getDiscountSize(),discount.getDiscountType().toString(),discount.getNumberOfUnitsOfItem(),supplierId,catalogNumber);
         executeVoidQuery(queryFields);
     }
 
@@ -276,15 +278,15 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
     public void insertOrderUnitsDiscount(OrderUnitsDiscount discount, int supplierId)
     {
         this.orderUnitsDiscountIdentityMap.put(new DoubleKey(supplierId,discount.getNumberOfUnitsInOrder()),discount);
-        String queryFields = String.format("INSERT INTO OrderUnitsDiscounts(discountSize,discountType, numberOfUnitsOfItem, supplierId)" +
-                "VALUES (%f,%s,%d,%d)",discount.getDiscountSize(),discount.getDiscountType().toString(),discount.getNumberOfUnitsInOrder(),supplierId);
+        String queryFields = String.format("INSERT INTO OrderUnitsDiscounts(discountSize,discountType, numberOfUnitsInOrder, supplierId)" +
+                "VALUES (%f,'%s',%d,%d)",discount.getDiscountSize(),discount.getDiscountType().toString(),discount.getNumberOfUnitsInOrder(),supplierId);
         executeVoidQuery(queryFields);
     }
 
     public void deleteOrderUnitsDiscount(OrderUnitsDiscount discount, int supplierId)
     {
         this.orderUnitsDiscountIdentityMap.remove(new DoubleKey(supplierId,discount.getNumberOfUnitsInOrder()));
-        String query = String.format("DELETE FROM OrderUnitsDiscounts WHERE supplierId = %d AND numberOfUnitsOfItem = %d", supplierId,discount.getNumberOfUnitsInOrder());
+        String query = String.format("DELETE FROM OrderUnitsDiscounts WHERE supplierId = %d AND numberOfUnitsInOrder = %d", supplierId,discount.getNumberOfUnitsInOrder());
         executeVoidQuery(query);
     }
 
@@ -292,7 +294,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
     {
         this.orderCostDiscountIdentityMap.put(new DoubleKey(supplierId,discount.getCost()),discount);
         String queryFields = String.format("INSERT INTO OrderCostDiscounts(discountSize,discountType, cost, supplierId)" +
-                "VALUES (%f,%s,%f,%d)",discount.getDiscountSize(),discount.getDiscountType().toString(),discount.getCost(),supplierId);
+                "VALUES (%f,'%s',%f,%d)",discount.getDiscountSize(),discount.getDiscountType().toString(),discount.getCost(),supplierId);
         executeVoidQuery(queryFields);
     }
 

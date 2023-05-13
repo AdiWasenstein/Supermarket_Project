@@ -37,14 +37,21 @@ public class SupplierCardDataMapper extends ADataMapper<SupplierCard>
     {
         for(Contact contact : card.getContacts())
         {
-            String query = String.format("SELECT * FROM SuppliersANDContacts WHERE supplierId=%d" +
-                            "AND phoneNumber=%s", card.getSupplierId(), contact.GetPhoneNumber());
-            ResultSet matches = executeSelectQuery(query);
-            if (matches == null)//need to add to SuppliersANDContacts table the contact
+            String query = String.format("SELECT * FROM `SuppliersANDContacts` WHERE supplierId=%d" +
+                            " AND phoneNumber='%s'", card.getSupplierId(), contact.GetPhoneNumber());
+            ResultSet results = executeSelectQuery(query);
+            try {
+                if (!results.next())//need to add to SuppliersANDContacts table the contact
+                {
+                    closeConnection();
+                    String queryFields = String.format("INSERT INTO `SuppliersANDContacts`(supplierId, phoneNumber)" +
+                            " VALUES (%d, '%s')", card.getSupplierId(), contact.GetPhoneNumber());
+                    executeVoidQuery(queryFields);
+                }
+            }
+            catch (SQLException e)
             {
-                String queryFields = String.format("INSERT INTO SuppliersANDContacts(supplierId, phoneNumber)" +
-                        " VALUES (%d, %s)", card.getSupplierId(),contact.GetPhoneNumber());
-                executeVoidQuery(queryFields);
+                System.out.println(e.getMessage());
             }
             closeConnection();
         }

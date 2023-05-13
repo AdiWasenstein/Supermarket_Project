@@ -2,6 +2,7 @@ package SuperLi.src.DataAccess;
 
 import SuperLi.src.BusinessLogic.*;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -26,6 +27,10 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
 
     //THE NEXT FUNCTIONS TAKE CARE OF SUPPLIER
 
+    protected String insertQuery(Supplier object)
+    {
+        return "";
+    }
     private void insertDeliverERegular(Supplier supplier) {
         SupplierDeliversERegular sup = (SupplierDeliversERegular) supplier;
         String queryFields = String.format("INSERT INTO SuppliersDeliverERegular(supplierId, numberOfDays) VALUES (%d,%d)", sup.getSupplierId(), sup.getNumberOfDaysToDeliver());
@@ -35,42 +40,57 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private void insertDeliverRegular(Supplier supplier) {
         SupplierDeliversRegular sup = (SupplierDeliversRegular) supplier;
         for (Day day : sup.getDeliveryDays()) {
-            String queryFields = String.format("INSERT INTO SuppliersDeliverRegular(supplierId, day) VALUES (%d,%s)", sup.getSupplierId(), day.toString());
+            String queryFields = String.format("INSERT INTO SuppliersDeliverRegular(supplierId, day) VALUES (%d,'%s')", sup.getSupplierId(), day.toString());
             executeVoidQuery(queryFields);
         }
     }
 
     private void insertManufacturers(Supplier supplier) {
         for (String manufacturer : supplier.getSupplierManufacturers()) {
-            String query = String.format("SELECT * FROM SuppliersANDManufacturers WHERE supplierId=%d" +
-                    "AND manufacturer=%s", supplier.getSupplierId(), manufacturer);
+            String query = String.format("SELECT * FROM `SuppliersANDManufacturers` WHERE supplierId=%d" +
+                    " AND manufacturer='%s'", supplier.getSupplierId(), manufacturer);
             ResultSet matches = executeSelectQuery(query);
-            if (matches == null)//need to add to SuppliersANDManufacturers table the manufacturer
-            {
-                String queryFields = String.format("INSERT INTO SuppliersANDManufacturers(supplierId, manufacturer) VALUES (%d,%s)", supplier.getSupplierId(), manufacturer);
-                executeVoidQuery(queryFields);
-            }
             closeConnection();
+            try
+            {
+                if (!matches.next())//need to add to SuppliersANDManufacturers table the manufacturer
+                {
+                    String queryFields = String.format("INSERT INTO `SuppliersANDManufacturers`(supplierId, manufacturer) VALUES (%d,'%s')", supplier.getSupplierId(), manufacturer);
+                    executeVoidQuery(queryFields);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     private void insertCategories(Supplier supplier) {
         for (String category : supplier.getSupplierCatagories()) {
-            String query = String.format("SELECT * FROM SuppliersANDCategories WHERE supplierId=%d" +
-                    "AND category=%s", supplier.getSupplierId(), category);
+            String query = String.format("SELECT * FROM `SuppliersANDCategories` WHERE supplierId=%d" +
+                    " AND category='%s'", supplier.getSupplierId(), category);
             ResultSet matches = executeSelectQuery(query);
-            if (matches == null)//need to add to SuppliersANDCategories table the manufacturer
-            {
-                String queryFields = String.format("INSERT INTO SuppliersANDCategories(supplierId, category) VALUES (%d,%s)", supplier.getSupplierId(), category);
-                executeVoidQuery(queryFields);
-            }
             closeConnection();
+            try {
+                if (!matches.next())//need to add to SuppliersANDCategories table the manufacturer
+                {
+                    String queryFields = String.format("INSERT INTO `SuppliersANDCategories`(supplierId, category) VALUES (%d,'%s')", supplier.getSupplierId(), category);
+                    executeVoidQuery(queryFields);
+                }
+            }
+            catch (SQLException e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     //inserting new Supplier
-    protected String insertQuery(Supplier supplier) {
+    public void insert(Supplier supplier) {
         this.supplierIdentityMap.put(supplier.getSupplierId(), supplier);
+        String queryFields = String.format("INSERT INTO Suppliers(supplierId) VALUES (%d)", supplier.getSupplierId());
+        executeVoidQuery(queryFields);
         //check the type of supplier:
         if (supplier instanceof SupplierDeliversERegular) {
             this.insertDeliverERegular(supplier);
@@ -85,15 +105,12 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         //insert supplier card
         SupplierCardDataMapper.getInstance().insert(supplier.getSupplierCard());
         //and finally - insert to Suppliers Table
-        String queryFields = String.format("INSERT INTO Suppliers(supplierId) VALUES (%d)", supplier.getSupplierId());
-        return queryFields;
     }
 
     //we don't allow supplier deletion in our system
     protected String deleteQuery(Supplier supplier) {
         return "";
     }
-
     protected String updateQuery(Supplier supplier) {
         //update supplier card
         SupplierCardDataMapper.getInstance().update(supplier.getSupplierCard());
@@ -112,7 +129,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private LinkedList<String> findSupplierCategories(String...key)
     {
         LinkedList<String> categories = new LinkedList<>();
-        String query = String.format("SELECT category FROM SuppliersANDCategories WHERE supplierId=%d",Integer.valueOf(key[0]));
+        String query = String.format("SELECT category FROM `SuppliersANDCategories` WHERE supplierId=%d",Integer.valueOf(key[0]));
         ResultSet matches = executeSelectQuery(query);
         if(matches == null)
         {
@@ -136,7 +153,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private LinkedList<String> findSupplierManufacturers(String...key)
     {
         LinkedList<String> manufacturers = new LinkedList<>();
-        String query = String.format("SELECT manufacturer FROM SuppliersANDManufacturers WHERE supplierId=%d",Integer.valueOf(key[0]));
+        String query = String.format("SELECT manufacturer FROM `SuppliersANDManufacturers` WHERE supplierId=%d",Integer.valueOf(key[0]));
         ResultSet matches = executeSelectQuery(query);
         if(matches == null)
         {
@@ -160,19 +177,26 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private Optional<SupplierDeliversRegular> createSupplierDeliversRegular(int supplierId, SupplierCard card,LinkedList<String> categories,LinkedList<String> manufacturers)
     {
         String query = String.format("SELECT * FROM SuppliersDeliverRegular WHERE supplierId=%d", supplierId);
-        ResultSet matches = executeSelectQuery(query);
-        if (matches == null)//the supplierId doesn't represent a SupplierDeliversRegular
-        {
-            closeConnection();
-            return Optional.empty();
-        }
+        ResultSet results = executeSelectQuery(query);
+            if (results == null)//the supplierId doesn't represent a SupplierDeliversRegular
+            {
+                closeConnection();
+                return Optional.empty();
+            }
         LinkedList<String> daysStr = new LinkedList<>();
         try
         {
-            while (matches.next())
+            boolean flag = false;
+            while (results.next())
             {
-                String day = matches.getString("day");
+                flag = true;
+                String day = results.getString("day");
                 daysStr.add(day);
+            }
+            if(!flag)
+            {
+                closeConnection();
+                return Optional.empty();
             }
         }
         catch (SQLException e)
@@ -186,8 +210,9 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         LinkedList<Day> days = new LinkedList<>();
         for(String s_day : daysStr)
         {
-            if (s_day.equalsIgnoreCase("sunday"))
+            if (s_day.equalsIgnoreCase("sunday")) {
                 days.add(Day.sunday);
+            }
             else if (s_day.equalsIgnoreCase("monday"))
                 days.add(Day.monday);
             else if (s_day.equalsIgnoreCase("tuesday"))
@@ -208,8 +233,8 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private Optional<SupplierDeliversERegular> createSupplierDeliversERegular(int supplierId, SupplierCard card,LinkedList<String> categories,LinkedList<String> manufacturers)
     {
         String query = String.format("SELECT * FROM SuppliersDeliverERegular WHERE supplierId=%d", supplierId);
-        ResultSet matches = executeSelectQuery(query);
-        if (matches == null)//the supplierId doesn't represent a SupplierDeliversERegular
+        ResultSet results = executeSelectQuery(query);
+        if (results == null)//the supplierId doesn't represent a SupplierDeliversERegular
         {
             closeConnection();
             return Optional.empty();
@@ -217,9 +242,9 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         int numberOfDays = 0;
         try
         {
-            if(matches.next())
+            if(results.next())
             {
-                numberOfDays = matches.getInt("numberOfDays");
+                numberOfDays = results.getInt("numberOfDays");
             }
         }
         catch (SQLException e)
@@ -246,10 +271,16 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private Optional<Supplier> createSupplier(String...key)
     {
         String query = String.format("SELECT * FROM Suppliers WHERE supplierId=%d",Integer.valueOf(key[0]));
-        ResultSet matches = executeSelectQuery(query);
-        if (matches == null)//a supplier with given id wasn't found
+        ResultSet results = executeSelectQuery(query);
+        try {
+            if (!results.next())//a supplier with given id wasn't found
+            {
+                closeConnection();
+                return Optional.empty();
+            }
+        }
+        catch (SQLException e)
         {
-            closeConnection();
             return Optional.empty();
         }
         closeConnection();
@@ -280,7 +311,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         return Optional.of(sup);
     }
 
-    public Optional<Supplier> find(String ...key)
+    public Optional<Supplier> find(String...key)
     {
         Supplier identityMapObject = findInIdentityMap(key);
         //if fitting supplier found in identity map
@@ -323,20 +354,27 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
 
 
     public LinkedList<Supplier> findAll(){
+        LinkedList<Integer> idSuppliers = new LinkedList<>();
         LinkedList<Supplier> objects = new LinkedList<>();
         openConnection();
         if(connection == null) {
             return objects;
         }
-        ResultSet matches = executeSelectQuery(findAllQuery());
-        if(matches == null) {
+        ResultSet result = executeSelectQuery(findAllQuery());
+        if(result == null)
+        {
             closeConnection();
             return objects;
         }
         try{
-            while (matches.next()) {
-                int supplierId = matches.getInt("supplierId");
-                Optional<Supplier> object = find(Integer.toString(supplierId));
+            while (result.next())
+            {
+                int supplierId = result.getInt("supplierId");
+                idSuppliers.add(supplierId);
+            }
+            for(Integer id : idSuppliers)
+            {
+                Optional<Supplier> object = find(Integer.toString(id));
                 if(!object.isEmpty())
                     objects.add(object.get());
             }
@@ -405,15 +443,21 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
 
     public void deleteContact(Supplier sup, Contact con)
     {
-        String deleteQuery = String.format("DELETE FROM SuppliersANDContacts WHERE supplierId=%d AND phoneNumber = %s", sup.getSupplierId(),con.GetPhoneNumber());
+        String deleteQuery = String.format("DELETE FROM `SuppliersANDContacts` WHERE supplierId=%d AND phoneNumber = '%s'", sup.getSupplierId(),con.GetPhoneNumber());
         executeVoidQuery(deleteQuery);
         //check if the contact worked only for this specific supplier:
-        String selectQuery = String.format("SELECT * FROM SuppliersANDContacts WHERE phoneNumber = %s",con.GetPhoneNumber());
+        String selectQuery = String.format("SELECT * FROM `SuppliersANDContacts` WHERE phoneNumber = '%s'",con.GetPhoneNumber());
         ResultSet matches = executeSelectQuery(selectQuery);
-        if (matches == null)//the contact worked only for this specific supplier
+        try {
+            if (!matches.next())//the contact worked only for this specific supplier
+            {
+                closeConnection();
+                ContactDataMapper.getInstance().delete(con);
+            }
+        }
+        catch (SQLException e)
         {
-            closeConnection();
-            ContactDataMapper.getInstance().delete(con);
+            System.out.println(e.getMessage());
         }
         closeConnection();
     }

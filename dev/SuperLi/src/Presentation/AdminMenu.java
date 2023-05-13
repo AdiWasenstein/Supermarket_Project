@@ -175,7 +175,7 @@ public class AdminMenu extends AMenu {
             try {
                 System.out.println("Enter category");
                 String category = input.nextLine();
-                if (!(category.matches("[a-zA-Z]+")))
+                if ((category.matches("[0-9]+")))
                     throw new InvalidParameterException("category is not valid");
                 if (categories.contains(category))
                     throw new InvalidParameterException("impossible to add the same category twice.");
@@ -350,7 +350,7 @@ public class AdminMenu extends AMenu {
         String contactName = getSupplierContactName();
         String contactPhone = getSupplierContactPhone();
         String contactEmail = getSupplierContactEmail();
-        LinkedList<String> categories = getCatalogItemCategories();
+        LinkedList<String> categories = getSupplierCategory();
         LinkedList<String> manufacturers = getSupplierManufacturers();
         LinkedList<Day> days = null;
         int numDaysToDeliver = -1;

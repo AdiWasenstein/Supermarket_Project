@@ -10,7 +10,7 @@ public class SupplierDeliversRegular extends SupplierDelivers {
                                    SupplierCard supplierCard, SupplierContract supplierContract, LinkedList<Day> deliveryDays) {
         super(supplierCatagories, supplierManufacturers, supplierCard, supplierContract);
         if (deliveryDays.isEmpty())
-            throw new InvalidParameterException("SuperLi.src.BusinessLogic.Supplier must supply items in at least one day");
+            throw new InvalidParameterException("Supplier must supply items in at least one day");
         this.deliveryDays = deliveryDays;
     }
 
