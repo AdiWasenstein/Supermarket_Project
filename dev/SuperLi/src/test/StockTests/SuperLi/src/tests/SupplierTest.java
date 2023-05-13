@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public class SupplierTest {
     private SupplierNotDelivers supp;
     @BeforeEach
-    void beforeEach(){
+    void setUp(){
         LinkedList<String> categories = new LinkedList<>();
         categories.add("Dairy Products");
         categories.add("Milk");
@@ -23,13 +23,13 @@ public class SupplierTest {
                 50, "Dairy Products", 1);
 
         LinkedList<String > suppCatagories = new LinkedList<>();
-        suppCatagories.add("Dairy Products");
+        suppCatagories.add("Dairy");
 
         LinkedList<String> suppManufact = new LinkedList<>();
         suppManufact.add("Tnuva");
 
         SupplierCard suppCard = new SupplierCard("adi", "add", 1, "123", PaymentsWays.direct, "tiltan", "0526207807", "tiltan@gmmail.com");
-        supp = new SuperLi.src.BusinessLogic.SupplierNotDelivers(suppCatagories, suppCatagories, suppCard,null);
+        supp = new SupplierNotDelivers(suppCatagories, suppManufact, suppCard,null);
         SupplierContract contract = new SuperLi.src.BusinessLogic.SupplierContract(SuperLi.src.BusinessLogic.PaymentsWays.direct, supp);
         supp.setSupplierContract(contract);
         supp.addItem(supplierItem);
@@ -37,12 +37,69 @@ public class SupplierTest {
     }
 
     @AfterEach
-    void afterEach()
+    void tearDown()
     {
         supp = null;
     }
 
 
+
+    @Test
+    void addTests()
+    {
+        supp.addNewContact("dan", "0524560846", "dans@gmail.com");
+        Assertions.assertTrue(supp.isContactExist("0526207807", supp.getContacts()));
+        Assertions.assertTrue(supp.isContactExist("0524560846", supp.getContacts()));
+
+        supp.AddNewCategory("Soap");
+        LinkedList<String> catList = new LinkedList<>();
+        catList.add("Dairy");
+        catList.add("Soap");
+        Assertions.assertArrayEquals(supp.getSupplierCatagories().toArray(), catList.toArray());
+
+        supp.AddNewManufacturer("Lalin");
+        LinkedList<String> manList = new LinkedList<>();
+        manList.add("Tnuva");
+        manList.add("Lalin");
+        Assertions.assertArrayEquals(supp.getSupplierManufacturers().toArray(), manList.toArray());
+    }
+
+    @Test
+    void canSupplyMarketItem()
+    {
+        Assertions.assertTrue(supp.canSupplyMarketItem(new Pair<>(1, 10)));
+        Assertions.assertFalse(supp.canSupplyMarketItem(new Pair<>(1, 60)));
+        Assertions.assertFalse(supp.canSupplyMarketItem(new Pair<>(2, 1)));
+    }
+
+    @Test
+    void setTests()
+    {
+        PaymentsWays paymentsWays = PaymentsWays.plus30;
+        supp.setPayment(paymentsWays);
+        Assertions.assertEquals(paymentsWays.ordinal(), supp.getPaymentWay().ordinal());
+
+        supp.setBankAccount("1234");
+        Assertions.assertEquals("1234", supp.getBankAccount());
+
+        supp.setAddress("Givaa st.");
+        Assertions.assertEquals("Givaa st.", supp.getAddress());
+
+    }
+
+    @Test
+    void toStringTest()
+    {
+        String suppString = "Supplier's id: 1 , supplier's name: adi \n";
+        Assertions.assertEquals(supp.toString(), suppString);
+
+    }
+
+    @Test
+    void daysTillArrives()
+    {
+        Assertions.assertEquals(0, supp.daysTillArrives(Day.friday));
+    }
 
 
 

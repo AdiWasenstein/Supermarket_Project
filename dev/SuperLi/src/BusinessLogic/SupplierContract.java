@@ -28,7 +28,7 @@ public class SupplierContract {
     {
         for(int i=0;i<this.supplierItems.size();i++)
         {
-            if(this.supplierItems.get(i).GetMarketId() == pairMarketIdAndQuantity.getLeft() && this.supplierItems.get(i).getNumberOfUnits() == pairMarketIdAndQuantity.getRight())
+            if(this.supplierItems.get(i).GetMarketId() == pairMarketIdAndQuantity.getLeft() && this.supplierItems.get(i).getNumberOfUnits() >= pairMarketIdAndQuantity.getRight())
                 return true;
         }
         return false;

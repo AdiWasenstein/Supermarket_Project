@@ -119,6 +119,20 @@ public abstract class Supplier {
         return this.supplierContract.numberOfUnitsCanSupply(marketId);
     }
 
+    public PaymentsWays getPaymentWay()
+    {
+        return this.supplierCard.payment;
+    }
+
+    public String getBankAccount()
+    {
+        return this.supplierCard.bankAccount;
+    }
+
+    public String getAddress()
+    {
+        return this.supplierCard.supplierAddress;
+    }
     public void setPayment(PaymentsWays newPayment)
     {
         if (newPayment == null)
