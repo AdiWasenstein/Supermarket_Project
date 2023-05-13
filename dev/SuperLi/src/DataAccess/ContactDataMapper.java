@@ -28,7 +28,7 @@ public class ContactDataMapper extends ADataMapper<Contact> {
     public String deleteQuery(Contact contact)
     {
         contactIdentityMap.remove(contact.GetPhoneNumber());
-        return String.format("DELETE FROM Branches WHERE phoneNumber = '%s'", contact.GetPhoneNumber());
+        return String.format("DELETE FROM Contacts WHERE phoneNumber = '%s'", contact.GetPhoneNumber());
     }
 
     public String updateQuery(Contact contact)

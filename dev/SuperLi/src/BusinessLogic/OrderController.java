@@ -93,7 +93,7 @@ public class OrderController {
 //    }
 
     //this func gets reportId and HashMap of items according to their market id, and their quantities to update.
-    public boolean updateReport (int reportId, HashMap<Integer,Integer> itemsWithUpdatedQuantities)throws InvalidParameterException
+    public boolean updateReport (int reportId, HashMap<Integer,Integer> itemsWithUpdatedQuantities)
     {
         if(itemsWithUpdatedQuantities.isEmpty())
             return true;
@@ -101,11 +101,15 @@ public class OrderController {
         if(resultReport.isEmpty())//report with given report id wasn't found.
             return false;
         PeriodicReport report = resultReport.get();
+        HashMap<SupplierItem,Integer> itemsToUpdate = new HashMap<>();
         for(Integer marketId : itemsWithUpdatedQuantities.keySet())
         {
-            report.setQuantityOfItem(marketId,itemsWithUpdatedQuantities.get(marketId));
+            Pair temp = report.setQuantityOfItem(marketId,itemsWithUpdatedQuantities.get(marketId));
+            if(temp==null)
+                continue;
+            itemsToUpdate.put((SupplierItem)temp.getLeft(),(Integer)temp.getRight());
         }
-        this.periodicReportDataMapper.update(report);
+        this.periodicReportDataMapper.updateQueryForItems(itemsToUpdate, reportId);
         return true;
     }
 

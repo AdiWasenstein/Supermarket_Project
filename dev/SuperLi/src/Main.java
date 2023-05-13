@@ -6,7 +6,7 @@ package SuperLi.src;
 import SuperLi.src.Presentation.MainMenu;
 //import SuperLi.src.Presentation.UserMenu;
 //import java.util.LinkedList;
-//import SuperLi.src.BusinessLogic.*;
+import SuperLi.src.BusinessLogic.*;
 //import java.time.LocalDate;
 //
 public class Main {
@@ -32,7 +32,7 @@ public class Main {
 //    static Category cake_mold21 = new Category(convert(new String[]{"Baking", "Disposable"}), new Size(21, MeasureUnit.CM));
 //
     public static void main(String[] args) {
-////        OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main so it will run every day automatically.
+        OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main so it will run every day automatically.
         MainMenu.getInstance().communicate();
 //        UserMenu us = new UserMenu();
 ////        if (us.initialize_data() == 1) {

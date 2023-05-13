@@ -40,7 +40,8 @@ public abstract class ADataMapper<ObjectType> {
     public void insert(ObjectType object){executeVoidQuery(this::insertQuery, object);}
     public void update(ObjectType object){executeVoidQuery(this::updateQuery, object);}
     public void delete(ObjectType object){executeVoidQuery(this::deleteQuery, object);}
-    public void executeVoidQuery(String query){
+    public void executeVoidQuery(String query)
+    {
         openConnection();
         if(connection == null)
             return;
@@ -74,7 +75,8 @@ public abstract class ADataMapper<ObjectType> {
 	}
     public Optional<ObjectType> find(String ...key){
         ObjectType identityMapObject = findInIdentityMap(key);
-        if(identityMapObject != null) {
+        if(identityMapObject != null)
+        {
             return Optional.of(identityMapObject);
         }
         ResultSet matches = executeSelectQuery(findQuery(key));
@@ -118,7 +120,7 @@ public abstract class ADataMapper<ObjectType> {
         closeConnection();
         return objects;
     }
-    public LinkedList<ObjectType> findAllByKey(){
+    public LinkedList<ObjectType> findAllByKey(String ... key){
         LinkedList<ObjectType> objects = new LinkedList<>();
         openConnection();
         if(connection == null) {

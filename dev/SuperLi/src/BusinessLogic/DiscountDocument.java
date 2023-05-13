@@ -29,21 +29,31 @@ public class DiscountDocument {
         return this.itemsDiscounts;
     }
 
-    //this method returns false if it's impossible to add discount for item. else, adds it and returns true.
-    public boolean addItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)
+    public void setItemsDiscounts(Map<Integer,LinkedList<ItemDiscount>> itemsDiscounts)
+    {
+        this.itemsDiscounts = itemsDiscounts;
+    }
+
+    public void setOrderDiscounts(LinkedList<OrderDiscount> orderDiscounts)
+    {
+        this.orderDiscounts = orderDiscounts;
+    }
+
+    //this method returns null if it's impossible to add discount for item. else, adds it and returns it.
+    public ItemDiscount addItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)
     {
         //creating new item discount
         ItemDiscountFactory itemFactoy = new ItemDiscountFactory();
         ItemDiscount newItem = itemFactoy.createItemDiscount(discountKind,discountType,discountSize,value);
         if(newItem==null)//meaning couldn't create new SuperLi.src.BusinessLogic.ItemDiscount object for some reason
-            return false;
+            return null;
         //checking if there are no discounts for this item yet
         if(!(this.itemsDiscounts.containsKey(catalogNumber)))
         {
             LinkedList<ItemDiscount> tempList = new LinkedList<ItemDiscount>();
             tempList.add(newItem);
             this.itemsDiscounts.put(catalogNumber,tempList);
-            return true;
+            return newItem;
         }
         //if there are already discounts for this item, check if we don't already have the given discount
         LinkedList<ItemDiscount> discountsOfItem = this.itemsDiscounts.get(catalogNumber);
@@ -51,16 +61,16 @@ public class DiscountDocument {
         {
             if(discountsOfItem.get(i).hasSameCondition(newItem))
             {
-                return false;//item already has the given discount
+                return null;//item already has the given discount
             }
         }
         //adding the new discount
         discountsOfItem.add(newItem);
-        return true;
+        return newItem;
     }
 
-    //this method throws exception if it's impossible to remove discount for item. else, removes it.
-    public void removeItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)throws Exception
+    //this method throws exception if it's impossible to remove discount for item. else, removes it and returns the deleted discount.
+    public ItemDiscount removeItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)throws Exception
     {
         //checking if there are no discounts for this item yet
         if(!(this.itemsDiscounts.containsKey(catalogNumber)))
@@ -70,7 +80,7 @@ public class DiscountDocument {
         //else, we need to check if item has this discount
         ItemDiscountFactory itemFactoy = new ItemDiscountFactory();
         ItemDiscount tempDiscount = itemFactoy.createItemDiscount(discountKind,discountType,discountSize,value);
-        if(tempDiscount==null)//meaning couldn't create new SuperLi.src.BusinessLogic.ItemDiscount object for some reason
+        if(tempDiscount==null)//meaning couldn't create new ItemDiscount object for some reason
             throw new Exception("discount details are incorrect, item discount was not removed.");
         LinkedList<ItemDiscount> discountsOfItem = this.itemsDiscounts.get(catalogNumber);
         int index = -1;
@@ -86,35 +96,36 @@ public class DiscountDocument {
         {
             throw new Exception("given discount doesn't exist for this item.");
         }
-        discountsOfItem.remove(index);
+        ItemDiscount removedDiscount = discountsOfItem.remove(index);
         if(discountsOfItem.isEmpty())
         {
             this.itemsDiscounts.remove(catalogNumber);
         }
+        return removedDiscount;
     }
 
-    //this method returns false if it's impossible to add order discount. else, adds it and returns true.
-    public boolean addOrderDiscount(String discountKind, String discountType, double discountSize, double value)
+    //this method returns null if it's impossible to add order discount. else, adds it and returns it.
+    public OrderDiscount addOrderDiscount(String discountKind, String discountType, double discountSize, double value)
     {
         OrderDiscountFactory orderFactory = new OrderDiscountFactory();
         OrderDiscount newItem = orderFactory.createOrderDiscount(discountKind,discountType,discountSize,value);
         if(newItem==null)//meaning couldn't create new SuperLi.src.BusinessLogic.OrderDiscount object for some reason
-            return false;
+            return null;
         //check if we don't already have the given discount
         for(int i=0;i<this.orderDiscounts.size();i++)
         {
             if(this.orderDiscounts.get(i).hasSameCondition(newItem))
             {
-                return false;//already has the given discount
+                return null;//already has the given discount
             }
         }
         //adding the new discount
         this.orderDiscounts.add(newItem);
-        return true;
+        return newItem;
     }
 
-    //this method throws exception if it's impossible to remove order discount. else, removes it.
-    public void removeOrderDiscount(String discountKind, String discountType, double discountSize, double value)throws Exception
+    //this method throws exception if it's impossible to remove order discount. else, removes it and returns deleted discount.
+    public OrderDiscount removeOrderDiscount(String discountKind, String discountType, double discountSize, double value)throws Exception
     {
         OrderDiscountFactory orderFactory = new OrderDiscountFactory();
         OrderDiscount tempDiscount = orderFactory.createOrderDiscount(discountKind,discountType,discountSize,value);
@@ -134,7 +145,8 @@ public class DiscountDocument {
         {
             throw new Exception("given order discount doesn't exist for this item.");
         }
-        this.orderDiscounts.remove(index);
+        OrderDiscount removedDiscount = this.orderDiscounts.remove(index);
+        return removedDiscount;
     }
 
 

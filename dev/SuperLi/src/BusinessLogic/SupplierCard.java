@@ -11,7 +11,8 @@ public class SupplierCard {
     PaymentsWays payment;
     LinkedList<Contact> contacts;
 
-    public SupplierCard(String supplierName, String supplierAddress, int supplierId, String bankAccount, PaymentsWays payment, String nameCon, String phoneCon, String emailCon) {
+    public SupplierCard(String supplierName, String supplierAddress, int supplierId, String bankAccount, PaymentsWays payment, String nameCon, String phoneCon, String emailCon) throws InvalidParameterException
+    {
         if (!(bankAccount.matches("[0-9]+")))
             throw new InvalidParameterException("Bank account number is not valid");
         if (!(supplierName.matches("[a-zA-Z]+")))
@@ -28,6 +29,24 @@ public class SupplierCard {
         Contact newCon = new Contact(nameCon,phoneCon,emailCon);
         this.contacts = new LinkedList<>();
         this.contacts.add(newCon);
+    }
+
+    public SupplierCard(String supplierName, String supplierAddress, int supplierId, String bankAccount, PaymentsWays payment, LinkedList<Contact> contacts) throws InvalidParameterException
+    {
+        if (!(bankAccount.matches("[0-9]+")))
+            throw new InvalidParameterException("Bank account number is not valid");
+        if (!(supplierName.matches("[a-zA-Z]+")))
+            throw new InvalidParameterException("Name is not valid");
+        if (supplierId < 0 )
+            throw new InvalidParameterException("Id is not valid");
+        if (supplierAddress.equals(""))
+            throw new InvalidParameterException("Address is not valid");
+        this.supplierName = supplierName;
+        this.supplierAddress = supplierAddress;
+        this.supplierId = supplierId;
+        this.bankAccount = bankAccount;
+        this.payment = payment;
+        this.contacts = contacts;
     }
 
     public String getSupplierName() {
@@ -99,6 +118,14 @@ public class SupplierCard {
             }
         }
         return -1;
+    }
+
+    public Contact getContact(String phoneNumber)
+    {
+        int index = this.indexOfContactIfExists(phoneNumber);
+        if(index == -1)
+            return null;
+        return contacts.get(index);
     }
 
     public void removeContact(String phoneNumber)throws Exception

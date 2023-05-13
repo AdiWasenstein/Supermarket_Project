@@ -364,11 +364,12 @@ public class AdminMenu extends AMenu {
                 numDaysToDeliver = getNumberOfDaysToDeliver();
             }
         }
-        try {
-            SupplierCard supCard;
-            // Commented line to compile
-//            adminController.addNewSupplier(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail, categories, manufacturers, supCard, days, numDaysToDeliver);
-        } catch (InvalidParameterException e) {
+        try
+        {
+            adminController.addNewSupplier(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail, categories, manufacturers, days, numDaysToDeliver);
+        }
+        catch (InvalidParameterException e)
+        {
             System.out.println(e.getMessage());
             System.out.println("Details are incorrect, no supplier was added. please try again next time.");
         }

@@ -60,28 +60,30 @@ public class PeriodicReport extends AReport{
         }
         return supplierItems;
     }
-    //this func updates the quantity of an item.
-    public void setQuantityOfItem(int itemCatalogNumber, int newQuantity)throws InvalidParameterException
+    //this func updates the quantity of an item. returns the supplier item and the quantity that was updated.
+    public Pair<SupplierItem,Integer> setQuantityOfItem(int itemCatalogNumber, int newQuantity)
     {
-        if(newQuantity <= 0)
-            throw new InvalidParameterException("quantity of item must be a positive number.");
-        boolean itemFound = false;
         for(SupplierItem item : items.keySet())
         {
             if(item.GetMarketId() == itemCatalogNumber)
             {
-                if(newQuantity > item.getNumberOfUnits()) //if requested amount is bigger than max number of units supplier can supply, update the new amount to the max amount possible.
-                    items.put(item,item.getNumberOfUnits());
+                if(newQuantity <= 0)//can't update new quantity
+                {
+                    return new Pair(item,this.items.get(item));//return previous quantity.
+                }
+                else if(newQuantity > item.getNumberOfUnits()) //if requested amount is bigger than max number of units supplier can supply, update the new amount to the max amount possible.
+                {
+                    items.put(item, item.getNumberOfUnits());
+                    return new Pair(item,item.getNumberOfUnits());
+                }
                 else
                 {
                     items.put(item, newQuantity);
+                    return new Pair(item,newQuantity);
                 }
-                itemFound = true;
-                break;
             }
         }
-        if(!itemFound)
-            throw new InvalidParameterException("an item with given catalog number does not exist in periodic report.");
+        return null;
     }
 
     public Day oneDayBeforeOrderDay()

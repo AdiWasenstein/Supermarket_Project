@@ -28,69 +28,35 @@ public class AdminController {
     //this func checks if there is already a supplier with given id.
     public boolean isSupplierIdExists(int id)//CHANGE!
     {
-//        for(int i = 0; i< SuperLi.src.Presentation.MainMenu.allSuppliers.size(); i++)
-//        {
-//            if(SuperLi.src.Presentation.MainMenu.allSuppliers.get(i).getSupplierId() == id)
-//                return true;
-//        }
+        Optional<Supplier> optionalSupplier = SupplierDataMapper.getInstance().find(Integer.toString(id));
+        if (!optionalSupplier.isEmpty())
+            return true;
         return false;
     }
 
-    //this func creates new supplier card and returns it. else, throws InvalidParameterException.
-    private SupplierCard createNewSupplierCard(String name, String address, int id, String bankAcc, PaymentsWays payment, String contactName, String contactPhone, String contactEmail)throws InvalidParameterException//CHANGE!
-    {
-//        SupplierCard supCard = new SupplierCard(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail);
-        return null;
-    }
-
-    //this func creates new supplier contract and returns it.
-    private SupplierContract createNewSupplierContract(PaymentsWays payment, Supplier sup)
-    {
-//        SupplierContract supContract = new SupplierContract(payment,sup);
-//        sup.setSupplierContract(supContract);
-        return null;
-    }
-
-    //this func creates and returns new DeliversRegularSupplier.
-    private Supplier createNewDeliversRegularSupplier(LinkedList<String> categories, LinkedList<String> manufacturers, SupplierCard supCard, LinkedList<Day> days)
-    {
-//        sup = new SuperLi.src.BusinessLogic.SupplierDeliversRegular(categories,manufacturers,supCard,null,days);
-        return null;
-    }
-
-    //this func creates and returns new DeliversRegularSupplier.
-    private Supplier createNewDeliversERegularSupplier(LinkedList<String> categories, LinkedList<String> manufacturers, SupplierCard supCard, int numDaysToDeliver)
-    {
-//        sup = new SuperLi.src.BusinessLogic.SupplierDeliversERegular(categories,manufacturers,supCard,null,numDaysToDeliver);
-        return null;
-    }
-
-    //this func creates and returns new SuperLi.src.BusinessLogic.SupplierNotDelivers.
-    private Supplier createNewSupplierNotDelivers(LinkedList<String> categories, LinkedList<String> manufacturers, SupplierCard supCard)
-    {
-//        sup = new SuperLi.src.BusinessLogic.SupplierNotDelivers(categories,manufacturers,supCard,null);
-        return null;
-    }
 
     //this func creates and adds new supplier to system. if impossible, throws InvalidParameterException.
-    public void addNewSupplier(String name, String address, int id, String bankAcc, PaymentsWays payment, String contactName, String contactPhone, String contactEmail, LinkedList<String> categories, LinkedList<String> manufacturers, SupplierCard supCard, LinkedList<Day> days,int numDaysToDeliver)throws InvalidParameterException
+    public void addNewSupplier(String name, String address, int id, String bankAcc, PaymentsWays payment, String contactName, String contactPhone, String contactEmail, LinkedList<String> categories, LinkedList<String> manufacturers, LinkedList<Day> days,int numDaysToDeliver)throws InvalidParameterException
     {
-//        SupplierCard supCard = createNewSupplierCard(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail);
+
+        SupplierCard supCard = new SupplierCard(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail);
         Supplier sup;
-        if(days != null)
+        if(days != null)//meaning the suppliers delivers regular
         {
-            sup = createNewDeliversRegularSupplier(categories,manufacturers,supCard,days);
+            sup = new SupplierDeliversRegular(categories,manufacturers,supCard,null,days);
         }
-        else if(numDaysToDeliver != -1)
+        else if(numDaysToDeliver != -1)//meaning the suppliers delivers ERegular
         {
-            sup = createNewDeliversERegularSupplier(categories,manufacturers,supCard,numDaysToDeliver);
+            sup = new SupplierDeliversERegular(categories,manufacturers,supCard,null,numDaysToDeliver);
         }
-        else
+        else//meaning the suppliers not delivers
         {
-            sup = createNewSupplierNotDelivers(categories,manufacturers,supCard);
+            sup = new SupplierNotDelivers(categories,manufacturers,supCard,null);
         }
-        SupplierContract supContract = createNewSupplierContract(payment,sup);
+        SupplierContract supContract = new SupplierContract(payment,sup);
+        sup.setSupplierContract(supContract);
         //ADD TO DB
+        this.supplierDataMapper.insert(sup);
     }
 
     //this func creates and adds new branch to system.

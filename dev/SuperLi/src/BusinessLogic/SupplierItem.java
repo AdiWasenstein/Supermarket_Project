@@ -41,16 +41,20 @@ public class SupplierItem{
     {
         return this.marketId;
     }
-    public void SetUnitPrice(double price)
+    public void SetUnitPrice(double price)throws InvalidParameterException
     {
         if(price > 0)
             this.unitPrice = price;
+        else
+            throw new InvalidParameterException();
     }
 
-    public void SetNumberOfUnits(int numOfUnits)
+    public void SetNumberOfUnits(int numOfUnits)throws InvalidParameterException
     {
         if (numOfUnits > 0)
             this.numberOfUnits = numOfUnits;
+        else
+            throw new InvalidParameterException();
     }
 
     public int getCatalogNumber() {

@@ -70,14 +70,15 @@ public class OrderManagment {
         //combinations for itemsCompletely
         LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> listCombinationsFullItems = new LinkedList<>();
         combinationsForFullItems(suppliers, itemsCompletely, listCombinationsFullItems, new HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>());
-        if (itemsSeperateToUnits.isEmpty())//meaning there is no item we need to separate to units. therefore we would like to check maybe there is a supplier that can supply all ordered items.
-        {
-            // TODO maybe need to change
-            LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> listOfoneSupplierSuppliesAll = isOneSupplierCanSupplyAllExists(listCombinationsFullItems);
-            if (!listOfoneSupplierSuppliesAll.isEmpty()) {
-                return findCheappestCombination(listOfoneSupplierSuppliesAll);
-            }
-        }
+//        if (itemsSeperateToUnits.isEmpty())//meaning there is no item we need to separate to units. therefore we would like to check maybe there is a supplier that can supply all ordered items.
+//        {
+//
+//            // TODO maybe need to change
+//            LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> listOfoneSupplierSuppliesAll = isOneSupplierCanSupplyAllExists(listCombinationsFullItems);
+//            if (!listOfoneSupplierSuppliesAll.isEmpty()) {
+//                return findCheappestCombination(listOfoneSupplierSuppliesAll);
+//            }
+//        }
         for (int i = 0; i < listCombinationsFullItems.size(); i++)//running over each combination of separating the full items
         {
             for (int j = 0; j < itemsSeperateToUnits.size(); j++)//for each partial item

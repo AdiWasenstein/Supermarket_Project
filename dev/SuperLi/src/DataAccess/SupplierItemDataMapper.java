@@ -58,8 +58,6 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         return supplierItemDataMapper;
     }
 
-    //PASTING FROM STOCK
-
     protected String insertQuery(SupplierItem supplierItem)
     {
         return "";
@@ -109,6 +107,10 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         }
     }
 
+    protected String deleteQuery(SupplierItem supplierItem)
+    {
+        return "";
+    }
 
     protected String deleteQuery(SupplierItem supplierItem, int supplierId)
     {
@@ -123,57 +125,58 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         executeVoidQuery(deleteQuery(sItem,supplierId));
     }
 
-    protected String updateQuery(CatalogItem catalogItem) {
-        String queryFields = String.format("UPDATE CatalogItems SET SellPrice = %.1f,MinCapacity = %d", catalogItem.getSellPrice(), catalogItem.getMinCapacity());
-        CostumerDiscount discount = catalogItem.getCostumerDiscount();
-        return queryFields +
-                (discount == null ? "" : String.format(", DiscountValue=%.1f, DiscountPercentage=%d, DiscountCapacity=%d, DiscountExpiration='%s'",
-                        discount.getValue(), discount.isPercentage() ? 1 : 0, discount.getMinCapacity(), discount.getExpirationDate().toString())) +
-                String.format("WHERE Id=%d", catalogItem.getId());
+    public void update(SupplierItem sItem, int supplierId)
+    {
+        executeVoidQuery(updateQuery(sItem,supplierId));
     }
-    protected String findQuery(String... key) {return String.format("SELECT * FROM CatalogItems WHERE Id=%s" ,key[0]);}
-    protected String findAllQuery(){return "SELECT * FROM CatalogItems";}
-    protected CatalogItem findInIdentityMap(String ...key){return catalogItemsIdentitiyMap.get(Integer.valueOf(key[0]));}
-    protected CatalogItem insertIdentityMap(ResultSet match) throws SQLException {
+
+    protected String updateQuery(SupplierItem sItem, int supplierId) {
+        String queryFields = String.format("UPDATE SuppliersItems SET catalogNumber = %d , itemName = %s, manufacturer = %s," +
+                "catagory = %s, unitPrice = %f, unitWeight = %f, numberOfUnits = %d, marketId = %d, supplierId = %d " +
+                "WHERE supplierId = %d AND catalogNumber = %d", sItem.getCatalogNumber(),sItem.getItemName(),
+                sItem.getManufacturer(),sItem.getCatagory(),sItem.getUnitPrice(),sItem.getUnitWeight(),sItem.getNumberOfUnits(),
+                sItem.GetMarketId(),supplierId,supplierId,sItem.getCatalogNumber());
+        return queryFields;
+    }
+
+    protected String updateQuery(SupplierItem supplierItem)
+    {
+        return "";
+    }
+
+    protected String findQuery(String ... key)
+    {
+        return String.format("SELECT * FROM SuppliersItems WHERE catalogNumber = %s AND supplierId = %s" ,key[1],key[0]);
+    }
+
+    protected String findAllQuery(){return "SELECT * FROM SuppliersItems";}
+    protected SupplierItem findInIdentityMap(String ...key)
+    {
+        return this.supplierItemIdentityMap.get(new MyKey(Integer.valueOf(key[0]),Integer.valueOf(key[1])));}
+    protected SupplierItem insertIdentityMap(ResultSet match) throws SQLException {
         if(match == null)
             return null;
-        CatalogItem catalogItem = catalogItemsIdentitiyMap.get(match.getInt("Id"));
-        if(catalogItem != null)
-            return catalogItem;
-        int id = match.getInt("Id");
-        LinkedList<String> categories = getCatalogItemCategories(id);
-        Category category = new Category(categories, new Size(match.getDouble("SizeAmount"), MeasureUnit.values()[match.getInt("MeasureUnit")]));
-        String name = match.getString("Name");
-        String manufacturer = match.getString("Manufacturer");
-        double sellPrice = match.getDouble("SellPrice");
-        int minCapacity = match.getInt("MinCapacity");
-        int shelfLife = match.getInt("ShelfLife");
-        int shelvesLocation = match.getInt("ShelvesLocation");
-        int backLocation = match.getInt("BackLocation");
-        catalogItem = new CatalogItem(id, name, manufacturer, sellPrice, minCapacity, category, shelvesLocation, backLocation, shelfLife);
-        String expirationDate = match.getString("DiscountExpiration");
-        if(expirationDate != null) {
-            double value = match.getDouble("DiscountValue");
-            boolean isPercentage = match.getInt("DiscountPercentage") == 1;
-            int capacity = match.getInt("DiscountCapacity");
-            catalogItem.setCostumerDiscount(new CostumerDiscount(LocalDate.parse(expirationDate, DateTimeFormatter.ofPattern("d/M/yy")), value, isPercentage, capacity));
-        }
-        catalogItemsIdentitiyMap.put(catalogItem.getId(), catalogItem);
-        return catalogItem;
+        SupplierItem sItem = this.supplierItemIdentityMap.get(new MyKey(match.getInt("supplierId"),match.getInt("catalogNumber")));
+        if(sItem != null)
+            return sItem;
+        int catalogNumber = match.getInt("catalogNumber");
+        String itemName = match.getString("itemName");
+        String manufacturer = match.getString("manufacturer");
+        String catagory = match.getString("catagory");
+        double unitPrice = match.getDouble("unitPrice");
+        double unitWeight = match.getDouble("unitWeight");
+        int numberOfUnits = match.getInt("numberOfUnits");
+        int marketId = match.getInt("marketId");
+        int supplierId = match.getInt("supplierId");
+        sItem = new SupplierItem(catalogNumber,itemName,manufacturer,unitPrice,unitWeight,numberOfUnits,catagory,marketId);
+        this.supplierItemIdentityMap.put(new MyKey(supplierId, catalogNumber),sItem);
+        return sItem;
     }
-    public LinkedList<String> getCatalogItemCategories(int id) throws SQLException{
-        ResultSet matches = executeSelectQuery(String.format("SELECT Category FROM CatalogItemsCategories WHERE CatalogItemId=%d", id));
-        LinkedList<String> categories = new LinkedList<>();
-        while(matches.next())
-            categories.add(matches.getString("Category"));
-        return categories;
-    }
-    public LinkedList<CatalogItem> findAllFromCategory(Category category){
-        LinkedList<CatalogItem> catalogItems = new LinkedList<>();
-        for(CatalogItem catalogItem : findAll())
-            if(catalogItem.isFromCategory(category))
-                catalogItems.add(catalogItem);
-        return catalogItems;
+
+    //find all suppliers items of given supplier
+    protected String findAllQueryByKey(String ... key)
+    {
+        return String.format("SELECT * FROM SuppliersItems WHERE supplierId = %s", key[0]);
     }
 
 

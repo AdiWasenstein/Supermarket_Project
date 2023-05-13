@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 
 public class PeriodicReportDataMapper extends ADataMapper{
     Map<Integer, PeriodicReport> periodicReportIdentityMap;
@@ -74,14 +75,32 @@ public class PeriodicReportDataMapper extends ADataMapper{
         return String.format("DELETE FROM PeriodicReports WHERE reportId = %d", report.getReportId());
     }
 
-    // TODO laavor im adi
-    public String updateQuery(PeriodicReport report)
+
+    protected String updateQuery(Integer...key)
     {
-        return String.format("UPDATE Branches SET Address = '%s' WHERE Id = %d", branch.getAddress(), branch.getId());
+        return String.format("UPDATE PeriodicReports SET numberOfUnits = %d WHERE reportId = %d AND supplierCatalogNumber = %d", key[0], key[1], key[2]);
+    }
+
+    public void updateQueryForItems(HashMap<SupplierItem,Integer> itemsToUpdate, int reportId)
+    {
+        for(SupplierItem item : itemsToUpdate.keySet())
+        {
+            int numUnits = itemsToUpdate.get(item);
+            executeVoidQuery(updateQuery(numUnits,reportId,item.getCatalogNumber()));
+        }
+
+    }
+
+    protected String updateQuery(PeriodicReport x){
+        return "";
     }
 
     public String findQuery(String ...key){
-        return String.format("SELECT * FROM Branches WHERE Id = '%s'", key[0]);
+        return String.format("SELECT * FROM PeriodicReports WHERE reportId = %d", key[0]);
+    }
+
+    public String findAllQueryByKey(String ...key){
+        return String.format("SELECT * FROM PeriodicReports WHERE reportId = %d", key[0]);
     }
 
     public String findAllQuery(){

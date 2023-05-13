@@ -7,6 +7,7 @@ import com.sun.source.tree.TryTree;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
+import java.util.Optional;
 
 public class SupplierController {
     private static SupplierController instance = new SupplierController();
@@ -26,49 +27,55 @@ public class SupplierController {
 
     private boolean supplierHasContact(Supplier sup, String phone)//CHANGE!
     {
-//        LinkedList<Contact> contacts = supplier.getSupplierCard().getContacts();
+        for(Contact con : sup.getSupplierCard().getContacts())
+        {
+            if(con.GetPhoneNumber().equals(phone))
+                return true;
+        }
         return false;
     }
 
     //the func throws Exception if contact with given phone number already exists for the supplier,
     //InvalidParameterException if can't create contact (details are not valid).
     //else, adds the contact to supplier.
-    public void addContactToSupplier(Supplier sup, String name, String phone, String email)throws InvalidParameterException, Exception//CHANGE!
+    public void addContactToSupplier(Supplier sup, String name, String phone, String email)throws InvalidParameterException, Exception
     {
-        //CHECK IF SUPPLIERHASCONTACT - THROW EXCEPTION.
-//        supplier.addNewContact(name,phone,email);
+        if(this.supplierHasContact(sup,phone))//contact already exists
+            throw new Exception("supplier already has a contact with given phone number.");
+        sup.addNewContact(name,phone,email);
+        this.supplierDataMapper.update(sup);
     }
 
     // based on given id finds if exist in system or not.
     // returns the supplier if exist, else returns null.
-    public Supplier findSupplierById(int id)//CHANGE!
+    public Supplier findSupplierById(int id)
     {
-//        for (Supplier supplier : SuperLi.src.Presentation.MainMenu.allSuppliers)
-//        {
-//            if (supplier.isIdEquals(id))
-//                return supplier;
-//        }
-        return null;
+        Optional<Supplier> supOptional = this.supplierDataMapper.find(Integer.toString(id));
+        if(supOptional.isEmpty())
+            return null;
+        return supOptional.get();
     }
 
     //the func gets a list of categories, and adds all the categories that not already exist in the supplier, to the supplier.
-    public void addCategoriesToSupplier(Supplier sup, LinkedList<String> addedCategories)//CHANGE!
+    public void addCategoriesToSupplier(Supplier sup, LinkedList<String> addedCategories)
     {
-//        for (String catagory : addedCategories)
-//        {
-//            if (!(supplier.getSupplierCatagories().contains(catagory)))
-//                supplier.AddNewCategory(catagory);
-//        }
+        for (String category : addedCategories)
+        {
+            if (!(sup.getSupplierCatagories().contains(category)))
+                sup.AddNewCategory(category);
+        }
+        this.supplierDataMapper.update(sup);
     }
 
     //the func gets a list of manufacturers, and adds all the manufacturers that not already exist in the supplier, to the supplier.
-    public void addManufacturersToSupplier(Supplier sup, LinkedList<String> addedManufacturers)//CHANGE!
+    public void addManufacturersToSupplier(Supplier sup, LinkedList<String> addedManufacturers)
     {
-//        for (String manufacturer : addedManufacturers)
-//        {
-//            if (!(supplier.getSupplierManufacturers().contains(manufacturer)))
-//                supplier.AddNewManufacturer(manufacturer);
-//        }
+        for (String manufacturer : addedManufacturers)
+        {
+            if (!(sup.getSupplierManufacturers().contains(manufacturer)))
+                sup.AddNewManufacturer(manufacturer);
+        }
+        this.supplierDataMapper.update(sup);
     }
 
     //this func shows all order history of supplier
@@ -84,29 +91,30 @@ public class SupplierController {
     }
 
     //this func updates supplier paymentway
-    public void updateSupplierPaymentWay(Supplier sup, PaymentsWays newPayment)//CHANGE!
+    public void updateSupplierPaymentWay(Supplier sup, PaymentsWays newPayment)
     {
-//        sup.setPayment(newPayment);
+        sup.setPayment(newPayment);
+        this.supplierDataMapper.update(sup);
     }
 
     //this func updates supplier bank account
-    public void updateSupplierBankAccount(Supplier sup, String newBank)//CHANGE!
+    public void updateSupplierBankAccount(Supplier sup, String newBank)
     {
-//        sup.setBankAccount(newBank);
+        sup.setBankAccount(newBank);
+        this.supplierDataMapper.update(sup);
     }
 
-    public void updateSupplierAddress(Supplier sup, String newAddress)//CHANGE!
+    public void updateSupplierAddress(Supplier sup, String newAddress)
     {
-//        sup.setAddress(newAddress);
+        sup.setAddress(newAddress);
+        this.supplierDataMapper.update(sup);
     }
 
-    //returns true if supplier works with given manufacturer AND category. else, false.
-    public boolean checkIfSupplierHasManufacturerAndCategory(Supplier sup, String manufacturer, String category)//CHANGE!
+    //returns true if supplier works with given manufacturer AND category AND catalogNumber doesn't belong to another supplierItem. else, false.
+    public boolean checkIfItemDetailsValid(Supplier sup,int catalogNumber, String manufacturer, String category)
     {
-//        !(supplier.getSupplierContract().canAddItem(catalogNumber, manufacturer, category))
-        return false;
+        return sup.getSupplierContract().canAddItem(catalogNumber, manufacturer, category);
     }
-
 
     //this func adds new supplier item to supplier if possible. else, throws EXCEPTION.
     public void addSupplierItemToSupplier(Supplier sup, int catalogNumber, String itemName, String manufacturer, double unitPrice, double unitWeight, int numberOfUnits, String category)throws Exception
@@ -134,68 +142,122 @@ public class SupplierController {
     //this func adds new itemUnitsDiscount to suppliers discount document, or throws Exception if impossible.
     public void addItemUnitsDiscount(Supplier sup, int catalogNumber, String discountKind, String discountType, double discountSize, double numberOfUnits)throws Exception
     {
-//        sup.getSupplierContract().addItemDiscount(catalogNumber, discountKind, discountType, discountSize, numberOfUnits)
+        ItemDiscount newDis = sup.getSupplierContract().addItemDiscount(catalogNumber, discountKind, discountType, discountSize, numberOfUnits);
+        if(newDis == null)
+            throw new Exception("adding discount is impossible.");
+        ItemUnitsDiscount discount;
+        if(newDis instanceof ItemUnitsDiscount)
+        {
+            discount = (ItemUnitsDiscount)newDis;
+            this.supplierDataMapper.insertItemUnitsDiscount(sup,catalogNumber,discount);
+        }
     }
 
     //this func adds new orderDiscount to suppliers discount document, or throws Exception if impossible.
-    public void AddOrderDiscount(Supplier sup,String discountKind, String discountType, double discountSize, double numberOfUnits)throws Exception
+    public void AddOrderDiscount(Supplier sup,String discountKind, String discountType, double discountSize, double value)throws Exception
     {
-//        if(sup.getSupplierContract().addOrderDiscount(discountKind, discountType, discountSize, numberOfUnits))
+        OrderDiscount newDis = sup.getSupplierContract().addOrderDiscount(discountKind, discountType, discountSize, value);
+        if(newDis == null)
+            throw new Exception("adding discount is impossible.");
+        if(newDis instanceof OrderUnitsDiscount)
+        {
+            OrderUnitsDiscount discount = (OrderUnitsDiscount)newDis;
+            this.supplierDataMapper.insertOrderUnitsDiscount(sup,discount);
+        }
+        else if(newDis instanceof OrderCostDiscount)
+        {
+            OrderCostDiscount dis = (OrderCostDiscount)newDis;
+            this.supplierDataMapper.insertOrderCostDiscount(sup,dis);
+        }
     }
 
     //this func removes item discount of supplier if possible. else, throws Exception.
     public void removeItemDiscount(Supplier sup, int catNumber, String discountKind, String discountType, double discountSize, double numberOfUnits)throws Exception
     {
-//        sup.getSupplierContract().removeItemDiscount(catNumber, discountKind, discountType, discountSize, numberOfUnits);
+        ItemDiscount removedDiscount = sup.getSupplierContract().removeItemDiscount(catNumber, discountKind, discountType, discountSize, numberOfUnits);
+        if(removedDiscount instanceof ItemUnitsDiscount)
+        {
+            ItemUnitsDiscount discount = (ItemUnitsDiscount)removedDiscount;
+            this.supplierDataMapper.deleteItemUnitsDiscount(sup, catNumber,discount);
+        }
     }
 
     //this func removes order discount of supplier if possible. else, throws Exception.
     public void removeOrderDiscount(Supplier sup ,String discountKind, String discountType, double discountSize, double numberOfUnits)throws Exception
     {
-//        sup.getSupplierContract().removeOrderDiscount(discountKind, discountType, discountSize, numberOfUnits);
+        OrderDiscount removedDiscount = sup.getSupplierContract().removeOrderDiscount(discountKind, discountType, discountSize, numberOfUnits);
+        if(removedDiscount instanceof OrderUnitsDiscount)
+        {
+            OrderUnitsDiscount discount = (OrderUnitsDiscount)removedDiscount;
+            this.supplierDataMapper.deleteOrderUnitsDiscount(sup,discount);
+        }
+        else if(removedDiscount instanceof OrderCostDiscount)
+        {
+            OrderCostDiscount dis = (OrderCostDiscount)removedDiscount;
+            this.supplierDataMapper.deleteOrderCostDiscount(sup, dis);
+        }
     }
 
     //this func removes contact from supplier if possible. else, throws Exception.
     public void removeContactFromSupplier(Supplier sup, String phone)throws Exception
     {
-//        supplier.getSupplierCard().removeContact(phone);
+        Contact con = sup.getSupplierCard().getContact(phone);
+        sup.getSupplierCard().removeContact(phone);
+        this.supplierDataMapper.deleteContact(sup,con);
     }
+
 
     // given supplier and catalog number return the supplier item object if exist, null if not.
     public SupplierItem getSupplierItemByCatalog(Supplier sup, int catalogNumber)
     {
-        //check if supplier has an item with this catalog number.
-//            if(!supplier.getSupplierContract().isitemExists(catalogNum))
-//            {
-//                System.out.println("There is no item with given catalog number.");
-//                return;
-//            }
-        return null;
+        return sup.getSupplierContract().getSupplierItemByCatalogNum(catalogNumber);
     }
 
     public boolean updateUnitsofItem(Supplier sup, SupplierItem item, int newAmount)
     {
-        //sup.getSupplierItemAccordingToCatalogNumber(catNum).SetNumberOfUnits(numUnits);
-//        System.out.println("Number of units was updated successfully.");
-        return false;
+        try
+        {
+            item.SetNumberOfUnits(newAmount);
+        }
+        catch (InvalidParameterException e)
+        {
+            return false;
+        }
+        this.supplierDataMapper.updateSupplierItem(item,sup.getSupplierId());
+        return true;
     }
 
     public boolean updatePriceOfItem(Supplier sup, SupplierItem item, double newPrice)
     {
-        //        sup.getSupplierItemAccordingToCatalogNumber(catNum).SetUnitPrice(price);
-//        System.out.println("Price was updated successfully.");
-        return false;
+        try
+        {
+            item.SetUnitPrice(newPrice);
+        }
+        catch (InvalidParameterException e)
+        {
+            return false;
+        }
+        this.supplierDataMapper.updateSupplierItem(item,sup.getSupplierId());
+        return true;
     }
 
     public boolean removeItem(Supplier sup, int catalogNumber)
     {
+        //remove suppjlierItem from supplier
         SupplierContract contract = sup.getSupplierContract();
-        //removing from contract
-        contract.removeItem();
-        //removing from periodic reports
-        //removing from itemUnitsDiscounts
-//        supplier.getSupplierContract().removeItem(catalogNumber);
-//        System.out.println("Item was removed successfully.");
+        SupplierItem sItem = sup.getSupplierItemAccordingToCatalogNumber(catalogNumber);
+        if(sItem == null)
             return false;
+        try
+        {
+            contract.removeItem(catalogNumber);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        this.supplierDataMapper.deleteSupplierItem(sItem,sup.getSupplierId());
+        return true;
     }
+
 }
