@@ -147,8 +147,8 @@ public class SupplierCard {
 
     public String toString()
     {
-        return "SuperLi.src.BusinessLogic.Supplier card info: \n" + "Id: " +supplierId + "\n Bank account: " + bankAccount+ "\n Address: " +
-                supplierAddress + "\n Payment way: " + payment+ "\n contacts: " + contacts;
+        return "Supplier card info: \n" + "Id: " +supplierId + "\nBank account: " + bankAccount+ "\nAddress: " +
+                supplierAddress + "\nPayment way: " + payment+ "\nContacts: " + contacts;
     }
 
     public boolean isContactExist(String phone, LinkedList<Contact> contacts)

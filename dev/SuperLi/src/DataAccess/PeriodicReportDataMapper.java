@@ -67,9 +67,9 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         HashMap<SupplierItem,Integer> itemsInReport = report.getItems();
         for(SupplierItem supplierItem : itemsInReport.keySet())
         {
-            executeVoidQuery(String.format("INSERT INTO PeriodicReports (branchNumber, reportId, supplierCatalogNumber, numberOfUnits, supplierId) VALUES (%d, %d, %d, %d, %d)"
+            executeVoidQuery(String.format("INSERT INTO PeriodicReports (branchNumber, reportId, supplierCatalogNumber, numberOfUnits, supplierId, day) VALUES (%d, %d, %d, %d, %d, '%s')"
                     ,report.getBranchNumber(), report.getReportId(),
-                    supplierItem.GetMarketId(), supplierItem.getNumberOfUnits(), report.getSupplier().getSupplierId()));
+                    supplierItem.GetMarketId(), supplierItem.getNumberOfUnits(), report.getSupplier().getSupplierId(), report.getDayToOrder().toString()));
         }
     }
 

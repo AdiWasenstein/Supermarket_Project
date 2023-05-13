@@ -60,9 +60,9 @@ public class ContactDataMapper extends ADataMapper<Contact> {
     //this func returns all records of contacts of specific supplier.
     protected String findAllQueryByKey(String ...key)
     {
-        return String.format("SELECT Contacts.phoneNumber, Contacts.name, Contacts.email FROM Contacts INNER JOIN SuppliersANDContacts" +
-                "ON Contacts.phoneNumber = SuppliersANDContacts.phoneNumber" +
-                "WHERE SuppliersANDContacts.supplierId = %s",key[0]);
+        return String.format("SELECT Contacts.phoneNumber, Contacts.name, Contacts.email FROM Contacts INNER JOIN SuppliersANDContacts " +
+                "ON Contacts.phoneNumber = SuppliersANDContacts.phoneNumber " +
+                "WHERE SuppliersANDContacts.supplierId = '%s'",key[0]);
     }
 
 

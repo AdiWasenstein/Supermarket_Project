@@ -64,8 +64,8 @@ public class SupplierCardDataMapper extends ADataMapper<SupplierCard>
         this.insertContactToContactTable(card);
         this.insertContactToContactAndSuppliersTable(card);
         //insert to SupplierCards Table
-        String queryFields = String.format("INSERT INTO SupplierCards(supplierId, bankAccount, supplierName," +
-                "supplierAddress, paymentWay) VALUES (%d, %s,%s,%s,%s)", card.getSupplierId(), card.getBankAccount(),card.getSupplierName(),card.getSupplierAddress(),
+        String queryFields = String.format("INSERT INTO `SupplierCards`(supplierId, bankAccount, supplierName," +
+                "supplierAddress, paymentWay) VALUES (%d, '%s' ,'%s' ,'%s' ,'%s')", card.getSupplierId(), card.getBankAccount(),card.getSupplierName(),card.getSupplierAddress(),
                 card.getPayment().toString());
         return queryFields;
     }
@@ -81,9 +81,9 @@ public class SupplierCardDataMapper extends ADataMapper<SupplierCard>
         this.insertContactToContactTable(card);
         this.insertContactToContactAndSuppliersTable(card);
         //update card
-        String queryFields = String.format("UPDATE SupplierCards SET supplierId = %d , bankAccount = %s, supplierName = %s," +
-                        "supplierAddress = %s, paymentWay = %s",card.getSupplierId(), card.getBankAccount(),card.getSupplierName(),card.getSupplierAddress(),
-                card.getPayment().toString());
+        String queryFields = String.format("UPDATE `SupplierCards` SET bankAccount = '%s', supplierName = '%s'," +
+                        "supplierAddress = '%s', paymentWay = '%s' WHERE supplierId = %d",card.getBankAccount(),card.getSupplierName(),card.getSupplierAddress(),
+                card.getPayment().toString(),card.getSupplierId());
         return queryFields;
     }
 
@@ -94,7 +94,7 @@ public class SupplierCardDataMapper extends ADataMapper<SupplierCard>
 
     protected String findQuery(String ... key)
     {
-        return String.format("SELECT * FROM SupplierCards WHERE supplierId = %s" ,key[0]);
+        return String.format("SELECT * FROM `SupplierCards` WHERE supplierId = '%s'" ,key[0]);
     }
 
     protected String findAllQuery() {

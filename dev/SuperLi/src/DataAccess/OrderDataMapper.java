@@ -39,10 +39,10 @@ public class OrderDataMapper extends ADataMapper<Order> {
     {
         for (OrderItem item : order.getOrderItems())
         {
-            OrderItemDataMapper.getInstance().insert(item, order.getOrderNumber());
+            OrderItemDataMapper.getInstance().insert(item, order.getOrderNumber(), order.getSupplierId());
         }
-        executeVoidQuery(String.format("INSERT INTO Orders(orderNumber, supplierId, orderDate, costOfOrder, branchNumber) " +
-                        "VALUES (%d, %d, %s, %.2f, %d)", order.getOrderNumber(), order.getSupplierId(),
+        executeVoidQuery(String.format("INSERT INTO `Orders`(orderNumber, supplierId, orderDate, costOfOrder, branchNumber) " +
+                        "VALUES (%d, %d, '%s', %.2f, %d)", order.getOrderNumber(), order.getSupplierId(),
                 order.getOrderDate().toString(), order.getCostOfOrder(), order.getBranchNumber()));
 
     }
@@ -59,7 +59,7 @@ public class OrderDataMapper extends ADataMapper<Order> {
 
 
     public String findQuery(String ...key){
-        return String.format("SELECT * FROM Orders WHERE orderNumber = %d", Integer.valueOf(key[0]));
+        return String.format("SELECT * FROM `Orders` WHERE orderNumber = %d", Integer.valueOf(key[0]));
     }
 
     public LinkedList<Order> findAllBySupplier(int suppId)
@@ -89,7 +89,7 @@ public class OrderDataMapper extends ADataMapper<Order> {
     }
 
     public String findAllQuery(){
-        return "SELECT * FROM Orders";
+        return "SELECT * FROM `Orders`";
     }
 
     public Order findInIdentityMap(String ...key){

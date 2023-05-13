@@ -64,20 +64,20 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
         return "";
     }
 
-    public void insert(OrderItem orderItem, int orderId)
+    public void insert(OrderItem orderItem, int orderId, int supplierId)
     {
-        executeVoidQuery(insertQuery(orderItem, orderId));
+        executeVoidQuery(insertQuery(orderItem, orderId, supplierId));
     }
 
-    protected String insertQuery(OrderItem item, int orderNum) {
+    protected String insertQuery(OrderItem item, int orderNum, int supplierId) {
         this.orderItemIdentityMap.put(new MyKey(orderNum,item.getItemNumber()), item);
         int amount = item.getItemAmount();
         double itemDiscount = item.getItemDiscount();
         double finalPrice = item.getFinalPrice();
         int supplierCatalogNumber = item.getItemNumber();
         int orderId = orderNum;
-        String queryFields = String.format("INSERT INTO OrderItems(amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId)" +
-                "VALUES (%d,%.2f,%.2f,%d,%d)",amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId);
+        String queryFields = String.format("INSERT INTO `OrderItems`(amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId, supplierId)" +
+                "VALUES (%d,%.2f,%.2f,%d,%d, %d)",amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId, supplierId);
         return queryFields;
     }
 
@@ -93,7 +93,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
 
     protected String findQuery(int orderNumber, int catalogNumber)
     {
-        return String.format("SELECT * FROM OrderItems WHERE orderId = %d AND supplierCatalogNumber = %d " ,orderNumber ,catalogNumber);
+        return String.format("SELECT * FROM `OrderItems` WHERE orderId = %d AND `supplierCatalogNumber` = %d " ,orderNumber ,catalogNumber);
     }
 
     protected String findQuery(String ... key)
@@ -134,7 +134,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
     //find all order items of given order number
     protected String findAllQueryByKey(String ... key)
     {
-        return String.format("SELECT * FROM OrderItems WHERE orderId = %s", key[0]);
+        return String.format("SELECT * FROM `OrderItems` WHERE orderId = '%s'", key[0]);
     }
 
 

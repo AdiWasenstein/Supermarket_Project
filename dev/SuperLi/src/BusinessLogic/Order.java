@@ -26,7 +26,7 @@ public class Order {
         if (orderItems == null || orderItems.isEmpty())
             throw new InvalidParameterException("order must have a least one item to order");
         if (branchNumber <= 0)
-            throw new InvalidParameterException("Business.Branch number must be a positive number");
+            throw new InvalidParameterException("Branch number must be a positive number");
         this.orderNumber = orderNum;
         orderNum++;
         this.orderSupplier = orderSupplier;
@@ -46,7 +46,7 @@ public class Order {
         if (orderItems == null || orderItems.isEmpty())
             throw new InvalidParameterException("order must have a least one item to order");
         if (branchNumber <= 0)
-            throw new InvalidParameterException("Business.Branch number must be a positive number");
+            throw new InvalidParameterException("Branch number must be a positive number");
 
         this.orderSupplier = orderSupplier;
         this.orderItems = orderItems;
@@ -118,7 +118,7 @@ public class Order {
         String pattern = "MM/dd/yyyy HH:mm:ss";
         DateFormat df = new SimpleDateFormat(pattern);
         String dateAsString = df.format(OrderDate);
-        String str =  "Business.Branch number: " + branchNumber + "\nSuperLi.src.BusinessLogic.Order number: " + orderNumber + "\nSuperLi.src.BusinessLogic.Supplier: " + orderSupplier +  " ,supply time: " + orderSupplier.printSupplyTimeData() +"\nSuperLi.src.BusinessLogic.Order date: " + dateAsString + "\nOrdered items:";
+        String str =  "Branch number: " + branchNumber + "\nBusinessLogic.Order number: " + orderNumber + "\nBusinessLogic.Supplier: " + orderSupplier +  " ,supply time: " + orderSupplier.printSupplyTimeData() +"\nOrder date: " + dateAsString + "\nOrdered items:";
         for(OrderItem item: orderItems)
         {
             str += "\n" + item.toString();

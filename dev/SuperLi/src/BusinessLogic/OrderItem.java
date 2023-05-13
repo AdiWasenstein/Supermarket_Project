@@ -17,7 +17,7 @@ public class OrderItem{
         if (amount <= 0)
             throw new InvalidParameterException("Need to order at least one unit from the item");
         if (itemDiscount < 0)
-            throw new InvalidParameterException("SuperLi.src.BusinessLogic.Discount can't be negative");
+            throw new InvalidParameterException("Discount can't be negative");
         // if not holds the original price itself!
         if (finalPrice > supplierItem.getUnitPrice()*amount)
             throw new InvalidParameterException("Final price can't be bigger than original price");
@@ -61,7 +61,7 @@ public class OrderItem{
     @Override
     public String toString()
     {
-        return "Item name: " + supplierItem.getItemName() + " ,Number of units: " + amount + " ,SuperLi.src.BusinessLogic.Discount in shekels: " + itemDiscount + " ,Final price: " + finalPrice + " shekels.";
+        return "Item name: " + supplierItem.getItemName() + " ,Number of units: " + amount + " ,Discount in shekels: " + itemDiscount + " ,Final price: " + finalPrice + " shekels.";
     }
 
 }
