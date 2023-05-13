@@ -29,6 +29,23 @@ public class PeriodicReport extends AReport{
         this.items = items;
     }
 
+    // overload, for creating periodic report that already exist in the database
+    public PeriodicReport(int branchNumber, Day dayToOrder, Supplier supplier, HashMap<SupplierItem,Integer> items, int id) {
+        if(branchNumber<=0)
+            throw new InvalidParameterException("branch number must be positive number.");
+        if(dayToOrder == null)
+            throw new InvalidParameterException("periodic report must have a day to make an order.");
+        if(supplier == null)
+            throw new InvalidParameterException("periodic report must have a supplier.");
+        if(items == null)
+            throw new InvalidParameterException("periodic report must have items to order.");
+        this.branchNumber = branchNumber;
+        this.dayToOrder = dayToOrder;
+        this.supplier = supplier;
+        this.items = items;
+        this.reportId = id;
+    }
+
     public int getReportId() {
         return reportId;
     }

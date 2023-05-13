@@ -52,11 +52,7 @@ public class Contact {
     public String GetEmail() {
         return this.email;
     }
-    public void SetEmail(String newEmail)
-    {
-        if(isEmailValid(newEmail))
-            this.email = newEmail;
-    }
+
 
     public boolean equals(Contact other)
     {

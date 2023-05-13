@@ -1,10 +1,7 @@
 package SuperLi.src.DataAccess;
 
 
-import SuperLi.src.BusinessLogic.CatalogItem;
-import SuperLi.src.BusinessLogic.PeriodicReport;
-import SuperLi.src.BusinessLogic.Supplier;
-import SuperLi.src.BusinessLogic.SupplierItem;
+import SuperLi.src.BusinessLogic.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +47,13 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     }
     public void insert(PeriodicReport report)
     {
+        this.periodicReportIdentityMap.put(report.getReportId(), report);
+        insertReport(report);
+    }
 
+    protected String insertQuery(PeriodicReport report)
+    {
+        return "";
     }
 //    public String insertQuery(PeriodicReport report){
 //        periodicReportIdentityMap.put(report.getReportId(), report);
@@ -70,9 +73,8 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         }
     }
 
-    public String deleteQuery(PeriodicReport report){
-        periodicReportIdentityMap.remove(report.getReportId());
-        return String.format("DELETE FROM PeriodicReports WHERE reportId = %d", report.getReportId());
+    protected String deleteQuery(PeriodicReport report){
+        return "";
     }
 
 
@@ -104,7 +106,7 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     }
 
     public String findAllQuery(){
-        return "SELECT * FROM Branches";
+        return "SELECT * FROM PeriodicReports";
     }
 
     public PeriodicReport findInIdentityMap(String ...key){
@@ -118,8 +120,37 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         PeriodicReport report = periodicReportIdentityMap.get(match.getInt("reportId"));
         if(report != null)
             return report;
-        report = new PeriodicReport(match.getInt("reportId"), match.getInt("Id"));
+        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(match.getInt("supplierId")));
+        if (suppOpt.isEmpty())
+            return null;
+        Supplier supp = suppOpt.get();        int branchID= match.getInt("branchNumber");
+        int reportID = match.getInt("reportId");
+        Day day = Day.valueOf(match.getString("day"));
+
+        HashMap<SupplierItem,Integer> items = new HashMap<>();
+        SupplierItem suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
+        items.put(suppItem, match.getInt("numberOfUnits"));
+        while (match.next())
+        {
+            suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
+            items.put(suppItem, match.getInt("numberOfUnits"));
+        }
+        report = new PeriodicReport(branchID, day, supp, items, reportID);
         periodicReportIdentityMap.put(report.getReportId(), report);
         return report;
     }
+
+
+
+   public LinkedList<PeriodicReport> findByBranch(int branchNum)
+   {
+       LinkedList<PeriodicReport> all = findAll();
+       LinkedList<PeriodicReport> reportsForBranch = new LinkedList<>();
+       for (PeriodicReport report : all)
+           if (report.getBranchNumber() == branchNum)
+               reportsForBranch.add(report);
+       return reportsForBranch;
+   }
+
+
 }

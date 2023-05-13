@@ -128,7 +128,8 @@ public class SupplierMenu extends AMenu {
         Supplier supplier = findSupplierUser(scan);
         if (supplier == null)
             return;
-        supplierCon.showSupplierOrders(supplier);
+        for (Order order : supplier.getOrders())
+            System.out.println(order.toString());
     }
 
     public void updatePaymentWay(Scanner scan, Supplier sup)

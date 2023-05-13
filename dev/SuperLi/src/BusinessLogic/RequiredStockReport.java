@@ -18,10 +18,17 @@ public class RequiredStockReport extends ACatalogReport{
     public String[] getHeaders(){
         return new String[]{"ID", "Manufacturer", "Name", "Size", "Amount To Order"};
     }
+
     public Map<Integer, Integer> getReportData(){
         Map<Integer, Integer> amountsToOrder = new HashMap<>();
         for(CatalogItem catalogItem : catalogItems)
             amountsToOrder.put(catalogItem.getId(), catalogItem.getMinCapacity() * 2 - catalogItem.getTotalAmount(this.branchId));
         return amountsToOrder;
+    }
+
+    // TODO
+    public int getBranchId()
+    {
+        return this.branchId;
     }
 }

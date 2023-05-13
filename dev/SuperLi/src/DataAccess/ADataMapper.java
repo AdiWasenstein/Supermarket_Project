@@ -97,6 +97,7 @@ public abstract class ADataMapper<ObjectType> {
         }
         return result;
     }
+
     public LinkedList<ObjectType> findAll(){
         LinkedList<ObjectType> objects = new LinkedList<>();
         openConnection();
@@ -127,7 +128,7 @@ public abstract class ADataMapper<ObjectType> {
         if(connection == null) {
             return objects;
         }
-        ResultSet matches = executeSelectQuery(findAllQueryByKey());
+        ResultSet matches = executeSelectQuery(findAllQueryByKey(key));
         if(matches == null) {
             closeConnection();
             return objects;

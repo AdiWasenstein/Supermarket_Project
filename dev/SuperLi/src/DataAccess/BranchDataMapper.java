@@ -31,6 +31,7 @@ public class BranchDataMapper extends ADataMapper<Branch> {
     public Branch findInIdentityMap(String ...key){
         return branchIdentityMap.get(Integer.valueOf(key[0]));
     }
+
     public Branch insertIdentityMap(ResultSet match) throws SQLException{
         if (match == null)
             return null;

@@ -419,7 +419,8 @@ public class AdminMenu extends AMenu {
 //        }
         try {
             LinkedList<Order> allBranchOrders = adminController.getAllOrdersOfBranch(branchNumber);
-            //PRINT ALL ORDERS.
+            for (Order order : allBranchOrders)
+                System.out.println(order.toString());
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
         }

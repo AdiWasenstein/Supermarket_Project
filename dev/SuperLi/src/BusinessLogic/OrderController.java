@@ -31,6 +31,7 @@ public class OrderController {
         this.orderManagment = OrderManagment.getInstance();
         this.branchDataMapper = BranchDataMapper.getInstance();
         this.supplierDataMapper = SupplierDataMapper.getInstance();
+
     }
 
     public static OrderController getInstance()
@@ -44,11 +45,43 @@ public class OrderController {
 
 
     // this method called by stock modoul and with given valid branch number and missing item report will make new order
-    // the method will return list of order that matches the report
-    public LinkedList<Order> createNewMissingItemsOrder() //TODO parameter report, number of branch
+    // the method will return true if orders were made successfully, false if not.
+    public boolean createNewMissingItemsOrder(RequiredStockReport report)
     {
-        // calls the methood creatOrder in orderManagment
-        return null;
+        if (report == null)
+            return false;
+
+        // get the data from the report
+        Map<Integer, Integer> itemsAmount = report.getReportData();
+        int branchNumber = report.getBranchId();
+
+        Optional<Branch> optionalBranch = BranchDataMapper.getInstance().find(Integer.toString(branchNumber));
+        if (optionalBranch.isEmpty())
+            return false;
+        Branch branch = optionalBranch.get();
+
+        // get all suppliers in the system
+        LinkedList<Supplier> allSupp = SupplierDataMapper.getInstance().findAll();
+        if (allSupp.isEmpty())
+            return false;
+        LinkedList<Order> orders = new LinkedList<>();
+        try
+        {
+              orders = this.orderManagment.creatMissingOrder(itemsAmount, branchNumber, allSupp);
+              if (orders.isEmpty())
+                  return false;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        // update data in the system
+        for (Order order : orders)
+        {
+            branch.addOrder(order);
+            this.orderDataMapper.insert(order);
+        }
+        return true;
     }
 
     // this method receive supplier id and list of catalog numbers and amount and create report accordingly
@@ -82,7 +115,7 @@ public class OrderController {
 
     public LinkedList<PeriodicReport> getAllPeriodicReports()
     {
-        return null;
+        return this.periodicReportDataMapper.findAll();
     }
 
 //    public PeriodicReport getReportById (int reportNumber)
@@ -175,7 +208,7 @@ public class OrderController {
 //       if (branchFound.isEmpty())
 //           return null;
 
-        LinkedList<PeriodicReport> reportsFound = this.periodicReportDataMapper.findAllByBranch(Integer.toString(branchID));
+        LinkedList<PeriodicReport> reportsFound = this.periodicReportDataMapper.findByBranch(branchID);
         return reportsFound;
 //        for (PeriodicReport currReport : reportsFound)
 //            System.out.println(currReport.toString());
@@ -237,7 +270,7 @@ public class OrderController {
 
     public Supplier getSuppByID(int suppID)
     {
-        Optional<Supplier> res = this.supplierItemDataMapper.find(Integer.toString(suppID));
+        Optional<Supplier> res = this.supplierDataMapper.find(Integer.toString(suppID));
         if (res.isEmpty())
             return null;
         return res.get();
