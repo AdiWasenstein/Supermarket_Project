@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 
-public class PeriodicReportDataMapper extends ADataMapper{
+public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     Map<Integer, PeriodicReport> periodicReportIdentityMap;
     static PeriodicReportDataMapper periodicReportDataMapper = null;
     private PeriodicReportDataMapper(){

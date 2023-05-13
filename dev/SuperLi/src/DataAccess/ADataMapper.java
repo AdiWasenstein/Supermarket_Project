@@ -32,6 +32,7 @@ public abstract class ADataMapper<ObjectType> {
     protected abstract String insertQuery(ObjectType object); // Including inserting to identityMap
     protected abstract String deleteQuery(ObjectType object); // Including deleting from identityMap
     protected abstract String updateQuery(ObjectType object);
+    protected String updateQuery(Integer...key){return "";} //override with multiply integer argument for periodicReport
     protected abstract String findQuery(String ...key);
     protected abstract String findAllQuery();
     protected String findAllQueryByKey(String ...key){return "";};
