@@ -10,7 +10,7 @@ public class OrderItem{
     double itemDiscount;
     double finalPrice;
 
-    public OrderItem(Supplier supplier, SupplierItem supplierItem, int amount, double itemDiscount, double finalPrice)
+    public OrderItem(SupplierItem supplierItem, int amount, double itemDiscount, double finalPrice)
     {
         if (supplierItem == null)
             throw new InvalidParameterException("Item in order must be connected to supplier item");
@@ -56,6 +56,7 @@ public class OrderItem{
     {
         return this.finalPrice;
     }
+
 
     @Override
     public String toString()

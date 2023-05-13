@@ -1,50 +1,149 @@
 package SuperLi.src.DataAccess;
+
 import java.sql.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Optional;
 import java.util.function.*;
 
-public abstract class ADataMapper<T> {
-    public abstract String findQuery(String object);
-    public abstract String findAllQuery();
-    public abstract String insertQuery(T object);
-    public abstract String deleteQuery(T object);
-    public abstract String updateQuery(T object);
-
-    public void executeQuery(Function<T, String> func, T object){
-
-    }
-    public void insert(T object){
-        executeQuery(insertQuery, object);
-    }
-    public void insert(T object){
-        Connection conn;
-        Statement stmt;
-        try{
-            conn = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
+public abstract class ADataMapper<ObjectType> {
+    static Connection connection = null;
+    static Statement stmt;
+    public void openConnection(){
+        if(connection != null)
             return;
-        }
         try{
-            stmt = conn.createStatement();
-            stmt.executeUpdate(insertQuery(object));
+            connection = DriverManager.getConnection("jdbc:sqlite:SuppliersStock.db");
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
+    }
+    public void closeConnection(){
+        if(connection == null)
+            return;
         try{
-            conn.close();
+            connection.close();
         }
         catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
+        connection = null;
     }
-    void update(T object){
+    protected abstract String insertQuery(ObjectType object); // Including inserting to identityMap
+    protected abstract String deleteQuery(ObjectType object); // Including deleting from identityMap
+    protected abstract String updateQuery(ObjectType object);
+    protected String updateQuery(Integer...key){return "";} //override with multiply integer argument for periodicReport
+    protected abstract String findQuery(String ...key);
+    protected abstract String findAllQuery();
+    protected String findAllQueryByKey(String ...key){return "";};
+    protected abstract ObjectType findInIdentityMap(String ...key);
+    protected abstract ObjectType insertIdentityMap(ResultSet match) throws SQLException;
+    public void insert(ObjectType object){executeVoidQuery(this::insertQuery, object);}
+    public void update(ObjectType object){executeVoidQuery(this::updateQuery, object);}
+    public void delete(ObjectType object){executeVoidQuery(this::deleteQuery, object);}
+    public void executeVoidQuery(String query)
+    {
+        openConnection();
+        if(connection == null)
+            return;
+        try{
+            stmt = connection.createStatement();
+            stmt.execute("PRAGMA foreign_keys = ON;");
+            stmt.executeUpdate(query);
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        closeConnection();
+    }
+    public void executeVoidQuery(Function<ObjectType, String> queryFunc, ObjectType object){
+        executeVoidQuery(queryFunc.apply(object));
+    }
+    public ResultSet executeSelectQuery(String query){
+        openConnection();
+        if(connection == null)
+            return null;
+        ResultSet matches = null;
+        try{
+            stmt = connection.createStatement();
+            stmt.execute("PRAGMA foreign_keys = ON;");
+            matches = stmt.executeQuery(query);
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+		return matches;
+	}
+    public Optional<ObjectType> find(String ...key){
+        ObjectType identityMapObject = findInIdentityMap(key);
+        if(identityMapObject != null)
+        {
+            return Optional.of(identityMapObject);
+        }
+        ResultSet matches = executeSelectQuery(findQuery(key));
+        Optional<ObjectType> result = Optional.empty();
+        try{
+            if(matches == null) {
+                throw new SQLException("SELECT QUERY FAILED");
+            }
+            if(matches.next()){
+                ObjectType object = insertIdentityMap(matches);
+                if(object != null)
+                    result = Optional.of(object);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        return result;
+    }
 
+    public LinkedList<ObjectType> findAll(){
+        LinkedList<ObjectType> objects = new LinkedList<>();
+        openConnection();
+        if(connection == null) {
+            return objects;
+        }
+        ResultSet matches = executeSelectQuery(findAllQuery());
+        if(matches == null) {
+            closeConnection();
+            return objects;
+        }
+        try{
+            while (matches.next()) {
+                ObjectType object = insertIdentityMap(matches);
+                if(object != null)
+                    objects.add(object);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        closeConnection();
+        return objects;
     }
-    void delete(T object){
-
+    public LinkedList<ObjectType> findAllByKey(String ... key){
+        LinkedList<ObjectType> objects = new LinkedList<>();
+        openConnection();
+        if(connection == null) {
+            return objects;
+        }
+        ResultSet matches = executeSelectQuery(findAllQueryByKey(key));
+        if(matches == null) {
+            closeConnection();
+            return objects;
+        }
+        try{
+            while (matches.next()) {
+                ObjectType object = insertIdentityMap(matches);
+                if(object != null)
+                    objects.add(object);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        closeConnection();
+        return objects;
     }
-    Optional<T> find(String param){return null;}
 }

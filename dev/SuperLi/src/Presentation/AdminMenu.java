@@ -57,7 +57,7 @@ public class AdminMenu extends AMenu {
                 case 8 -> printAllOrdersInSystem();
                 case 9 -> printAllBranchOrders();
                 case 0 -> run = false;
-                default -> System.out.println("Please enter a number between 0-5.");
+                default -> System.out.println("Invalid option");
             }
         }
     }
@@ -364,11 +364,12 @@ public class AdminMenu extends AMenu {
                 numDaysToDeliver = getNumberOfDaysToDeliver();
             }
         }
-        try {
-            SupplierCard supCard;
-            // Commented line to compile
-//            adminController.addNewSupplier(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail, categories, manufacturers, supCard, days, numDaysToDeliver);
-        } catch (InvalidParameterException e) {
+        try
+        {
+            adminController.addNewSupplier(name, address, id, bankAcc, payment, contactName, contactPhone, contactEmail, categories, manufacturers, days, numDaysToDeliver);
+        }
+        catch (InvalidParameterException e)
+        {
             System.out.println(e.getMessage());
             System.out.println("Details are incorrect, no supplier was added. please try again next time.");
         }
@@ -418,7 +419,8 @@ public class AdminMenu extends AMenu {
 //        }
         try {
             LinkedList<Order> allBranchOrders = adminController.getAllOrdersOfBranch(branchNumber);
-            //PRINT ALL ORDERS.
+            for (Order order : allBranchOrders)
+                System.out.println(order.toString());
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
         }

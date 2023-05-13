@@ -24,7 +24,7 @@ public class SupplierContract {
         this.supplierItems = new LinkedList<SupplierItem>();
     }
 
-    public boolean isMarketIdExists(Pair<Integer, Integer> pairMarketIdAndQuantity)
+    public boolean checkItemIDandAmount(Pair<Integer, Integer> pairMarketIdAndQuantity)
     {
         for(int i=0;i<this.supplierItems.size();i++)
         {
@@ -77,12 +77,20 @@ public class SupplierContract {
         return -1;
     }
 
-    public boolean isitemExists(int catalogNumber)
+    public SupplierItem getSupplierItemByCatalogNum(int catalogNumber)
     {
-        if(this.checkIfItemExists(catalogNumber) == -1)
-            return false;
-        return true;
+        int index = this.checkIfItemExists(catalogNumber);
+        if(index == -1)
+            return null;
+        return this.supplierItems.get(index);
     }
+
+//    public boolean isitemExists(int catalogNumber)
+//    {
+//        if(this.checkIfItemExists(catalogNumber) == -1)
+//            return false;
+//        return true;
+//    }
 
     //this method checks if the item's manufacturer is valid.
     private boolean checkIfItemHasValidManufacturer(String manufacturer)
@@ -123,17 +131,17 @@ public class SupplierContract {
     }
 
     // add item with given parameters
-    public boolean addItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits, String category, int marketId)
-    {
-        if(!canAddItem(catalogNumber,manufacturer,category))
-        {
-            return false;
-        }
-        //else, if possible:
-        SupplierItem newItem = new SupplierItem(catalogNumber, itemName, manufacturer, unitPrice, unitWeight, numberOfUnits, category, marketId);
-        this.supplierItems.add(newItem);
-        return true;
-    }
+//    public boolean addItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits, String category, int marketId)
+//    {
+//        if(!canAddItem(catalogNumber,manufacturer,category))
+//        {
+//            return false;
+//        }
+//        //else, if possible:
+//        SupplierItem newItem = new SupplierItem(catalogNumber, itemName, manufacturer, unitPrice, unitWeight, numberOfUnits, category, marketId);
+//        this.supplierItems.add(newItem);
+//        return true;
+//    }
 
     // add item with given item
     public void addItem(SupplierItem newItem)
@@ -144,43 +152,43 @@ public class SupplierContract {
     {
         int index = checkIfItemExists(catalogNumber);
         if(index == -1)
-            throw new Exception("SuperLi.src.BusinessLogic.Supplier not supplying an item with given catalog number.");
+            throw new Exception("Supplier not supplying an item with given catalog number.");
         this.supplierItems.remove(index);
         this.getDiscountDocument().removeAllDiscountsOfItem(catalogNumber);
     }
 
-    //this method returns false if it's impossible to add discount for item. else, returns true.
-    public boolean addItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)
+    //this method returns null if it's impossible to add discount for item. else, returns the new discount.
+    public ItemDiscount addItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)
     {
         //checking if the item we want to add discount to actually exists
         if(checkIfItemExists(catalogNumber)==-1)
         {
-            return false;
+            return null;
         }
         return this.discountDocument.addItemDiscount(catalogNumber,discountKind,discountType,discountSize,value);
     }
 
-    //this method throws exception if it's impossible to remove discount for item. else, removes it.
-    public void removeItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)throws Exception
+    //this method throws exception if it's impossible to remove discount for item. else, removes it and returns the deleted discount.
+    public ItemDiscount removeItemDiscount(int catalogNumber, String discountKind, String discountType, double discountSize, double value)throws Exception
     {
         //checking if the item we want to remove the discount from is actually exists
         if(checkIfItemExists(catalogNumber)==-1)
         {
             throw new Exception("The supplier doesn't supply an item with given catalog number.");
         }
-        this.discountDocument.removeItemDiscount(catalogNumber,discountKind,discountType,discountSize,value);
+        return this.discountDocument.removeItemDiscount(catalogNumber,discountKind,discountType,discountSize,value);
     }
 
-    //this method returns false if it's impossible to add order discount. else, returns true.
-    public boolean addOrderDiscount(String discountKind, String discountType, double discountSize, double value)
+    //this method returns null if it's impossible to add order discount. else, returns the new OrderDiscount.
+    public OrderDiscount addOrderDiscount(String discountKind, String discountType, double discountSize, double value)
     {
         return this.discountDocument.addOrderDiscount(discountKind,discountType,discountSize,value);
     }
 
-    //this method throws exception if it's impossible to remove discount for order. else, removes it.
-    public void removeOrderDiscount(String discountKind, String discountType, double discountSize, double value)throws Exception
+    //this method throws exception if it's impossible to remove discount for order. else, removes it and returns deleted discount.
+    public OrderDiscount removeOrderDiscount(String discountKind, String discountType, double discountSize, double value)throws Exception
     {
-        this.discountDocument.removeOrderDiscount(discountKind,discountType,discountSize,value);
+        return this.discountDocument.removeOrderDiscount(discountKind,discountType,discountSize,value);
     }
 
     public ItemDiscount findItemDiscount(int catalogNumber, int amount)

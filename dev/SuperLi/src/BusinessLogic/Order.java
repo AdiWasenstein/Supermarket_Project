@@ -39,6 +39,27 @@ public class Order {
         this.branchNumber = branchNumber;
     }
 
+    public Order(Supplier orderSupplier, LinkedList<OrderItem> orderItems, int branchNumber, int orderNumber)
+    {
+        if (orderSupplier == null)
+            throw new InvalidParameterException("order must have supplier");
+        if (orderItems == null || orderItems.isEmpty())
+            throw new InvalidParameterException("order must have a least one item to order");
+        if (branchNumber <= 0)
+            throw new InvalidParameterException("Business.Branch number must be a positive number");
+
+        this.orderSupplier = orderSupplier;
+        this.orderItems = orderItems;
+        this.OrderDate = new Date();
+        for (OrderItem curr : orderItems)
+        {
+            this.costOfOrder+=curr.getFinalPrice();
+        }
+        this.branchNumber = branchNumber;
+        this.orderNumber = orderNumber;
+    }
+
+
     public String getSupplierName()
     {
         return this.orderSupplier.getSupplierCard().getSupplierName();
@@ -63,6 +84,8 @@ public class Order {
     {
         return this.OrderDate;
     }
+
+    public int getBranchNumber() {return this.branchNumber;}
 
     public String getContactNumber()
     {

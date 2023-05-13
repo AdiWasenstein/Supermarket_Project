@@ -35,6 +35,10 @@ public class StockManagementFacade {
         Optional<Branch> branch = branchDataMapper.find(Integer.toString(branchId));
         return branch.orElse(null);
     }
+    public String getBranchAddress(int branchId) {
+        Branch branch = getBranch(branchId);
+        return branch == null ? "" : branch.getAddress();
+    }
     public boolean addCatalogItem(int id, String name, String manufacturer, double sellPrice, int minCapacity, LinkedList<String> categories, double size, int measureUnit) {
         if (getCatalogItem(id) != null)
             return false;
@@ -137,6 +141,7 @@ public class StockManagementFacade {
         if(catalogItem == null)
             return false;
         catalogItem.setSellPrice(sellPrice);
+        catalogItemDataMapper.update(catalogItem);
         return true;
     }
     public boolean setCatalogItemCostumerDiscount(int id, LocalDate expirationDate, double value, boolean isPercentage, int minAmount){
@@ -145,19 +150,23 @@ public class StockManagementFacade {
             return false;
         CostumerDiscount costumerDiscount = new CostumerDiscount(expirationDate, value, isPercentage, minAmount);
         catalogItem.setCostumerDiscount(costumerDiscount);
+        catalogItemDataMapper.update(catalogItem);
         return true;
     }
     public void setCategoryDiscount(LinkedList<String> categories, double size, int measureUnit, LocalDate expirationDate, double value, boolean isPercentage, int minAmount){
         CostumerDiscount costumerDiscount = new CostumerDiscount(expirationDate, value, isPercentage, minAmount);
         Category category = new Category(categories, new Size(size, MeasureUnit.values()[measureUnit]));
-        for(CatalogItem catalogItem : catalogItemDataMapper.findAllFromCategory(category))
+        for(CatalogItem catalogItem : catalogItemDataMapper.findAllFromCategory(category)) {
             catalogItem.setCostumerDiscount(costumerDiscount);
+            catalogItemDataMapper.update(catalogItem);
+        }
     }
     public boolean setMinCapacity(int id, int amount){
         CatalogItem catalogItem = getCatalogItem(id);
         if (catalogItem == null)
             return false;
         catalogItem.setMinCapacity(amount);
+        catalogItemDataMapper.update(catalogItem);
         return true;
     }
     public boolean setDamage(int barcode, int type, int branchId){
@@ -224,5 +233,14 @@ public class StockManagementFacade {
             return false;
         // TO SEND TO ORDER CONTROLLER
         return true;
+    }
+
+    public int catalogIdAccordingToNameManufacturerCategory(String name, String manufacturer, String category)throws Exception
+    {
+        Optional<CatalogItem> catalogItemOpt = this.catalogItemDataMapper.findAccordingToNameManufacturerCategory(name, manufacturer, category);
+        if(catalogItemOpt.isEmpty())
+            throw new Exception("No item in stock fits to given details.");
+        CatalogItem cItem = catalogItemOpt.get();
+        return cItem.getId();
     }
 }

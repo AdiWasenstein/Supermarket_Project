@@ -18,6 +18,8 @@ public class BranchStockManagerMenu extends AMenu{
         return branchStockManagerMenu;
     }
     public void printMenu(){
+        System.out.format("Welcome %s's branch manager!\n", stockManagementFacade.getBranchAddress(branchId));
+        System.out.println("What would you like to do?");
         System.out.println("1. Create Shortage Order");
         System.out.println("2. Update Periodic Report");
         System.out.println("3. Print Report");

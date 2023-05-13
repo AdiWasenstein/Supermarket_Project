@@ -11,7 +11,7 @@ public class SupplierItem{
     private String catagory;
     private int marketId;
 
-    public SupplierItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits,String catagory,int marketId)
+    public SupplierItem(int catalogNumber,String itemName, String manufacturer,double unitPrice,double unitWeight,int numberOfUnits,String catagory,int marketId)throws InvalidParameterException
     {
         if(catalogNumber <= 0 )
             throw new InvalidParameterException("catalog number must be a positive number");
@@ -41,16 +41,20 @@ public class SupplierItem{
     {
         return this.marketId;
     }
-    public void SetUnitPrice(double price)
+    public void SetUnitPrice(double price)throws InvalidParameterException
     {
         if(price > 0)
             this.unitPrice = price;
+        else
+            throw new InvalidParameterException();
     }
 
-    public void SetNumberOfUnits(int numOfUnits)
+    public void SetNumberOfUnits(int numOfUnits)throws InvalidParameterException
     {
         if (numOfUnits > 0)
             this.numberOfUnits = numOfUnits;
+        else
+            throw new InvalidParameterException();
     }
 
     public int getCatalogNumber() {
@@ -75,9 +79,10 @@ public class SupplierItem{
 
     public int getNumberOfUnits() {return numberOfUnits;}
 
+    public String getCatagory() {return catagory;}
     public String toString()
     {
-        return "Catalog number: " + catalogNumber + ", Market Id: " + marketId + ", Item name: " + itemName;
+        return "Catalog number: " + catalogNumber + ", Market Id: " + marketId + ", Item name: " + itemName + ", Max amount to supply: " + numberOfUnits + " \n";
     }
 
 }
