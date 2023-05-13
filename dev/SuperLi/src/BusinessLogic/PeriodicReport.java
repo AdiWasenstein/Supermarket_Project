@@ -22,7 +22,8 @@ public class PeriodicReport extends AReport{
             throw new InvalidParameterException("periodic report must have a supplier.");
         if(items == null)
             throw new InvalidParameterException("periodic report must have items to order.");
-        this.reportId = reportCounter++;
+        this.reportId = reportCounter;
+        reportCounter++;
         this.branchNumber = branchNumber;
         this.dayToOrder = dayToOrder;
         this.supplier = supplier;
@@ -103,6 +104,13 @@ public class PeriodicReport extends AReport{
         return null;
     }
 
+    public int getQuantityOfItem(SupplierItem suppItem)
+    {
+        if (!items.containsKey(suppItem))
+            return 0;
+        int amount = items.get(suppItem);
+        return amount;
+    }
     public Day oneDayBeforeOrderDay()
     {
         //getting the index of day to order

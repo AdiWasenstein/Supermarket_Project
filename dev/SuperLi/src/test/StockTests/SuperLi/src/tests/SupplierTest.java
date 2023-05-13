@@ -101,6 +101,31 @@ public class SupplierTest {
         Assertions.assertEquals(0, supp.daysTillArrives(Day.friday));
     }
 
+    @Test
+    void itemGettersTest()
+    {
+        SupplierItem item = supp.getAllSuppItem().getFirst();
+        Assertions.assertEquals(40, item.getCatalogNumber());
+        Assertions.assertEquals("Milk 3%", item.getItemName());
+        Assertions.assertEquals(22, item.getUnitPrice());
+        Assertions.assertEquals(1, item.getUnitWeight());
+        Assertions.assertEquals(50, item.getNumberOfUnits());
+        Assertions.assertEquals("Dairy Products", item.getCatagory());
+        Assertions.assertEquals("Tnuva", item.getManufacturer());
+
+    }
+
+    @Test
+    void itemSettersTest()
+    {
+        SupplierItem item = supp.getAllSuppItem().getFirst();
+        item.SetNumberOfUnits(60);
+        Assertions.assertEquals(60, item.getNumberOfUnits());
+        item.SetUnitPrice(40);
+        Assertions.assertEquals(40, item.getUnitPrice());
+
+    }
+
 
 
     //    public static void main(String[] args)
