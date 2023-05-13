@@ -85,12 +85,12 @@ public class OrderController {
     }
 
     // this method receive supplier id and list of catalog numbers and amount and create report accordingly
-    public boolean createNewPeriodicReport(int branchNumber, Supplier supp, Day day, HashMap<Integer,Integer> items) //TODO parameter
+    public PeriodicReport createNewPeriodicReport(int branchNumber, Supplier supp, Day day, HashMap<Integer,Integer> items)
     {
         PeriodicReport report = this.orderManagment.createPeriodicReport(branchNumber, supp, day, items);
          // check if repord eas created successfully
           if (report == null)
-              return false;
+              return null;
           // update report data mapper
         this.periodicReportDataMapper.insert(report);
         // if the day the report need to be sent is the day today, make a new order
@@ -99,18 +99,9 @@ public class OrderController {
 //            this.orderDataMapper.insert(orderFromNewReport);
         if (orderFromNewReport != null)
             addOrderToSystemData(orderFromNewReport);
-        return true;
+        return report;
     }
 
-//    // this methood will recieve periodic report and return order accordingly
-//    public Order createNewPeriodicOrder(PeriodicReport report) //TODO parameter
-//    {
-//
-//        // need to decide if accessing data mapper and finds the object or data managment
-//        // first calling the report method
-//        // than creating new order
-//        return null;
-//    }
 
 
     public LinkedList<PeriodicReport> getAllPeriodicReports()
@@ -118,12 +109,6 @@ public class OrderController {
         return this.periodicReportDataMapper.findAll();
     }
 
-//    public PeriodicReport getReportById (int reportNumber)
-//    {
-//        // need to check that exist
-//        // need to check the time
-//        return null;
-//    }
 
     //this func gets reportId and HashMap of items according to their market id, and their quantities to update.
     public boolean updateReport (int reportId, HashMap<Integer,Integer> itemsWithUpdatedQuantities)

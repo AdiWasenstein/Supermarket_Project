@@ -163,6 +163,12 @@ public class PeriodicReport extends AReport{
             throw new Exception("supplier item doesn't exist in report.");
     }
 
+    public static int howManyReports()
+    {
+        return reportCounter;
+    }
+
+
 
 
 
