@@ -3,6 +3,7 @@ package SuperLi.src.BusinessLogic;
 import SuperLi.src.DataAccess.BranchDataMapper;
 import SuperLi.src.DataAccess.CatalogItemDataMapper;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Random;
@@ -231,10 +232,23 @@ public class StockManagementFacade {
         RequiredStockReport report = generateRequiredStockReport(branchId);
         if(report.getReportData().size() == 0)
             return false;
-        // TO SEND TO ORDER CONTROLLER
-        return true;
+        return OrderController.getInstance().createNewMissingItemsOrder(report);
     }
-
+    public boolean updatePeriodReport(int reportId, int branchId)throws Exception{
+        LinkedList<Integer> reportCatalogItems;reportCatalogItems = OrderController.getInstance().allItemsInPeriodicReport(reportId, branchId);
+        if(reportCatalogItems == null)
+            return false;
+        Branch branch = getBranch(branchId);
+        HashMap<Integer, Integer> reportQuantities = new HashMap<>();
+        for(Integer catalogId : reportCatalogItems){
+            Optional<CatalogItem> catalogItemOpt = catalogItemDataMapper.find(catalogId.toString());
+            if(catalogItemOpt.isEmpty())
+                continue;
+            CatalogItem catalogItem = catalogItemOpt.get();
+            reportQuantities.put(catalogId, catalogItem.getMinCapacity() * 2 - branch.getTotalIdAmount(catalogId));
+        }
+        return OrderController.getInstance().updateReport(reportId, reportQuantities);
+    }
     public int catalogIdAccordingToNameManufacturerCategory(String name, String manufacturer, String category)throws Exception
     {
         Optional<CatalogItem> catalogItemOpt = this.catalogItemDataMapper.findAccordingToNameManufacturerCategory(name, manufacturer, category);

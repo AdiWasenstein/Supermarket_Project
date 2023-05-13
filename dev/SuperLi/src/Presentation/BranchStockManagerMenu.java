@@ -1,5 +1,4 @@
 package SuperLi.src.Presentation;
-
 import SuperLi.src.BusinessLogic.StockManagementFacade;
 
 public class BranchStockManagerMenu extends AMenu{
@@ -63,6 +62,26 @@ public class BranchStockManagerMenu extends AMenu{
         System.out.println("Returning to menu...");
     }
     public void updatePeriodicOrder() {
-        //TO DO WITH SUPPLIERS
+        System.out.println("Please choose a report to update:");
+        if(!ReportViewer.getInstance().generatePeriodicReportsAccordingToBrunch(branchId)) {
+            System.out.println("There are no periodic reports of branch with given number. Returning to menu...");
+            return;
+        }
+        System.out.print("Please insert the report's ID that you want ot update: "); int reportId = inputNumber();
+        if(reportId < 0) {
+            System.out.println("Invalid report ID. Returning to menu...");
+            return;
+        }
+        try{
+            if(!stockManagementFacade.updatePeriodReport(reportId, branchId)) {
+                System.out.println("Cannot update the requested reportId");
+                return;
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        System.out.format("Report %d was updated successfully. Returning to menu...\n", reportId);
     }
 }

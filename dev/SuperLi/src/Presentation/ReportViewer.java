@@ -20,23 +20,18 @@ public class ReportViewer {
             reportViewer = new ReportViewer();
         return reportViewer;
     }
-    public void generatePeriodicReportsAccordingToBrunch(int branchId)
+    public boolean generatePeriodicReportsAccordingToBrunch(int branchId)
     {
         LinkedList<PeriodicReport> reportsOfBranch = OrderController.getInstance().findReportsOfBranch(branchId);
         if(reportsOfBranch == null || reportsOfBranch.isEmpty())
+            return false;
+        System.out.println("Periodic Reports of branch " + branchId);
+        for(PeriodicReport report : reportsOfBranch)
         {
-            System.out.println("There are no periodic reports of branch with given number.");
-            return;
+            System.out.println("Report id: " + report.getReportId() + "\nDay to order: " + report.getDayToOrder().toString() + "\nSupplier: " + report.getSupplier().getSupplierCard().getSupplierName());
+            viewReport(report);
         }
-        else
-        {
-            System.out.println("Periodic Reports of branch " + branchId);
-            for(PeriodicReport report : reportsOfBranch)
-            {
-                System.out.println("Report id: " + report.getReportId() + "\nDay to order: " + report.getDayToOrder().toString() + "\nSupplier: " + report.getSupplier().getSupplierCard().getSupplierName());
-                viewReport(report);
-            }
-        }
+        return true;
     }
     public void generateAllCatalogReport(){
         viewReport(stockManagementFacade.generateAllCatalogReport());
