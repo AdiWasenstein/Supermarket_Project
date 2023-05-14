@@ -69,7 +69,7 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         {
             executeVoidQuery(String.format("INSERT INTO PeriodicReports (branchNumber, reportId, supplierCatalogNumber, numberOfUnits, supplierId, day) VALUES (%d, %d, %d, %d, %d, '%s')"
                     ,report.getBranchNumber(), report.getReportId(),
-                    supplierItem.getCatalogNumber(), supplierItem.getNumberOfUnits(), report.getSupplier().getSupplierId(), report.getDayToOrder().toString()));
+                    supplierItem.getCatalogNumber(), itemsInReport.get(supplierItem), report.getSupplier().getSupplierId(), report.getDayToOrder().toString()));
         }
     }
 

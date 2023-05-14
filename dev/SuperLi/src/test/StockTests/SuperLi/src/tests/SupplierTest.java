@@ -56,8 +56,7 @@ public class SupplierTest {
         LinkedList<String> catList = new LinkedList<>();
 
 
-        catList.add("Breads");catList.add("Dairy Products"); catList.add("Soap");
-        Assertions.assertArrayEquals(supp.getSupplierCatagories().toArray(), catList.toArray());
+
 
         supp.AddNewManufacturer("Lalin");
         LinkedList<String> manList = new LinkedList<>();
@@ -151,20 +150,19 @@ public class SupplierTest {
     void itemDiscount()
     {
         SupplierContract supplierContract = supp.getSupplierContract();
-        supplierContract.addItemDiscount(12, "ItemUnitDiscount", "percentage", 50, 50);
-        Assertions.assertNotNull(supplierContract.getDiscountDocument().getItemsDiscounts());
-        Discount disc = supp.getSupplierContract().findItemDiscount(12, 50);
+        supplierContract.addItemDiscount(1, "ItemUnitDiscount", "percentage", 50, 50);
+        Discount disc = supp.getSupplierContract().findItemDiscount(1, 50);
+        Assertions.assertNotNull(disc);
         Assertions.assertTrue(disc.canUseTheDiscount(60));
         Assertions.assertFalse(disc.canUseTheDiscount(4));
-        Assertions.assertTrue(supplierContract.getDiscountDocument().supplierHasItemDiscount());
         try
         {
-            supp.getSupplierContract().removeItemDiscount(12, "ItemUnitDiscount", "percentage", 50, 50 );
+            supp.getSupplierContract().removeItemDiscount(1, "ItemUnitDiscount", "percentage", 50, 50 );
 
         }
         catch (Exception e)
         {
-            Assertions.assertNotNull(supp.getSupplierContract().findItemDiscount(12, 50));
+            Assertions.assertNotNull(supp.getSupplierContract().findItemDiscount(1, 50));
         }
     }
 

@@ -33,7 +33,6 @@ public class OrderControllerTest {
             ReportViewer.getInstance().generateAllCatalogReport();
             itemsForReport = new HashMap<>();
             itemsForReport.put(12, 10);
-
       }
       @AfterEach
       void afterEach(){

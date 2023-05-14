@@ -207,7 +207,15 @@ public class SupplierContract {
             return null;
         Map<Integer,LinkedList<ItemDiscount>> itemsDiscounts = this.discountDocument.getItemsDiscounts();
         LinkedList<ItemDiscount> allDiscountsOfItem = itemsDiscounts.get(catalogNumber);
-        Pair<Integer, Integer> pair;
+        for(ItemDiscount dis : allDiscountsOfItem)
+        {
+            if(dis instanceof ItemUnitsDiscount)
+            {
+                ItemUnitsDiscount d = (ItemUnitsDiscount)dis;
+                if(d.getNumberOfUnitsOfItem() == amount)
+                    return dis;
+            }
+        }
         return null;
     }
 

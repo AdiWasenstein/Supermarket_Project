@@ -196,7 +196,7 @@ public class AdminMenu extends AMenu {
             try {
                 System.out.println("Enter manufacturer");
                 String manufacturer = input.nextLine();
-                if (!(manufacturer.matches("[a-zA-Z]+")))
+                if ((manufacturer.matches("[0-9]+")))
                     throw new InvalidParameterException("manufacturer is not valid");
                 if (manufacturers.contains(manufacturer))
                     throw new InvalidParameterException("impossible to add the same manufacturer twice.");
