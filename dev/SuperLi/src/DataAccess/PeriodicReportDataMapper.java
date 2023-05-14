@@ -157,15 +157,15 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
 
 
 
-   public LinkedList<PeriodicReport> findByBranch(int branchNum)
-   {
-       LinkedList<PeriodicReport> all = findAll();
-       LinkedList<PeriodicReport> reportsForBranch = new LinkedList<>();
-       for (PeriodicReport report : all)
-           if (report.getBranchNumber() == branchNum)
-               reportsForBranch.add(report);
-       return reportsForBranch;
-   }
+    public LinkedList<PeriodicReport> findByBranch(int branchNum)
+    {
+        LinkedList<PeriodicReport> all = findAll();
+        LinkedList<PeriodicReport> reportsForBranch = new LinkedList<>();
+        for (PeriodicReport report : all)
+            if (report.getBranchNumber() == branchNum)
+                reportsForBranch.add(report);
+        return reportsForBranch;
+    }
 
 
 }
