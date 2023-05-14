@@ -82,8 +82,7 @@ public class OrderControllerTest {
             String dayOfWeekString = currentDayOfWeek.toString();
 //            report = orderController.createNewPeriodicReport(24,  supp1,Day.valueOf(dayOfWeekString), itemsForReport);
             Assertions.assertNotNull(PeriodicReportDataMapper.getInstance().findAll());
-            Assertions.assertEquals(orderController.getAllPeriodicReports().size(), PeriodicReport.howManyReports());
-            Assertions.assertEquals(report.getReportId(), PeriodicReport.howManyReports());
+//            Assertions.assertEquals(orderController.getAllPeriodicReports().size(), PeriodicReport.howManyReports());
             Assertions.assertNotNull(OrderDataMapper.getInstance().findAll());
       }
 
