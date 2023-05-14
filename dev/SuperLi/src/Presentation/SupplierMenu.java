@@ -1,6 +1,8 @@
 package SuperLi.src.Presentation;
 
 import SuperLi.src.BusinessLogic.*;
+import SuperLi.src.DataAccess.OrderDataMapper;
+
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -160,7 +162,7 @@ public class SupplierMenu extends AMenu {
         Supplier supplier = findSupplierUser(scan);
         if (supplier == null)
             return;
-        for (Order order : supplier.getOrders())
+        for (Order order : this.supplierCon.getAllOrdersOfSupplier(supplier.getSupplierId()))
             System.out.println(order.toString());
     }
 

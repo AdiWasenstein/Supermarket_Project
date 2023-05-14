@@ -707,7 +707,7 @@ public class OrderManagment {
         for (Map.Entry<SupplierItem, Integer> entry : items.entrySet()) {
             Integer marketId = entry.getKey().GetMarketId();
             Integer quantity = entry.getValue();
-            Pair<Integer, Integer> supAndItem = new Pair<Integer, Integer>(marketId, quantity);
+            Pair<Integer, Integer> supAndItem = new Pair(marketId, quantity);
             itemsList.add(supAndItem);
         }
         Pair<Supplier, LinkedList<Pair<Integer, Integer>>> supAndItems = Pair.create(supp, itemsList);
