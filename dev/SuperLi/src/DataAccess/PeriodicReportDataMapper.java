@@ -22,11 +22,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         return periodicReportDataMapper;
     }
 
-//    // TODO implement
-//    public LinkedList<PeriodicReport> findAll(){return new LinkedList<>();}
-//    public LinkedList<PeriodicReport> findAllByBranch(String branchID){return new LinkedList<>();}
-
-
     public void removeSupplierItemFromPeriodicReports(SupplierItem supplierItem, int supplierId)
     {
         for(PeriodicReport report : this.periodicReportIdentityMap.values())
@@ -55,12 +50,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     {
         return "";
     }
-//    public String insertQuery(PeriodicReport report){
-//        periodicReportIdentityMap.put(report.getReportId(), report);
-//        return String.format("INSERT INTO Branches(reportId, supplierCatalogNumber, numberOfUnits, supplierId) VALUES (%d, %d, %d, %d)", report.getReportId(),
-//                report.);
-//    }
-
 
     public void insertReport(PeriodicReport report)
     {
@@ -76,13 +65,10 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     protected String deleteQuery(PeriodicReport report){
         return "";
     }
-
-
     protected String updateQuery(Integer...key)
     {
         return String.format("UPDATE PeriodicReports SET numberOfUnits = %d WHERE reportId = %d AND supplierCatalogNumber = %d", key[0], key[1], key[2]);
     }
-
     public void updateQueryForItems(HashMap<SupplierItem,Integer> itemsToUpdate, int reportId)
     {
         for(SupplierItem item : itemsToUpdate.keySet())
@@ -92,7 +78,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         }
 
     }
-
     protected String updateQuery(PeriodicReport x){
         return "";
     }
@@ -112,8 +97,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     public PeriodicReport findInIdentityMap(String ...key){
         return periodicReportIdentityMap.get(Integer.valueOf(key[0]));
     }
-
-
     public PeriodicReport insertIdentityMap(ResultSet match) throws SQLException {
         if (match == null)
             return null;
@@ -126,18 +109,13 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         HashMap<SupplierItem,Integer> items = new HashMap<>();
         HashMap<Integer,Integer> itemsTemp = new HashMap<>();
         int suppItemNum = match.getInt("supplierCatalogNumber");
-//        SupplierItem suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
         int numberUnits = match.getInt("numberOfUnits");
-//        items.put(suppItem, numberUnits);
         itemsTemp.put(suppItemNum, numberUnits);
         int supId = (match.getInt("supplierId"));
         while (match.next())
         {
-//            suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
-//            items.put(suppItem, match.getInt("numberOfUnits"));
             suppItemNum = match.getInt("supplierCatalogNumber");
             numberUnits = match.getInt("numberOfUnits");
-
             itemsTemp.put(suppItemNum, numberUnits);
         }
         Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(supId));
@@ -155,9 +133,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         periodicReportIdentityMap.put(report.getReportId(), report);
         return report;
     }
-
-
-
     public LinkedList<PeriodicReport> findByBranch(int branchNum)
     {
         LinkedList<PeriodicReport> all = findAll();
@@ -167,6 +142,4 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
                 reportsForBranch.add(report);
         return reportsForBranch;
     }
-
-
 }

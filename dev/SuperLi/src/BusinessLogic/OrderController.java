@@ -37,8 +37,6 @@ public class OrderController {
     }
 
 
-
-
     // this method called by stock modoul and with given valid branch number and missing item report will make new order
     // the method will return true if orders were made successfully, false if not.
     public boolean createNewMissingItemsOrder(RequiredStockReport report)
@@ -76,7 +74,6 @@ public class OrderController {
         for (Order order : orders)
         {
             branch.addOrder(order);
-//            this.orderDataMapper.insert(order);
         }
         return true;
     }
@@ -99,11 +96,6 @@ public class OrderController {
         this.periodicReportDataMapper.insert(report);
         // if the day the report need to be sent is the day today, make a new order
         Order orderFromNewReport = this.orderManagment.createOrderOfNewPeriodic(report);
-//        if (orderFromNewReport != null)
-//            this.orderDataMapper.insert(orderFromNewReport);
-        //TODO - maube to return it
-//        if (orderFromNewReport != null)
-//            OrderManagment.getInstance().addOrderToSystemData(orderFromNewReport);
         return report;
     }
 
@@ -193,18 +185,9 @@ public class OrderController {
     {
         if (branchID <= 0)
             return null;
-//       Optional<Branch> branchFound = this.branchDataMapper.find(branchID.toString());
-//       // check if branch with the given id is found. If not returns null, else get it.
-//       if (branchFound.isEmpty())
-//           return null;
-
         LinkedList<PeriodicReport> reportsFound = this.periodicReportDataMapper.findByBranch(branchID);
         return reportsFound;
-//        for (PeriodicReport currReport : reportsFound)
-//            System.out.println(currReport.toString());
     }
-
-
 
     public void makeOrdersOfToday()
     {
@@ -278,21 +261,4 @@ public class OrderController {
             return supp.getAllSuppItem();
         return null;
     }
-
-//    private void addOrderToSystemData(Order order)
-//    {
-//        if (order == null)
-//            return;
-//        Supplier suppOfOrder = order.getOrderSupplier();
-//        Branch branchOfOrder = this.branchDataMapper.find(Integer.toString(order.branchNumber)).get();
-//        // adding to the objects in cash
-////        suppOfOrder.addOrder(order);
-//        branchOfOrder.addOrder(order);
-//        // insert to DB
-//        this.orderDataMapper.insert(order);
-//
-//    }
-
-
-
 }

@@ -71,15 +71,6 @@ public class OrderManagment {
         LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> listCombinationsFullItems = new LinkedList<>();
         // finding full combination for items that can be supplied fully- in listCombinationsFullItems
         combinationsForFullItems(suppliers, itemsCompletely, listCombinationsFullItems, new HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>());
-//        if (itemsSeperateToUnits.isEmpty())//meaning there is no item we need to separate to units. therefore we would like to check maybe there is a supplier that can supply all ordered items.
-//        {
-//
-//            // TODO maybe need to change
-//            LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> listOfoneSupplierSuppliesAll = isOneSupplierCanSupplyAllExists(listCombinationsFullItems);
-//            if (!listOfoneSupplierSuppliesAll.isEmpty()) {
-//                return findCheappestCombination(listOfoneSupplierSuppliesAll);
-//            }
-//        }
         for (int i = 0; i < listCombinationsFullItems.size(); i++)//running over each combination of separating the full items
         {
             for (int j = 0; j < itemsSeperateToUnits.size(); j++)//for each partial item
@@ -104,7 +95,6 @@ public class OrderManagment {
                     }
                 } else { // we can split the current item between the suppliers already in the combination (fullCombiSuppliers)
                     HashMap<Supplier, Integer> fastCombination = findTheFastestSeparatingItemToUnitsCombination(itemsSeperateToUnits.get(j).getLeft(), listCombinationsForSeperateItem);
-//                    this.checkSuppliersOnBothCombinations(itemsSeperateToUnits.get(j).getLeft(), listCombinationsForSeperateItem, listCombinationsFullItems.get(i));
                     // after we found the best option, we merge the option to current combination being checked
                     addPartialCombiToFullCombi(itemsSeperateToUnits.get(j).getLeft(), fastCombination, listCombinationsFullItems.get(i));
                 }
@@ -141,7 +131,6 @@ public class OrderManagment {
         for (int i = 0; i < listCombinationsForSeperateItem.size(); i++) {
             HashMap<Supplier, Integer> currentCombi = new HashMap<>(listCombinationsForSeperateItem.get(i));
             HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> temp = new HashMap<>();
-            // TODO get where we found the value of the integer and change it to arrival time
             for (Supplier sup : currentCombi.keySet()) {
                 int saveAmount = currentCombi.get(sup);
                 LinkedList<Pair<Integer, Integer>> tempList = new LinkedList<>();
@@ -196,48 +185,20 @@ public class OrderManagment {
 
     //    private HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> checkSuppliersOnBothCombinations(int itemId, LinkedList<HashMap<SuperLi.src.BusinessLogic.Supplier,Integer>> listCombinationsForOneSeperateItem, HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> combinationFullItems)
     private void checkSuppliersOnBothCombinations(int itemId, LinkedList<HashMap<Supplier, Integer>> listCombinationsForOneSeperateItem, HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationFullItems) {
-
         for (int i = 0; i < listCombinationsForOneSeperateItem.size(); i++) //running over all the combinations for separating the item
-        {
-//            if(isFullCombiContainsPartialCombi(listCombinationsForOneSeperateItem.get(i), combinationFullItems))
-//            {
-//                combinationFullItems = this.addPartialCombiToFullCombi(itemId, listCombinationsForOneSeperateItem.get(i), combinationFullItems);
             this.addPartialCombiToFullCombi(itemId, listCombinationsForOneSeperateItem.get(i), combinationFullItems);
-//            }
-        }
     }
 
     //    private HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> addPartialCombiToFullCombi(int itemId, HashMap<SuperLi.src.BusinessLogic.Supplier,Integer> partialItemCombi, HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> fullItemCombi)
     private void addPartialCombiToFullCombi(int itemId, HashMap<Supplier, Integer> partialItemCombi, HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> fullItemCombi) {
-//        System.out.println("check this:");
-//        System.out.println(partialItemCombi);
-//        System.out.println(fullItemCombi);
-//        HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> temp = new HashMap<>(fullItemCombi);
-//        HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> t = new HashMap<>();
         for (Supplier sup : partialItemCombi.keySet()) {
-//            fullItemCombi.get(sup).add(Pair.create(itemId,partialItemCombi.get(sup)));
             LinkedList<Pair<Integer, Integer>> temp = new LinkedList<>();
             temp = (LinkedList<Pair<Integer, Integer>>) fullItemCombi.get(sup).clone();
             temp.add(Pair.create(itemId, partialItemCombi.get(sup)));
             fullItemCombi.remove(sup);
             fullItemCombi.put(sup, temp);
-//            temp.add(Pair.create(itemId,partialItemCombi.get(sup)));//OLAY ZRICHA
-//            t.get(sup).add(Pair.create(itemId,partialItemCombi.get(sup)));
-//            t.put(sup,temp);
         }
-//        return t;
     }
-
-    //not needed if the pizul is in my shita:
-//    private boolean isFullCombiContainsPartialCombi(HashMap<SuperLi.src.BusinessLogic.Supplier,Integer> partialItemCombi, HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> fullItemCombi)
-//    {
-//        for (SuperLi.src.BusinessLogic.Supplier sup : partialItemCombi.keySet())
-//        {
-//            if(!fullItemCombi.containsKey(sup))
-//                return false;
-//        }
-//        return true;
-//    }
     //this method returns pair with the intersection group and the difference group of supplier's items and the ordered items.
     private Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<Pair<Integer, Integer>>> getIntersectionAndDifferenceItems(Supplier sup, LinkedList<Pair<Integer, Integer>> items) {
         LinkedList<Pair<Integer, Integer>> intersection = new LinkedList<Pair<Integer, Integer>>();
@@ -256,9 +217,6 @@ public class OrderManagment {
     //this method updates the resultlist to have all the combinations of parting an item's units.
     public LinkedList<HashMap<Supplier, Integer>> combinationsForPartialItems(LinkedList<Supplier> suppliers, int itemId, int quantity, HashMap<Supplier, Integer> combination, LinkedList<HashMap<Supplier, Integer>> resultList) {
         if (quantity <= 0) {
-//            System.out.println("combination: "+combination);
-//            resultList.add(combination);
-//            System.out.println("resultlist: "+ resultList);
             HashMap<Supplier, Integer> temp = new HashMap<>(combination);
             resultList.add(temp);
             return resultList;
@@ -266,7 +224,6 @@ public class OrderManagment {
         Pair<Integer, Integer> max = findSupplierWithMaxUnitsOfItem(suppliers, itemId);
         LinkedList<Pair<Integer, Integer>> maxSup = allSuppliersWithSameNumOfUnits(max.getRight(), suppliers, itemId);
         for (int i = 0; i < maxSup.size(); i++) {
-//            System.out.println(suppliers.get(maxSup.get(i).getLeft()) + ": " + maxSup.get(i).getRight());
             int m = maxSup.get(i).getLeft();
             LinkedList<Supplier> sups = new LinkedList<>(suppliers);
             sups.remove(m);
@@ -277,11 +234,7 @@ public class OrderManagment {
                 sendQ = quantity;
             }
             combination.put(suppliers.get(maxSup.get(i).getLeft()), sendQ);
-//            this.ITryMyBestOK(sups, itemId, quantity-sendQ,combination,resultList);
             resultList = combinationsForPartialItems(sups, itemId, quantity - sendQ, combination, resultList);
-//            combi = new HashMap<>();
-//            resultList.add(this.ITryMyBestOK(sups, itemId, quantity-sendQ,combination,resultList));
-//            System.out.println("resultlist: "+resultList);
             combination.remove(suppliers.get(maxSup.get(i).getLeft()));
         }
         return resultList;
@@ -315,13 +268,10 @@ public class OrderManagment {
             Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<Pair<Integer, Integer>>> pair = getIntersectionAndDifferenceItems(suppliers.get(i), items);
             combination.put(suppliers.get(i), pair.getLeft());
             LinkedList<Supplier> sups = new LinkedList<>(suppliers);
-//            sups = suppliers;
             sups.remove(i);
             LinkedList<Pair<Integer, Integer>> leftItems1 = pair.getRight();
             LinkedList<Pair<Integer, Integer>> leftItems2 = new LinkedList<>(leftItems1);
             HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combi = new HashMap<>(combination);
-////            combi = combination;
-////            this.recTry(sups);
             if (leftItems2.isEmpty())//if the supplier can supply everything by himself
             {
                 combi.put(suppliers.get(i), pair.getLeft());
@@ -342,9 +292,6 @@ public class OrderManagment {
             }
         }
     }
-
-
-    //    public LinkedList<HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>>> listOfAllCombinations(LinkedList<SuperLi.src.BusinessLogic.Supplier> suppliers, LinkedList<Pair<Integer,Integer>> items, LinkedList<HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>>> resultList, HashMap<SuperLi.src.BusinessLogic.Supplier,LinkedList<Pair<Integer,Integer>>> combination)
     public HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> listOfAllCombinations(LinkedList<Supplier> suppliers, LinkedList<Pair<Integer, Integer>> items, LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> resultList, HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combination) {
         if (items.isEmpty()) {
             resultList.add(combination);
@@ -355,37 +302,14 @@ public class OrderManagment {
         }
         Supplier supplier = suppliers.get(0);
         Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<Pair<Integer, Integer>>> pair = this.getIntersectionAndDifferenceItems(supplier, items);
-//        if (pair.getLeft().isEmpty())//if intersection is empty
-//            continue;
         LinkedList<Supplier> sups = suppliers;
         sups.remove(0);
         HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combi = combination;
         combi.put(supplier, pair.getLeft());
         combination.put(supplier, pair.getLeft());
-//    suppliers.remove(index);
-//    System.out.println(pair.getRight());
         listOfAllCombinations(sups, pair.getRight(), resultList, combination);
         listOfAllCombinations(suppliers, items, resultList, combi);
-//        //stop crieteria
-//        if(items.isEmpty()) {
-//            resultList.add(combination);
-//            return resultList;
-//        }
-//        if(suppliers.isEmpty())
-//            return resultList;
-//        for (int i=0; i<suppliers.size();i++)
-//        {
-//            SuperLi.src.BusinessLogic.Supplier supplier = suppliers.get(i);
-//            Pair<LinkedList<Pair<Integer,Integer>>,LinkedList<Pair<Integer,Integer>>> pair = this.getIntersectionAndDifferenceItems(supplier,items);
-//            if (pair.getLeft().isEmpty())//if intersection is empty
-//                continue;
-//            LinkedList<SuperLi.src.BusinessLogic.Supplier> sups = suppliers;
-//            sups.remove(i);
-//            combination.put(supplier,pair.getLeft());
-//            resultList = listOfAllCombinations(sups,pair.getRight(),resultList,combination);
-//        }
-//        return resultList;
-////        return null;
+
         return null;
     }
 
@@ -430,8 +354,6 @@ public class OrderManagment {
                 if (!(entry.getKey().canSupplyMarketItem(currItem)))
                     updatedMissingItems.add(currItem);
             }
-//            HashMap<SuperLi.src.BusinessLogic.Supplier, LinkedList<Integer>> updated
-//            findSuppliersCombination(suppliersPossiblitiesSorted.remove(entry.getKey()), updatedMissingItems);
         }
         return null; //TO DELETE
     }
@@ -445,7 +367,6 @@ public class OrderManagment {
                 return Integer.compare(o2.getValue().size(), o1.getValue().size());
             }
         });
-
         // put data from sorted list to hashmap
         HashMap<Supplier, LinkedList<Integer>> temp = new LinkedHashMap<Supplier, LinkedList<Integer>>();
         for (Map.Entry<Supplier, LinkedList<Integer>> aa : list) {
@@ -557,8 +478,6 @@ public class OrderManagment {
         }
         LinkedList<Order> allOrders = OrderDataMapper.getInstance().findAll();
         int orderNumber = allOrders.size()+1;
-//        if (!allOrders.isEmpty())
-//            orderNumber = allOrders.size()+1;
         Order order = new Order(orderNumber, supplier, orderItems, branchNumber);
         OrderDiscount bestOrderDiscount = supplier.getSupplierContract().getDiscountDocument().
                 bestOrderDiscount(amount, order.getCostOfOrder());
@@ -611,7 +530,6 @@ public class OrderManagment {
         // Change by Yoav - switch SystemManagement to AdminController - to verify
         HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder = startOrderProcess(missingItemsList, suppliers);
         // Original
-//        HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder = OrderManagment.startOrderProcess(missingItems, SystemManagment.allSuppliers);
         orders = getOrdersForCombi(combinationToOrder, branchNumber);
         return orders;
     }
@@ -620,21 +538,15 @@ public class OrderManagment {
         // updates all the relevant databases with the new order
         for (Order order : orders) {
             // Changes by Yoav - Confirm
-//            AdminController.getInstance().getAllOrdersInSystem().add(order);
-//            AdminController.getInstance().getAllOrdersOfBranch(branchNumber).add(order);
             // END
-
             // Original Code - Commented to compile
-//            SystemManagment.allOrders.add(order);
            // order.getOrderSupplier().addOrder(order);
-//            SystemManagment.allBranches.get(branchNumber).addOrder(order);
         }
     }
 
 
 
     // this method receives all combinations and filter to only combinations with minimal arriving time
-    // TODO - need to check this method!
     public LinkedList<HashMap<Supplier, LinkedList<Pair<Integer, Integer>>>> getFastestCombos(LinkedList<HashMap<Supplier,
             LinkedList<Pair<Integer, Integer>>>> allCombis)
     {
@@ -676,10 +588,6 @@ public class OrderManagment {
        // return time till all combination arrives
         return time;
     }
-
-
-    // TODO - ALL NEXT SIGNATURES ARE FOR PERIODIC REPORT!
-
 
     // this method creates new periodic report and returns it
     public PeriodicReport createPeriodicReport(int reportId, int branchNumber, Supplier supp,  Day day, HashMap<Integer,Integer> items)

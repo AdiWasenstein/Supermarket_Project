@@ -13,45 +13,15 @@ public class SupplierDeliversRegular extends SupplierDelivers {
             throw new InvalidParameterException("Supplier must supply items in at least one day");
         this.deliveryDays = deliveryDays;
     }
-
     public LinkedList<Day> getDeliveryDays()
     {
         return this.deliveryDays;
     }
-
-//    ///// need to be tested
-//    @Override
-//    public Date arrivalTime(Date dateOfOrder) {
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(dateOfOrder);
-//        // find the day the order was made
-//        int dayOfOrder = cal.get(Calendar.DAY_OF_WEEK);
-//        // find the closest day that the suppliers delivers at
-//        int mindiff = 7;
-////        SuperLi.src.BusinessLogic.Day closestDay;
-//        for (SuperLi.src.BusinessLogic.Day day : deliveryDays) {
-//            // if the day is after
-//            if (day.ordinal() >= cal.get(Calendar.DAY_OF_WEEK) - 1){
-//                int diff = Math.abs(day.ordinal() + 1 - dayOfOrder); // Compute the absolute difference
-//                if (diff < mindiff) { // Update the closest day if the difference is smaller
-//                    mindiff = diff;
-////                closestDay = day;
-//                }
-//            }
-//
-//        }
-//        cal = Calendar.getInstance();
-//        cal.setTime(dateOfOrder);
-//        cal.add(Calendar.DATE, mindiff); // Add the difference between the closest day and dayOfWeek to the date
-//        Date closestDate = cal.getTime();
-//        return closestDate;
-//    }
     public String printSupplyTimeData()
     {
         return "Delivers on: " + deliveryDays.toString();
     }
 
-    // TODO check this method
     public int daysTillArrives(Day dayOfOrder)
     {
         int minimalGap = 8;

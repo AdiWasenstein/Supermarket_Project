@@ -25,8 +25,6 @@ public class RequiredStockReport extends ACatalogReport{
             amountsToOrder.put(catalogItem.getId(), catalogItem.getMinCapacity() * 2 - catalogItem.getTotalAmount(this.branchId));
         return amountsToOrder;
     }
-
-    // TODO
     public int getBranchId()
     {
         return this.branchId;
