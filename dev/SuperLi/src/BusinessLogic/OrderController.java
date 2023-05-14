@@ -103,13 +103,12 @@ public class OrderController {
           // update report data mapper
         this.periodicReportDataMapper.insert(report);
         // if the day the report need to be sent is the day today, make a new order
-        //TODO - add this row back
-//        Order orderFromNewReport = this.orderManagment.createOrderOfNewPeriodic(report);
+        Order orderFromNewReport = this.orderManagment.createOrderOfNewPeriodic(report);
 //        if (orderFromNewReport != null)
 //            this.orderDataMapper.insert(orderFromNewReport);
-        //TODO - also add this 2 rows back
+        //TODO - maube to return it
 //        if (orderFromNewReport != null)
-//            addOrderToSystemData(orderFromNewReport);
+//            OrderManagment.getInstance().addOrderToSystemData(orderFromNewReport);
         return report;
     }
 

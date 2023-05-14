@@ -21,7 +21,7 @@ public class OrderManagment {
     private OrderManagment() {
         this.orderDataMapper = OrderDataMapper.getInstance();
         this.hourToRunEveryDay = 10;
-        this.minuteToRunEveryDay = 0;
+        this.minuteToRunEveryDay = 00;
         this.secondToRunEveryDay = 0;
         this.millSecondToRunEveryDay = 0;
     }
