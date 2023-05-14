@@ -281,7 +281,7 @@ public class OrderController {
         Supplier suppOfOrder = order.getOrderSupplier();
         Branch branchOfOrder = this.branchDataMapper.find(Integer.toString(order.branchNumber)).get();
         // adding to the objects in cash
-        suppOfOrder.addOrder(order);
+//        suppOfOrder.addOrder(order);
         branchOfOrder.addOrder(order);
         // insert to DB
         this.orderDataMapper.insert(order);

@@ -324,12 +324,12 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         if(supplierOpt.isEmpty())
             return Optional.empty();
         Supplier sup = supplierOpt.get();
-        //orders
-        LinkedList<Order> orders = OrderDataMapper.getInstance().findAllBySupplier(Integer.valueOf(key[0]));
-        for( Order order : orders)
-        {
-            sup.addOrder(order);
-        }
+//        //orders
+//        LinkedList<Order> orders = OrderDataMapper.getInstance().findAllBySupplier(Integer.valueOf(key[0]));
+//        for( Order order : orders)
+//        {
+//            sup.addOrder(order);
+//        }
         //create contract
         SupplierContract contract = new SupplierContract(sup.getSupplierCard().getPayment(), sup);
         sup.setSupplierContract(contract);
@@ -492,6 +492,10 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         DiscountDataMapper.getInstance().deleteOrderCostDiscount(discount, sup.getSupplierId());
     }
 
+    public LinkedList<Order> getOrders(int supplierId)
+    {
+        return OrderDataMapper.getInstance().findAllBySupplier(supplierId);
+    }
 
 
 

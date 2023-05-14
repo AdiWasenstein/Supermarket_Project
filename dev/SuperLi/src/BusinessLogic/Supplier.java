@@ -11,7 +11,7 @@ public abstract class Supplier {
     LinkedList<String> supplierManufacturers;
     SupplierCard supplierCard;
     SupplierContract supplierContract;
-    LinkedList<Order> orders;
+//    LinkedList<Order> orders;
 
     public abstract boolean needDelivery();
 //    public abstract Date arrivalTime(Date dateOfOrder);
@@ -28,7 +28,7 @@ public abstract class Supplier {
         this.supplierManufacturers = supplierManufacturers;
         this.supplierCard = supplierCard;
         this.supplierContract = supplierContract;
-        this.orders = new LinkedList<>();
+//        this.orders = new LinkedList<>();
     }
 
     public boolean isContactExist(String phone, LinkedList<Contact> contacts)
@@ -66,10 +66,10 @@ public abstract class Supplier {
         return this.supplierContract;
     }
 
-    public LinkedList<Order> getOrders()
-    {
-        return this.orders;
-    }
+//    public LinkedList<Order> getOrders()
+//    {
+//        return this.orders;
+//    }
 
     public void AddNewCategory(String newCat)
     {
@@ -112,6 +112,11 @@ public abstract class Supplier {
     public boolean canSupplyMarketItem(Pair<Integer, Integer> pairMarketIdAndQuantity)
     {
         return this.supplierContract.checkItemIDandAmount(pairMarketIdAndQuantity);
+    }
+
+    public boolean supplierHasMarketId(int marketId)
+    {
+        return this.supplierContract.canSupplyMarketItem(marketId);
     }
 
     public int getNumberOfItemUnitsCanSupply(int marketId)
@@ -191,11 +196,11 @@ public abstract class Supplier {
         return this.supplierCard.getContacts();
     }
 
-    public void addOrder(Order order)
-    {
-        if (order != null)
-            this.orders.add(order);
-    }
+//    public void addOrder(Order order)
+//    {
+//        if (order != null)
+//            this.orders.add(order);
+//    }
 
 
     public LinkedList<SupplierItem> getAllSuppItem()

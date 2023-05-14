@@ -260,4 +260,9 @@ public class SupplierController {
         return true;
     }
 
+    public LinkedList<Order> getAllOrdersOfSupplier(int supplierId)
+    {
+        return this.supplierDataMapper.getOrders(supplierId);
+    }
+
 }

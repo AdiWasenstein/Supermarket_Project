@@ -62,16 +62,42 @@ public class OrderDataMapper extends ADataMapper<Order> {
         return String.format("SELECT * FROM `Orders` WHERE orderNumber = %d", Integer.valueOf(key[0]));
     }
 
-    public LinkedList<Order> findAllBySupplier(int suppId)
-    {
-        LinkedList<Order> ordersForSupp = new LinkedList<>();
-        for (Order order: findAll())
-        {
-            if (order.getSupplierId() == suppId)
-                ordersForSupp.add(order);
+    public LinkedList<Order> findAllBySupplier(int suppId) {
+        LinkedList<Integer> idOrders = new LinkedList<>();
+        LinkedList<Order> objects = new LinkedList<>();
+        openConnection();
+        if (connection == null) {
+            return objects;
         }
-        return ordersForSupp;
+        String query = String.format("SELECT orderNumber FROM Orders WHERE supplierId = %d", suppId);
+        ResultSet result = executeSelectQuery(query);
+        if (result == null) {
+            closeConnection();
+            return objects;
+        }
+        try {
+            while (result.next()) {
+                int orderId = result.getInt("orderNumber");
+                idOrders.add(orderId);
+            }
+            for (Integer id : idOrders) {
+                Optional<Order> object = find(Integer.toString(suppId));
+                if (!object.isEmpty())
+                    objects.add(object.get());
+            }
+        } catch (SQLException e) {
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        closeConnection();
+        return objects;
     }
+//        LinkedList<Order> ordersForSupp = new LinkedList<>();
+//        for (Order order: findAll())
+//        {
+//            if (order.getSupplierId() == suppId)
+//                ordersForSupp.add(order);
+//        }
+//        return ordersForSupp;
 
     public LinkedList<Order> findAllByBranch(int branchNumber)
     {

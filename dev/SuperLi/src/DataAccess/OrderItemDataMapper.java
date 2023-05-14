@@ -76,7 +76,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
         double finalPrice = item.getFinalPrice();
         int supplierCatalogNumber = item.getItemNumber();
         int orderId = orderNum;
-        String queryFields = String.format("INSERT INTO `OrderItems`(amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId, supplierId)" +
+        String queryFields = String.format("INSERT INTO `OrdersItems` (amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId, supplierId)" +
                 "VALUES (%d,%.2f,%.2f,%d,%d, %d)",amount, itemDiscount, finalPrice, supplierCatalogNumber, orderId, supplierId);
         return queryFields;
     }
@@ -93,7 +93,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
 
     protected String findQuery(int orderNumber, int catalogNumber)
     {
-        return String.format("SELECT * FROM `OrderItems` WHERE orderId = %d AND `supplierCatalogNumber` = %d " ,orderNumber ,catalogNumber);
+        return String.format("SELECT * FROM `OrdersItems` WHERE orderId = %d AND `supplierCatalogNumber` = %d " ,orderNumber ,catalogNumber);
     }
 
     protected String findQuery(String ... key)
@@ -101,7 +101,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
         return "";
     }
 
-    protected String findAllQuery(){return "SELECT * FROM OrderItems";}
+    protected String findAllQuery(){return "SELECT * FROM OrdersItems";}
 
 
 
@@ -134,7 +134,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
     //find all order items of given order number
     protected String findAllQueryByKey(String ... key)
     {
-        return String.format("SELECT * FROM `OrderItems` WHERE orderId = '%s'", key[0]);
+        return String.format("SELECT * FROM `OrdersItems` WHERE orderId = '%s'", key[0]);
     }
 
 

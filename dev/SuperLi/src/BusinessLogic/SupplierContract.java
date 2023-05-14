@@ -34,6 +34,16 @@ public class SupplierContract {
         return false;
     }
 
+    public boolean canSupplyMarketItem(int marketId)
+    {
+        for(SupplierItem sItem : this.supplierItems)
+        {
+            if(sItem.GetMarketId() == marketId)
+                return true;
+        }
+        return false;
+    }
+
     public int numberOfUnitsCanSupply(int marketId)
     {
         int units = 0;

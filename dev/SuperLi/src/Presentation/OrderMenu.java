@@ -19,12 +19,12 @@ public class OrderMenu extends AMenu{
     // this method called by the main menu when order manager choose to create new periodic order
     // the method will create new periodic report and order and returns boolean value if the report created successfully
     public boolean makeNewPeriodicOrder() {
-        System.out.println("Creating new periodic report. Please enter details. \n");
+        System.out.println("\nCreating new periodic report. Please enter details. \n");
         Scanner scan = new Scanner(System.in);
         while (true) {
 
             // receive branch number from user and find the branch
-            System.out.println("Please enter branch number or -1 to cancel. \n");
+            System.out.println("Please enter branch number or -1 to cancel.");
             int branchNumber;
             try {
                 branchNumber = scan.nextInt();
@@ -35,10 +35,10 @@ public class OrderMenu extends AMenu{
                     throw new InvalidParameterException("Branch number must be a positive number, please try again.\n");
                 Branch branch = this.orderController.getBranchByID(branchNumber);
                 if (branch == null)
-                    throw new InvalidParameterException("Branch number must be number of existing branch.\n");
+                    throw new InvalidParameterException("Branch number must be number of existing branch.");
             } catch (InputMismatchException e) {
                 scan.nextLine();
-                System.out.println("Branch number must be a positive number, please try again. \n");
+                System.out.println("Branch number must be a positive number, please try again.\n");
                 continue;
             } catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
@@ -47,7 +47,7 @@ public class OrderMenu extends AMenu{
 
             // receive day of the periodic order from the user
             System.out.println("Please enter the day you want the order will be sent each week (number between 1-7) " +
-                    "or -1 to cancel. \n");
+                    "or -1 to cancel.");
             int dayInt;
             try {
                 dayInt = scan.nextInt();
@@ -55,7 +55,7 @@ public class OrderMenu extends AMenu{
                 if (dayInt == -1)
                     return false;
                 if (dayInt < 0 || dayInt > 7)
-                    throw new InvalidParameterException("Day number must be positive number in range of 1-7.\n");
+                    throw new InvalidParameterException("Day number must be positive number in range of 1-7, please try again.\n");
             } catch (InputMismatchException e) {
                 scan.nextLine();
                 System.out.println("Day number must be a positive number, please try again. \n");
@@ -69,9 +69,13 @@ public class OrderMenu extends AMenu{
 
             // print all suppliers for user to choose
             LinkedList<Supplier> allSupp = this.orderController.getAllSuppliers();
-            System.out.println("Here is a list of all suppliers in the system. Please enter id of the wanted supplier. \n");
-            System.out.println(allSupp.toString());
-            System.out.println("Please enter supplier's id or -1 to exit. \n");
+            System.out.println("Here is a list of all suppliers in the system.");
+            for(Supplier sup : allSupp)
+            {
+                System.out.println(sup.toString());
+            }
+//            System.out.println(allSupp.toString());
+            System.out.println("Please enter wanted supplier's id or -1 to exit.");
             int id;
             Supplier supp;
             try {
@@ -80,13 +84,13 @@ public class OrderMenu extends AMenu{
                 if (id == -1)
                     return false;
                 if (id < 0)
-                    throw new InvalidParameterException("id must be a positive number, please try again. \n");
+                    throw new InvalidParameterException("id must be a positive number, please try again.\n");
                 supp = this.orderController.getSuppByID(id);
                 if (supp == null)
-                    throw new InvalidParameterException("Supplier id must be id of supplier in the system. \n");
+                    throw new InvalidParameterException("Supplier id must be id of supplier in the system, please try again.\n");
             } catch (InputMismatchException e) {
                 scan.nextLine();
-                System.out.println("id must be a positive number, please try again. \n");
+                System.out.println("id must be a positive number, please try again.\n");
                 continue;
             } catch (InvalidParameterException e) {
                 System.out.println(e.getMessage());
@@ -97,17 +101,20 @@ public class OrderMenu extends AMenu{
             LinkedList<SupplierItem> supplierItems = this.orderController.getAllItemsOfSupplier(id);
             if (supplierItems.isEmpty())
             {
-                System.out.println("Supplier has no items. please choose another supplier.");
+                System.out.println("Supplier has no items. please choose another supplier.\n");
                 continue;
             }
-            System.out.println("Here is all the items that the chosen supplier supply. \n");
-            System.out.println(supplierItems.toString());
+            System.out.println("Here is all the items that the chosen supplier supply : ");
+            for(SupplierItem sItem : supplierItems)
+            {
+                System.out.println(sItem.toString());
+            }
             int marketID = 0, amount = 0;
             HashMap<Integer,Integer> items = new HashMap<>();
 
             while (marketID != -1)
             {
-                System.out.println("Please enter market id of item you want to add to the report, or -1 for exit. \n");
+                System.out.println("Please enter market id of item you want to add to the report, or -1 for exit.\n");
 
                 try {
                     marketID = scan.nextInt();
@@ -121,10 +128,11 @@ public class OrderMenu extends AMenu{
                             continue;
                         }
                         break;
-
                     }
                     if (marketID < 0)
                         throw new InvalidParameterException("Market id must be a positive number, please try again. \n");
+                    if(!supp.supplierHasMarketId(marketID))
+                        throw new InvalidParameterException("Supplier doesn't supply an item with given market id.");
                 } catch (InputMismatchException e) {
                     scan.nextLine();
                     System.out.println("Market id must be a positive number, please try again. \n");
@@ -182,9 +190,9 @@ public class OrderMenu extends AMenu{
 
     @Override
     public void printMenu(){
-        System.out.println("What would you like to do? \n");
-        System.out.println("1. Create new periodic order. \n");
-        System.out.println("2.Return to main menu. \n");
+        System.out.println("\nWhat would you like to do?");
+        System.out.println("1. Create new periodic report.");
+        System.out.println("2.Return to main menu.");
     }
 
 

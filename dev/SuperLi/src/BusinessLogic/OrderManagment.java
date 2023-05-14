@@ -567,7 +567,7 @@ public class OrderManagment {
         }
 
         // add the order to the supplier order's list
-        supplier.addOrder(order);
+//        supplier.addOrder(order);
         return order;
     }
 
