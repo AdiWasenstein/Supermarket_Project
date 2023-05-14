@@ -9,16 +9,13 @@ import org.junit.jupiter.api.Test;
 
 public class PeriodicReportTest {
     private Supplier supp;
-
     private PeriodicReport report;
 
     @BeforeEach
-    void setUp()
-    {
+    void setUp() {
         report = PeriodicReportDataMapper.getInstance().find(new String[]{"27"}).get();
         supp = report.getSupplier();
     }
-
     @AfterEach
     void tearDown()
     {
@@ -26,7 +23,6 @@ public class PeriodicReportTest {
         report = null;
 
     }
-
     @Test
     void gettersTest()
     {
@@ -35,7 +31,6 @@ public class PeriodicReportTest {
         Assertions.assertEquals(Day.friday.ordinal(), report.getDayToOrder().ordinal());
 
     }
-
     @Test
     void setQuantity()
     {
@@ -47,6 +42,4 @@ public class PeriodicReportTest {
         Assertions.assertNotEquals(800, report.getQuantityOfItem(item));
 
     }
-
-
 }
