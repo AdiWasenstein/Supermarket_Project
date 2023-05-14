@@ -116,17 +116,20 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
         OrderItem orderItem = this.orderItemIdentityMap.get(new MyKey(match.getInt("orderId"), match.getInt("supplierCatalogNumber")));
         if(orderItem != null)
             return orderItem;
-        Optional<SupplierItem> supplierItemOptional = SupplierItemDataMapper.getInstance().find(match.getString("supplierCatalogNumber"));
-        if (supplierItemOptional.isEmpty())
-            return null;
-        SupplierItem supplierItem = supplierItemOptional.get();
+
         int amount = match.getInt("amount");
         double discount = match.getDouble("itemDiscount");
         double finalPrice = match.getDouble("finalPrice");
-        orderItem = new OrderItem(supplierItem, amount, discount, finalPrice);
         int orderId = match.getInt("orderId");
         int catalogNumber = match.getInt("supplierCatalogNumber");
+        int suppNUmber = match.getInt("supplierId");
         this.orderItemIdentityMap.put(new MyKey(orderId, catalogNumber), orderItem);
+        Optional<SupplierItem> supplierItemOptional = SupplierItemDataMapper.getInstance().find(Integer.toString(suppNUmber), Integer.toString(catalogNumber));
+        if (supplierItemOptional.isEmpty()) {
+            return null;
+        }
+        SupplierItem supplierItem = supplierItemOptional.get();
+        orderItem = new OrderItem(supplierItem, amount, discount, finalPrice);
         return orderItem;
 
     }

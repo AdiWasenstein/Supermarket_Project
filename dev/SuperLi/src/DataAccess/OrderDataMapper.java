@@ -133,14 +133,16 @@ public class OrderDataMapper extends ADataMapper<Order> {
         if(order != null)
             return order;
 
+
+        int orderNumber = match.getInt("orderNumber");
+        int branchNumber= match.getInt("branchNumber");
         Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(match.getInt("supplierId")));
         if (suppOpt.isEmpty())
             return null;
         Supplier supp = suppOpt.get();
-        int orderNumber = match.getInt("orderNumber");
-        LinkedList<OrderItem> items = OrderItemDataMapper.getInstance().findAllByKey(Integer.toString(orderNumber));
-        int branchNumber= match.getInt("branchNumber");
-        order = new Order(supp, items, branchNumber, orderNumber);
+        LinkedList<OrderItem> items = OrderItemDataMapper.getInstance().findAllByKey((Integer.toString(orderNumber)), Integer.toString(orderNumber));
+
+        order = new Order(orderNumber, supp, items, branchNumber);
         ordersIdentityMap.put(orderNumber, order);
         return order;
     }

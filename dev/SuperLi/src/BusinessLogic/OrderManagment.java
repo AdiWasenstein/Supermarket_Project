@@ -1,5 +1,6 @@
 package SuperLi.src.BusinessLogic;
 
+import SuperLi.src.DataAccess.BranchDataMapper;
 import SuperLi.src.DataAccess.OrderDataMapper;
 import SuperLi.src.BusinessLogic.Pair;
 import SuperLi.src.DataAccess.SupplierDataMapper;
@@ -558,7 +559,11 @@ public class OrderManagment {
             OrderItem currItem = new OrderItem( suppItem, amount, discountValue, finalPrice);
             orderItems.add(currItem);
         }
-        Order order = new Order(supplier, orderItems, branchNumber);
+        LinkedList<Order> allOrders = OrderDataMapper.getInstance().findAll();
+        int orderNumber = 1;
+        if (!allOrders.isEmpty())
+            orderNumber = allOrders.size()+1;
+        Order order = new Order(orderNumber, supplier, orderItems, branchNumber);
         OrderDiscount bestOrderDiscount = supplier.getSupplierContract().getDiscountDocument().
                 bestOrderDiscount(amount, order.getCostOfOrder());
         if (bestOrderDiscount != null) {
@@ -566,11 +571,22 @@ public class OrderManagment {
             order.setCostOfOrder(costAfterDiscount);
         }
 
-        // add the order to the supplier order's list
-//        supplier.addOrder(order);
+
+        addOrderToSystemData(order);
         return order;
     }
+    private void addOrderToSystemData(Order order)
+    {
+        if (order == null)
+            return;
+        Supplier suppOfOrder = order.getOrderSupplier();
+        Branch branchOfOrder = BranchDataMapper.getInstance().find(Integer.toString(order.branchNumber)).get();
 
+        branchOfOrder.addOrder(order);
+        // insert to DB
+        this.orderDataMapper.insert(order);
+
+    }
     // given the best combination to order, returns list of orders
     private LinkedList<Order> getOrdersForCombi(HashMap<Supplier, LinkedList<Pair<Integer, Integer>>> combinationToOrder, int branchNumber) {
 

@@ -285,19 +285,19 @@ public class OrderController {
         return null;
     }
 
-    private void addOrderToSystemData(Order order)
-    {
-        if (order == null)
-            return;
-        Supplier suppOfOrder = order.getOrderSupplier();
-        Branch branchOfOrder = this.branchDataMapper.find(Integer.toString(order.branchNumber)).get();
-        // adding to the objects in cash
-//        suppOfOrder.addOrder(order);
-        branchOfOrder.addOrder(order);
-        // insert to DB
-        this.orderDataMapper.insert(order);
-
-    }
+//    private void addOrderToSystemData(Order order)
+//    {
+//        if (order == null)
+//            return;
+//        Supplier suppOfOrder = order.getOrderSupplier();
+//        Branch branchOfOrder = this.branchDataMapper.find(Integer.toString(order.branchNumber)).get();
+//        // adding to the objects in cash
+////        suppOfOrder.addOrder(order);
+//        branchOfOrder.addOrder(order);
+//        // insert to DB
+//        this.orderDataMapper.insert(order);
+//
+//    }
 
 
 

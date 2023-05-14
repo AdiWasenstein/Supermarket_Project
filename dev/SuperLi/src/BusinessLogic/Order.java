@@ -9,7 +9,7 @@ import java.text.*;
 
 public class Order {
 
-    static int orderNum = 1;
+//    static int orderNum = 1;
     Supplier orderSupplier;
     int orderNumber;
     Date OrderDate;
@@ -19,27 +19,7 @@ public class Order {
 
 
 
-    public Order(Supplier orderSupplier, LinkedList<OrderItem> orderItems, int branchNumber)
-    {
-        if (orderSupplier == null)
-            throw new InvalidParameterException("order must have supplier");
-        if (orderItems == null || orderItems.isEmpty())
-            throw new InvalidParameterException("order must have a least one item to order");
-        if (branchNumber <= 0)
-            throw new InvalidParameterException("Branch number must be a positive number");
-        this.orderNumber = orderNum;
-        orderNum++;
-        this.orderSupplier = orderSupplier;
-        this.orderItems = orderItems;
-        this.OrderDate = new Date();
-        for (OrderItem curr : orderItems)
-        {
-            this.costOfOrder+=curr.getFinalPrice();
-        }
-        this.branchNumber = branchNumber;
-    }
-
-    public Order(Supplier orderSupplier, LinkedList<OrderItem> orderItems, int branchNumber, int orderNumber)
+    public Order(int orderNumber, Supplier orderSupplier, LinkedList<OrderItem> orderItems, int branchNumber)
     {
         if (orderSupplier == null)
             throw new InvalidParameterException("order must have supplier");
