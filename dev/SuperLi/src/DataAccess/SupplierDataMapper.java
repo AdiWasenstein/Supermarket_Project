@@ -47,7 +47,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
 
     private void insertManufacturers(Supplier supplier) {
         for (String manufacturer : supplier.getSupplierManufacturers()) {
-            String query = String.format("SELECT * FROM `SuppliersANDManufacturers` WHERE supplierId=%d" +
+            String query = String.format("SELECT * FROM SuppliersANDManufacturers WHERE supplierId=%d" +
                     " AND manufacturer='%s'", supplier.getSupplierId(), manufacturer);
             ResultSet matches = executeSelectQuery(query);
             closeConnection();
@@ -55,7 +55,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
             {
                 if (!matches.next())//need to add to SuppliersANDManufacturers table the manufacturer
                 {
-                    String queryFields = String.format("INSERT INTO `SuppliersANDManufacturers`(supplierId, manufacturer) VALUES (%d,'%s')", supplier.getSupplierId(), manufacturer);
+                    String queryFields = String.format("INSERT INTO SuppliersANDManufacturers (supplierId, manufacturer) VALUES (%d,'%s')", supplier.getSupplierId(), manufacturer);
                     executeVoidQuery(queryFields);
                 }
             }
@@ -68,14 +68,14 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
 
     private void insertCategories(Supplier supplier) {
         for (String category : supplier.getSupplierCatagories()) {
-            String query = String.format("SELECT * FROM `SuppliersANDCategories` WHERE supplierId=%d" +
+            String query = String.format("SELECT * FROM SuppliersANDCategories WHERE supplierId=%d" +
                     " AND category='%s'", supplier.getSupplierId(), category);
             ResultSet matches = executeSelectQuery(query);
             closeConnection();
             try {
                 if (!matches.next())//need to add to SuppliersANDCategories table the manufacturer
                 {
-                    String queryFields = String.format("INSERT INTO `SuppliersANDCategories`(supplierId, category) VALUES (%d,'%s')", supplier.getSupplierId(), category);
+                    String queryFields = String.format("INSERT INTO SuppliersANDCategories (supplierId, category) VALUES (%d,'%s')", supplier.getSupplierId(), category);
                     executeVoidQuery(queryFields);
                 }
             }
@@ -129,7 +129,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private LinkedList<String> findSupplierCategories(String...key)
     {
         LinkedList<String> categories = new LinkedList<>();
-        String query = String.format("SELECT category FROM `SuppliersANDCategories` WHERE supplierId=%d",Integer.valueOf(key[0]));
+        String query = String.format("SELECT category FROM SuppliersANDCategories WHERE supplierId=%d",Integer.valueOf(key[0]));
         ResultSet matches = executeSelectQuery(query);
         if(matches == null)
         {
@@ -153,7 +153,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     private LinkedList<String> findSupplierManufacturers(String...key)
     {
         LinkedList<String> manufacturers = new LinkedList<>();
-        String query = String.format("SELECT manufacturer FROM `SuppliersANDManufacturers` WHERE supplierId=%d",Integer.valueOf(key[0]));
+        String query = String.format("SELECT manufacturer FROM SuppliersANDManufacturers WHERE supplierId=%d",Integer.valueOf(key[0]));
         ResultSet matches = executeSelectQuery(query);
         if(matches == null)
         {
@@ -351,7 +351,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     }
 
     protected String findAllQuery() {
-        return "SELECT * supplierId FROM Suppliers";
+        return "SELECT supplierId FROM Suppliers";
     }
 
 
@@ -445,10 +445,10 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
 
     public void deleteContact(Supplier sup, Contact con)
     {
-        String deleteQuery = String.format("DELETE FROM `SuppliersANDContacts` WHERE supplierId=%d AND phoneNumber = '%s'", sup.getSupplierId(),con.GetPhoneNumber());
+        String deleteQuery = String.format("DELETE FROM SuppliersANDContacts WHERE supplierId=%d AND phoneNumber = '%s'", sup.getSupplierId(),con.GetPhoneNumber());
         executeVoidQuery(deleteQuery);
         //check if the contact worked only for this specific supplier:
-        String selectQuery = String.format("SELECT * FROM `SuppliersANDContacts` WHERE phoneNumber = '%s'",con.GetPhoneNumber());
+        String selectQuery = String.format("SELECT * FROM SuppliersANDContacts WHERE phoneNumber = '%s'",con.GetPhoneNumber());
         ResultSet matches = executeSelectQuery(selectQuery);
         try {
             if (!matches.next())//the contact worked only for this specific supplier

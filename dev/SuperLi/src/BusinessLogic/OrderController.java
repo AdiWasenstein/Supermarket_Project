@@ -61,16 +61,16 @@ public class OrderController {
 
         // get all suppliers in the system
         LinkedList<Supplier> allSupp = SupplierDataMapper.getInstance().findAll();
-        if (allSupp.isEmpty())
+        if (allSupp.isEmpty()) {
             return false;
-
+        }
 
         LinkedList<Order> orders = new LinkedList<>();
         try
         {
             orders = this.orderManagment.creatMissingOrder(itemsAmount, branchNumber, allSupp);
             if (orders.isEmpty())
-                  return false;
+                return false;
         }
         catch (Exception e)
         {

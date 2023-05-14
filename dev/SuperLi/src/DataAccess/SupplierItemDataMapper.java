@@ -39,7 +39,6 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
             return supplierId == myKey.supplierId &&
                     catalogNumber == myKey.catalogNumber;
         }
-
         @Override
         public int hashCode() {
             return Objects.hash(supplierId, catalogNumber);
@@ -152,6 +151,7 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
     protected String findAllQuery(){return "SELECT * FROM `SuppliersItems`";}
     protected SupplierItem findInIdentityMap(String ...key)
     {
+        System.out.println("Wala2");
         return this.supplierItemIdentityMap.get(new MyKey(Integer.valueOf(key[0]),Integer.valueOf(key[1])));}
     protected SupplierItem insertIdentityMap(ResultSet match) throws SQLException {
         if(match == null)
