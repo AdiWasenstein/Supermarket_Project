@@ -587,9 +587,7 @@ public class OrderManagment {
     public LinkedList<Order> creatMissingOrder(Map<Integer, Integer> missingItems, int branchNumber, LinkedList<Supplier> suppliers) throws Exception {
         if (missingItems.isEmpty())
             return null;
-        // TODO - need to add somewhere calling the time method
         LinkedList<Order> orders = new LinkedList<>();
-
         // transform data from map to list
         LinkedList<Pair<Integer, Integer>> missingItemsList = new LinkedList<>();
         for (Map.Entry<Integer, Integer> entry : missingItems.entrySet()) {

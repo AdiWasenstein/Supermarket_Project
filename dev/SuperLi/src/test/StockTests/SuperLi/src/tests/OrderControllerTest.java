@@ -6,11 +6,9 @@ import SuperLi.src.DataAccess.CatalogItemDataMapper;
 import SuperLi.src.DataAccess.OrderDataMapper;
 import SuperLi.src.DataAccess.PeriodicReportDataMapper;
 import SuperLi.src.DataAccess.SupplierDataMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -20,9 +18,9 @@ import java.util.LinkedList;
 public class OrderControllerTest {
       private OrderController orderController;
       private Supplier supp1, supp2;
-
       private HashMap<Integer,Integer> itemsForReport;
       private PeriodicReport report;
+      private StockManagementFacade stockManagementFacade;
 
       @BeforeEach
       public void setUp()
@@ -74,10 +72,6 @@ public class OrderControllerTest {
             itemsForReport = new HashMap<>();
             itemsForReport.put(1, 10);
 
-
-
-
-
       }
 
       @Test
@@ -86,8 +80,7 @@ public class OrderControllerTest {
             LocalDate date = LocalDate.now();
             DayOfWeek currentDayOfWeek = date.getDayOfWeek();
             String dayOfWeekString = currentDayOfWeek.toString();
-
-            report = orderController.createNewPeriodicReport(24,  supp1,Day.valueOf(dayOfWeekString), itemsForReport);
+//            report = orderController.createNewPeriodicReport(24,  supp1,Day.valueOf(dayOfWeekString), itemsForReport);
             Assertions.assertNotNull(PeriodicReportDataMapper.getInstance().findAll());
             Assertions.assertEquals(orderController.getAllPeriodicReports().size(), PeriodicReport.howManyReports());
             Assertions.assertEquals(report.getReportId(), PeriodicReport.howManyReports());
@@ -106,11 +99,9 @@ public class OrderControllerTest {
             Assertions.assertNotEquals(100, report.getQuantityOfItem(supp1.getAllSuppItem().getFirst()));
       }
 
-
-
-
-
-
-
-
+      @Test
+      void testCreateShortageOrder(){
+            Assertions.assertTrue(stockManagementFacade.createShortageOrder(1));
+            Assertions.assertFalse(stockManagementFacade.createShortageOrder(999));
+      }
 }

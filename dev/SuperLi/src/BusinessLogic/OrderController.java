@@ -54,7 +54,6 @@ public class OrderController {
         // get the data from the report
         Map<Integer, Integer> itemsAmount = report.getReportData();
         int branchNumber = report.getBranchId();
-
         Optional<Branch> optionalBranch = BranchDataMapper.getInstance().find(Integer.toString(branchNumber));
         if (optionalBranch.isEmpty())
             return false;
@@ -64,15 +63,18 @@ public class OrderController {
         LinkedList<Supplier> allSupp = SupplierDataMapper.getInstance().findAll();
         if (allSupp.isEmpty())
             return false;
+
+
         LinkedList<Order> orders = new LinkedList<>();
         try
         {
-              orders = this.orderManagment.creatMissingOrder(itemsAmount, branchNumber, allSupp);
-              if (orders.isEmpty())
+            orders = this.orderManagment.creatMissingOrder(itemsAmount, branchNumber, allSupp);
+            if (orders.isEmpty())
                   return false;
         }
         catch (Exception e)
         {
+            System.out.println(e.getMessage());
             return false;
         }
         // update data in the system

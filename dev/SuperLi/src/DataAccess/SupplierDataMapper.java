@@ -321,8 +321,10 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         }
         //else, need to search in db :
         Optional<Supplier> supplierOpt = this.createSupplier(key);
-        if(supplierOpt.isEmpty())
+        if(supplierOpt.isEmpty()) {
+//            System.out.println("Got HERE");
             return Optional.empty();
+        }
         Supplier sup = supplierOpt.get();
 //        //orders
 //        LinkedList<Order> orders = OrderDataMapper.getInstance().findAllBySupplier(Integer.valueOf(key[0]));
@@ -349,7 +351,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     }
 
     protected String findAllQuery() {
-        return "SELECT supplierId FROM Suppliers";
+        return "SELECT * supplierId FROM Suppliers";
     }
 
 

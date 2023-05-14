@@ -80,6 +80,9 @@ public class PeriodicReportTest {
 
     }
 
+    @Test
+    void testCreateReport(){
 
+    }
 
 }

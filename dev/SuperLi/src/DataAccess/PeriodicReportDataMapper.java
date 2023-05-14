@@ -130,6 +130,7 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         int numberUnits = match.getInt("numberOfUnits");
 //        items.put(suppItem, numberUnits);
         itemsTemp.put(suppItemNum, numberUnits);
+        int supId = (match.getInt("supplierId"));
         while (match.next())
         {
 //            suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
@@ -139,7 +140,7 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
 
             itemsTemp.put(suppItemNum, numberUnits);
         }
-        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(match.getInt("supplierId")));
+        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(supId));
 
         if (suppOpt.isEmpty())
             return null;
