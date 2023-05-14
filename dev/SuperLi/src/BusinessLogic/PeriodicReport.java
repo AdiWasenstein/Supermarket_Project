@@ -134,7 +134,7 @@ public class PeriodicReport extends AReport{
         String name = supplierItem.getItemName();
         String manufacturer = supplierItem.getManufacturer();
         String category = supplierItem.getCatagory();
-        String numberOfUnits = Integer.toString(supplierItem.getNumberOfUnits());
+        String numberOfUnits = Integer.toString(items.get(supplierItem));
         String unitPrice = Double.toString(supplierItem.getUnitPrice());
         String unitWeight = Double.toString(supplierItem.getUnitWeight());
         return new String[]{catalogNumber, MarketId, name, manufacturer, category,numberOfUnits,unitPrice,unitWeight};
