@@ -25,9 +25,9 @@ public class OrderDiscountFactory {
             return null;
 
         // creating specific discount base on given kind
-        if (discountKind.equalsIgnoreCase("SuperLi.src.BusinessLogic.OrderUnitsDiscount"))
+        if (discountKind.equalsIgnoreCase("OrderUnitsDiscount"))
             return new OrderUnitsDiscount(size,type, (int)value);
-        if (discountKind.equalsIgnoreCase("SuperLi.src.BusinessLogic.OrderCostDiscount"))
+        if (discountKind.equalsIgnoreCase("OrderCostDiscount"))
             return new OrderCostDiscount(size,type, value);
 
         return null;

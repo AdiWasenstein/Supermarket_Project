@@ -205,7 +205,7 @@ public abstract class Supplier {
 
     public String allDataOfSupplier()
     {
-        return "SuperLi.src.BusinessLogic.Supplier Name: " + this + "\n" +  supplierCard + "\n Catagories: " + supplierCatagories + "\n Manufacturers: " + supplierManufacturers
+        return "Supplier Name: " + this + "\n" +  supplierCard + "\n Catagories: " + supplierCatagories + "\n Manufacturers: " + supplierManufacturers
                 +" \n Items: " + getAllSuppItem() + "\n Supply information: " + printSupplyTimeData();
     }
     @Override
