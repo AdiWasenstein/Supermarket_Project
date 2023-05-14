@@ -98,7 +98,7 @@ public class Order {
         String pattern = "MM/dd/yyyy HH:mm:ss";
         DateFormat df = new SimpleDateFormat(pattern);
         String dateAsString = df.format(OrderDate);
-        String str =  "Branch number: " + branchNumber + "\nBusinessLogic.Order number: " + orderNumber + "\nBusinessLogic.Supplier: " + orderSupplier +  " ,supply time: " + orderSupplier.printSupplyTimeData() +"\nOrder date: " + dateAsString + "\nOrdered items:";
+        String str =  "Branch number: " + branchNumber + "\nOrder number: " + orderNumber + "\nSupplier: " + orderSupplier +  " ,supply time: " + orderSupplier.printSupplyTimeData() +"\nOrder date: " + dateAsString + "\nOrdered items:";
         for(OrderItem item: orderItems)
         {
             str += "\n" + item.toString();
