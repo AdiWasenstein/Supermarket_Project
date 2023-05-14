@@ -84,21 +84,30 @@ public class OrderController {
         return true;
     }
 
-    // this method receive supplier id and list of catalog numbers and amount and create report accordingly
-    public PeriodicReport createNewPeriodicReport(int branchNumber, Supplier supp, Day day, HashMap<Integer,Integer> items)
+    public boolean isReportIdAlreadyExist(int reportId)
     {
-        PeriodicReport report = this.orderManagment.createPeriodicReport(branchNumber, supp, day, items);
+        Optional<PeriodicReport> reportOpt =  PeriodicReportDataMapper.getInstance().find(Integer.toString(reportId));
+        if(reportOpt.isEmpty())
+            return false;
+        return true;
+    }
+    // this method receive supplier id and list of catalog numbers and amount and create report accordingly
+    public PeriodicReport createNewPeriodicReport(int reportId, int branchNumber, Supplier supp, Day day, HashMap<Integer,Integer> items)
+    {
+        PeriodicReport report = this.orderManagment.createPeriodicReport(reportId, branchNumber, supp, day, items);
          // check if repord eas created successfully
           if (report == null)
               return null;
           // update report data mapper
         this.periodicReportDataMapper.insert(report);
         // if the day the report need to be sent is the day today, make a new order
-        Order orderFromNewReport = this.orderManagment.createOrderOfNewPeriodic(report);
+        //TODO - add this row back
+//        Order orderFromNewReport = this.orderManagment.createOrderOfNewPeriodic(report);
 //        if (orderFromNewReport != null)
 //            this.orderDataMapper.insert(orderFromNewReport);
-        if (orderFromNewReport != null)
-            addOrderToSystemData(orderFromNewReport);
+        //TODO - also add this 2 rows back
+//        if (orderFromNewReport != null)
+//            addOrderToSystemData(orderFromNewReport);
         return report;
     }
 

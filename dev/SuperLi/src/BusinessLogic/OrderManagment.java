@@ -672,7 +672,7 @@ public class OrderManagment {
 
 
     // this method creates new periodic report and returns it
-    public PeriodicReport createPeriodicReport(int branchNumber, Supplier supp,  Day day, HashMap<Integer,Integer> items)
+    public PeriodicReport createPeriodicReport(int reportId, int branchNumber, Supplier supp,  Day day, HashMap<Integer,Integer> items)
     {
         if (branchNumber <0 || supp == null || items.isEmpty())
             return null;
@@ -683,7 +683,7 @@ public class OrderManagment {
         {
             itemsInReport.put(supp.findMatchToMarketItem(marketID), items.get(marketID));
         }
-        PeriodicReport report = new PeriodicReport(branchNumber, day, supp,  itemsInReport);
+        PeriodicReport report = new PeriodicReport(reportId,branchNumber, day, supp,  itemsInReport);
         // update supplier
         return report;
     }

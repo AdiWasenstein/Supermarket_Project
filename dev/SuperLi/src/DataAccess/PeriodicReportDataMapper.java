@@ -98,11 +98,11 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
     }
 
     public String findQuery(String ...key){
-        return String.format("SELECT * FROM PeriodicReports WHERE reportId = %d", key[0]);
+        return String.format("SELECT * FROM PeriodicReports WHERE reportId = '%s'", key[0]);
     }
 
     public String findAllQueryByKey(String ...key){
-        return String.format("SELECT * FROM PeriodicReports WHERE reportId = %d", key[0]);
+        return String.format("SELECT * FROM PeriodicReports WHERE reportId = '%s'", key[0]);
     }
 
     public String findAllQuery(){
@@ -120,20 +120,35 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         PeriodicReport report = periodicReportIdentityMap.get(match.getInt("reportId"));
         if(report != null)
             return report;
-        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(match.getInt("supplierId")));
-        if (suppOpt.isEmpty())
-            return null;
-        Supplier supp = suppOpt.get();        int branchID= match.getInt("branchNumber");
+        int branchID= match.getInt("branchNumber");
         int reportID = match.getInt("reportId");
         Day day = Day.valueOf(match.getString("day"));
-
         HashMap<SupplierItem,Integer> items = new HashMap<>();
-        SupplierItem suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
-        items.put(suppItem, match.getInt("numberOfUnits"));
+        HashMap<Integer,Integer> itemsTemp = new HashMap<>();
+        int suppItemNum = match.getInt("supplierCatalogNumber");
+//        SupplierItem suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
+        int numberUnits = match.getInt("numberOfUnits");
+//        items.put(suppItem, numberUnits);
+        itemsTemp.put(suppItemNum, numberUnits);
         while (match.next())
         {
-            suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
-            items.put(suppItem, match.getInt("numberOfUnits"));
+//            suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(match.getInt("supplierCatalogNumber"))).get();
+//            items.put(suppItem, match.getInt("numberOfUnits"));
+            suppItemNum = match.getInt("supplierCatalogNumber");
+            numberUnits = match.getInt("numberOfUnits");
+
+            itemsTemp.put(suppItemNum, numberUnits);
+        }
+        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(match.getInt("supplierId")));
+
+        if (suppOpt.isEmpty())
+            return null;
+
+        Supplier supp = suppOpt.get();
+        for (Integer itemNum : itemsTemp.keySet())
+        {
+            SupplierItem suppItem = SupplierItemDataMapper.getInstance().find(String.valueOf(supp.getSupplierId()), String.valueOf(itemNum)).get();
+            items.put(suppItem, itemsTemp.get(itemNum));
         }
         report = new PeriodicReport(branchID, day, supp, items, reportID);
         periodicReportIdentityMap.put(report.getReportId(), report);

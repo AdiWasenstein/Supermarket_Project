@@ -5,15 +5,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class PeriodicReport extends AReport{
-    private static int reportCounter = 1;
+//    private static int reportCounter = 1;
     private int reportId;
     private int branchNumber;
     private Day dayToOrder;
     private Supplier supplier;
     private HashMap<SupplierItem,Integer> items;
 
-    public PeriodicReport(int branchNumber, Day dayToOrder, Supplier supplier, HashMap<SupplierItem,Integer> items)
+    public PeriodicReport(int reportId, int branchNumber, Day dayToOrder, Supplier supplier, HashMap<SupplierItem,Integer> items)
     {
+        if(reportId <= 0)
+            throw new InvalidParameterException("report id must be positive number.");
         if(branchNumber<=0)
             throw new InvalidParameterException("branch number must be positive number.");
         if(dayToOrder == null)
@@ -22,8 +24,8 @@ public class PeriodicReport extends AReport{
             throw new InvalidParameterException("periodic report must have a supplier.");
         if(items == null)
             throw new InvalidParameterException("periodic report must have items to order.");
-        this.reportId = reportCounter;
-        reportCounter++;
+        this.reportId = reportId;
+//        reportCounter++;
         this.branchNumber = branchNumber;
         this.dayToOrder = dayToOrder;
         this.supplier = supplier;
@@ -162,14 +164,5 @@ public class PeriodicReport extends AReport{
         else
             throw new Exception("supplier item doesn't exist in report.");
     }
-
-    public static int howManyReports()
-    {
-        return reportCounter;
-    }
-
-
-
-
 
 }

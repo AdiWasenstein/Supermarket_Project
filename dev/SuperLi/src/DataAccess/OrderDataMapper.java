@@ -37,13 +37,16 @@ public class OrderDataMapper extends ADataMapper<Order> {
 
     public void insertOrder(Order order)
     {
+        executeVoidQuery(String.format("INSERT INTO `Orders`(orderNumber, supplierId, orderDate, costOfOrder, branchNumber) " +
+                        "VALUES (%d, %d, '%s', %.2f, %d)", order.getOrderNumber(), order.getSupplierId(),
+                order.getOrderDate().toString(), order.getCostOfOrder(), order.getBranchNumber()));
         for (OrderItem item : order.getOrderItems())
         {
             OrderItemDataMapper.getInstance().insert(item, order.getOrderNumber(), order.getSupplierId());
         }
-        executeVoidQuery(String.format("INSERT INTO `Orders`(orderNumber, supplierId, orderDate, costOfOrder, branchNumber) " +
-                        "VALUES (%d, %d, '%s', %.2f, %d)", order.getOrderNumber(), order.getSupplierId(),
-                order.getOrderDate().toString(), order.getCostOfOrder(), order.getBranchNumber()));
+//        executeVoidQuery(String.format("INSERT INTO `Orders`(orderNumber, supplierId, orderDate, costOfOrder, branchNumber) " +
+//                        "VALUES (%d, %d, '%s', %.2f, %d)", order.getOrderNumber(), order.getSupplierId(),
+//                order.getOrderDate().toString(), order.getCostOfOrder(), order.getBranchNumber()));
 
     }
 

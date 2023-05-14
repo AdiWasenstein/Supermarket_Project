@@ -19,10 +19,29 @@ public class OrderMenu extends AMenu{
     // this method called by the main menu when order manager choose to create new periodic order
     // the method will create new periodic report and order and returns boolean value if the report created successfully
     public boolean makeNewPeriodicOrder() {
-        System.out.println("\nCreating new periodic report. Please enter details. \n");
+        System.out.println("\nCreating new periodic report. Please enter details.");
         Scanner scan = new Scanner(System.in);
         while (true) {
-
+            // receive branch number from user and find the branch
+            System.out.println("Please enter report id or -1 to cancel.");
+            int reportId;
+            try {
+                reportId = scan.nextInt();
+                scan.nextLine();
+                if (reportId == -1)
+                    return false;
+                if (reportId < 0)
+                    throw new InvalidParameterException("Report id must be a positive number, please try again.\n");
+                if(this.orderController.isReportIdAlreadyExist(reportId))
+                    throw new InvalidParameterException("There is already report with givan id, please try again.\n");
+            } catch (InputMismatchException e) {
+                scan.nextLine();
+                System.out.println("Report id must be a positive number, please try again.\n");
+                continue;
+            } catch (InvalidParameterException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
             // receive branch number from user and find the branch
             System.out.println("Please enter branch number or -1 to cancel.");
             int branchNumber;
@@ -114,7 +133,7 @@ public class OrderMenu extends AMenu{
 
             while (marketID != -1)
             {
-                System.out.println("Please enter market id of item you want to add to the report, or -1 for exit.\n");
+                System.out.println("Please enter market id of item you want to add to the report, or -1 for exit.");
 
                 try {
                     marketID = scan.nextInt();
@@ -124,7 +143,7 @@ public class OrderMenu extends AMenu{
                     {
                         if (items.isEmpty())
                         {
-                            System.out.println("The report has no item - can't create an empty report. Please choose at least one item. ");
+                            System.out.println("The report has no item - can't create an empty report. Please choose at least one item. =");
                             continue;
                         }
                         break;
@@ -132,7 +151,7 @@ public class OrderMenu extends AMenu{
                     if (marketID < 0)
                         throw new InvalidParameterException("Market id must be a positive number, please try again. \n");
                     if(!supp.supplierHasMarketId(marketID))
-                        throw new InvalidParameterException("Supplier doesn't supply an item with given market id.");
+                        throw new InvalidParameterException("Supplier doesn't supply an item with given market id,please try again.\n");
                 } catch (InputMismatchException e) {
                     scan.nextLine();
                     System.out.println("Market id must be a positive number, please try again. \n");
@@ -142,7 +161,7 @@ public class OrderMenu extends AMenu{
                     continue;
                 }
 
-                System.out.println("Please enter amount of units from this item. \n");
+                System.out.println("Please enter amount of units from this item.");
 
                 try {
                     amount = scan.nextInt();
@@ -151,7 +170,7 @@ public class OrderMenu extends AMenu{
                         throw new InvalidParameterException("Amount must be a positive number, please try again. \n");
                     boolean canSupply = supp.canSupplyMarketItem(Pair.create(marketID, amount));
                     if (!canSupply)
-                        throw new InvalidParameterException("Supplier can't supply this item with this amount. \n");
+                        throw new InvalidParameterException("Supplier can't supply this item with this amount, please try again.\n");
                 } catch (InputMismatchException e) {
                     scan.nextLine();
                     System.out.println(e.getMessage());
@@ -163,8 +182,11 @@ public class OrderMenu extends AMenu{
                 items.put(marketID, amount);
 
             }
-            if (this.orderController.createNewPeriodicReport(branchNumber, supp, day, items) != null)
+            if (this.orderController.createNewPeriodicReport(reportId,branchNumber, supp, day, items) != null)
+            {
+                System.out.println("Periodic report was added successfully.");
                 return true;
+            }
             return false;
 
 
