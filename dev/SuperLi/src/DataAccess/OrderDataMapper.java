@@ -84,7 +84,7 @@ public class OrderDataMapper extends ADataMapper<Order> {
                 idOrders.add(orderId);
             }
             for (Integer id : idOrders) {
-                Optional<Order> object = find(Integer.toString(suppId));
+                Optional<Order> object = find(Integer.toString(id));
                 if (!object.isEmpty())
                     objects.add(object.get());
             }
@@ -132,11 +132,10 @@ public class OrderDataMapper extends ADataMapper<Order> {
         Order order = ordersIdentityMap.get(match.getInt("orderNumber"));
         if(order != null)
             return order;
-
-
         int orderNumber = match.getInt("orderNumber");
         int branchNumber= match.getInt("branchNumber");
-        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(match.getInt("supplierId")));
+        int supID = match.getInt("supplierId");
+        Optional<Supplier> suppOpt = SupplierDataMapper.getInstance().find(String.valueOf(supID));
         if (suppOpt.isEmpty())
             return null;
         Supplier supp = suppOpt.get();

@@ -1,13 +1,9 @@
 package SuperLi.src.DataAccess;
 
 import SuperLi.src.BusinessLogic.*;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -151,7 +147,6 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
     protected String findAllQuery(){return "SELECT * FROM `SuppliersItems`";}
     protected SupplierItem findInIdentityMap(String ...key)
     {
-        System.out.println("Wala2");
         return this.supplierItemIdentityMap.get(new MyKey(Integer.valueOf(key[0]),Integer.valueOf(key[1])));}
     protected SupplierItem insertIdentityMap(ResultSet match) throws SQLException {
         if(match == null)
@@ -172,12 +167,9 @@ public class SupplierItemDataMapper extends ADataMapper<SupplierItem>{
         this.supplierItemIdentityMap.put(new MyKey(supplierId, catalogNumber),sItem);
         return sItem;
     }
-
     //find all suppliers items of given supplier
     protected String findAllQueryByKey(String ... key)
     {
         return String.format("SELECT * FROM `SuppliersItems` WHERE supplierId = '%s'", key[0]);
     }
-
-
 }

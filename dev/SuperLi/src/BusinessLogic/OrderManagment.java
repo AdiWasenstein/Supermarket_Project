@@ -2,8 +2,6 @@ package SuperLi.src.BusinessLogic;
 
 import SuperLi.src.DataAccess.BranchDataMapper;
 import SuperLi.src.DataAccess.OrderDataMapper;
-import SuperLi.src.BusinessLogic.Pair;
-import SuperLi.src.DataAccess.SupplierDataMapper;
 import java.security.InvalidParameterException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -171,7 +169,6 @@ public class OrderManagment {
                 LinkedList<Pair<Integer, Integer>> tempi = new LinkedList<>();
                 tempi = (LinkedList<Pair<Integer, Integer>>) combinationFullItems.get(sup).clone();
                 tempi.add(Pair.create(itemId, combinationOfSeparatingItem.get(sup)));
-                ;
                 combinationFullItems.remove(sup);
                 combinationFullItems.put(sup, tempi);
             }
@@ -222,7 +219,6 @@ public class OrderManagment {
             LinkedList<Pair<Integer, Integer>> temp = new LinkedList<>();
             temp = (LinkedList<Pair<Integer, Integer>>) fullItemCombi.get(sup).clone();
             temp.add(Pair.create(itemId, partialItemCombi.get(sup)));
-            ;
             fullItemCombi.remove(sup);
             fullItemCombi.put(sup, temp);
 //            temp.add(Pair.create(itemId,partialItemCombi.get(sup)));//OLAY ZRICHA
@@ -560,7 +556,7 @@ public class OrderManagment {
             orderItems.add(currItem);
         }
         LinkedList<Order> allOrders = OrderDataMapper.getInstance().findAll();
-        int orderNumber = allOrders.size() + 1;
+        int orderNumber = allOrders.size()+1;
 //        if (!allOrders.isEmpty())
 //            orderNumber = allOrders.size()+1;
         Order order = new Order(orderNumber, supplier, orderItems, branchNumber);

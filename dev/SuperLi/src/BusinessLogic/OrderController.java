@@ -1,15 +1,10 @@
 package SuperLi.src.BusinessLogic;
 
 import SuperLi.src.DataAccess.OrderDataMapper;
-//import org.graalvm.collections.Pair;
-import SuperLi.src.BusinessLogic.Pair;
 import SuperLi.src.DataAccess.PeriodicReportDataMapper;
 import SuperLi.src.DataAccess.SupplierItemDataMapper;
 import SuperLi.src.DataAccess.BranchDataMapper;
 import SuperLi.src.DataAccess.SupplierDataMapper;
-
-
-import java.security.InvalidParameterException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -81,7 +76,7 @@ public class OrderController {
         for (Order order : orders)
         {
             branch.addOrder(order);
-            this.orderDataMapper.insert(order);
+//            this.orderDataMapper.insert(order);
         }
         return true;
     }
