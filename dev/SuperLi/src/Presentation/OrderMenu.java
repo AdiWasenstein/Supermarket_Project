@@ -155,7 +155,9 @@ public class OrderMenu extends AMenu{
                 items.put(marketID, amount);
 
             }
-            return this.orderController.createNewPeriodicReport(branchNumber, supp, day, items);
+            if (this.orderController.createNewPeriodicReport(branchNumber, supp, day, items) != null)
+                return true;
+            return false;
 
 
         }

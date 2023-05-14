@@ -16,11 +16,11 @@ public class SupplierTest {
         categories.add("Dairy Products");
         categories.add("Milk");
 
-        CatalogItem catalogItem = new CatalogItem(1, "Milk 3%", "Tnuva", 7.8, 100,
+        CatalogItem catalogItem = new CatalogItem(1000, "Milk 3%", "Tnuva", 7.8, 100,
                 new Category(categories, new Size(1000, MeasureUnit.ML)), 334, 1377);
 
-        SupplierItem supplierItem = new SupplierItem(40, "Milk 3%", "Tnuva", 22, 1,
-                50, "Dairy Products", 1);
+        SupplierItem supplierItem = new SupplierItem(400, "Milk 3%", "Tnuva", 22, 1,
+                50, "Dairy Products", 1000);
 
         LinkedList<String > suppCatagories = new LinkedList<>();
         suppCatagories.add("Dairy");
@@ -28,7 +28,7 @@ public class SupplierTest {
         LinkedList<String> suppManufact = new LinkedList<>();
         suppManufact.add("Tnuva");
 
-        SupplierCard suppCard = new SupplierCard("adi", "add", 1, "123", PaymentsWays.direct, "tiltan", "0526207807", "tiltan@gmmail.com");
+        SupplierCard suppCard = new SupplierCard("adi", "add", 200, "123", PaymentsWays.direct, "tiltan", "0526207807", "tiltan@gmmail.com");
         supp = new SupplierNotDelivers(suppCatagories, suppManufact, suppCard,null);
         SupplierContract contract = new SuperLi.src.BusinessLogic.SupplierContract(SuperLi.src.BusinessLogic.PaymentsWays.direct, supp);
         supp.setSupplierContract(contract);
@@ -67,9 +67,9 @@ public class SupplierTest {
     @Test
     void canSupplyMarketItem()
     {
-        Assertions.assertTrue(supp.canSupplyMarketItem(new Pair<>(1, 10)));
-        Assertions.assertFalse(supp.canSupplyMarketItem(new Pair<>(1, 60)));
-        Assertions.assertFalse(supp.canSupplyMarketItem(new Pair<>(2, 1)));
+        Assertions.assertTrue(supp.canSupplyMarketItem(new Pair<>(1000, 10)));
+        Assertions.assertFalse(supp.canSupplyMarketItem(new Pair<>(1000, 60)));
+        Assertions.assertFalse(supp.canSupplyMarketItem(new Pair<>(2000, 1)));
     }
 
     @Test
@@ -90,9 +90,16 @@ public class SupplierTest {
     @Test
     void toStringTest()
     {
-        String suppString = "Supplier's id: 1 , supplier's name: adi \n";
+        String suppString = "Supplier's id: 200 , supplier's name: adi \n";
         Assertions.assertEquals(supp.toString(), suppString);
 
+    }
+
+    @Test
+    void supplierItemToString()
+    {
+        SupplierItem item = supp.getSupplierItemAccordingToCatalogNumber(400);
+        Assertions.assertEquals("Catalog number: 400, Market Id: 1000, Item name: Milk 3%, Max amount to supply: 50 \n", item.toString());
     }
 
     @Test
@@ -105,7 +112,7 @@ public class SupplierTest {
     void itemGettersTest()
     {
         SupplierItem item = supp.getAllSuppItem().getFirst();
-        Assertions.assertEquals(40, item.getCatalogNumber());
+        Assertions.assertEquals(400, item.getCatalogNumber());
         Assertions.assertEquals("Milk 3%", item.getItemName());
         Assertions.assertEquals(22, item.getUnitPrice());
         Assertions.assertEquals(1, item.getUnitWeight());
@@ -125,6 +132,28 @@ public class SupplierTest {
         Assertions.assertEquals(40, item.getUnitPrice());
 
     }
+
+    @Test
+    void itemDiscount()
+    {
+        SupplierContract supplierContract = supp.getSupplierContract();
+        supplierContract.addItemDiscount(400, "ItemUnitDiscount", "percentage", 50, 5);
+        Assertions.assertNotNull(supplierContract.getDiscountDocument().getItemsDiscounts());
+        Discount disc = (supplierContract.getDiscountDocument().getItemsDiscounts().get(400).getFirst());
+        Assertions.assertTrue(disc.canUseTheDiscount(10));
+        Assertions.assertFalse(disc.canUseTheDiscount(4));
+        Assertions.assertTrue(supplierContract.getDiscountDocument().supplierHasItemDiscount());
+    }
+
+    @Test
+    void orderDiscount()
+    {
+        SupplierContract supplierContract = supp.getSupplierContract();
+        supplierContract.addOrderDiscount("OrderUnitsDiscount", "Constant", 50, 40);
+        Assertions.assertTrue(supplierContract.getDiscountDocument().supplierHasOrderDiscount());
+    }
+
+
 
 
 
