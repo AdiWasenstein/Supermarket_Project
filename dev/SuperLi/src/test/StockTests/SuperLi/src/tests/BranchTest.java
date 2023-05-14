@@ -1,4 +1,5 @@
-package SuperLi.src.tests;
+package SuperLi.src.test.StockTests.SuperLi.src.tests;
+
 
 import SuperLi.src.BusinessLogic.Branch;
 import SuperLi.src.DataAccess.BranchDataMapper;

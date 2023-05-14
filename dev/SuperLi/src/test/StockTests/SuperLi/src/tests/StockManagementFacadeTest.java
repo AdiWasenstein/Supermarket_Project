@@ -1,4 +1,4 @@
-package SuperLi.src.tests;
+package SuperLi.src.test.StockTests.SuperLi.src.tests;
 import SuperLi.src.BusinessLogic.CatalogItem;
 import SuperLi.src.BusinessLogic.StockManagementFacade;
 import org.junit.jupiter.api.BeforeEach;

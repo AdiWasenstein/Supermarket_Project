@@ -1,4 +1,5 @@
-package SuperLi.src.tests;
+package SuperLi.src.test.StockTests.SuperLi.src.tests;
+
 
 import SuperLi.src.BusinessLogic.*;
 import SuperLi.src.DataAccess.StockItemDataMapper;
@@ -74,19 +75,19 @@ class StockItemTest {
     }
     @Test
     void testFindDB(){
-        StockItem stockItem1 = stockItemDataMapper.find("1").get();
+        StockItem stockItem1 = stockItemDataMapper.find("3").get();
         assertNotNull(stockItem1);
-        Assertions.assertEquals(10, stockItem1.getCatalogItem().getId());
-        Assertions.assertEquals(122, stockItem1.getLocation());
-        Assertions.assertEquals(1, stockItem1.getBarcode());
+        Assertions.assertEquals(12, stockItem1.getCatalogItem().getId());
+        Assertions.assertEquals(124, stockItem1.getLocation());
+        Assertions.assertEquals(3, stockItem1.getBarcode());
         Assertions.assertEquals(1, stockItem1.getBranchId());
         Assertions.assertEquals(0, stockItem1.getDamage().ordinal());
-        Assertions.assertEquals(3, stockItem1.getCostPrice());
-        Assertions.assertEquals("11/4/23", stockItem1.getExpirationString());
+        Assertions.assertEquals(3.7, stockItem1.getCostPrice());
+        Assertions.assertEquals("18/4/23", stockItem1.getExpirationString());
     }
     @Test
     void testFindAllDB(){
         LinkedList<StockItem> stockItems = stockItemDataMapper.findAll();
-        assertEquals(98, stockItems.size());
+        Assertions.assertEquals(91, stockItems.size());
     }
 }

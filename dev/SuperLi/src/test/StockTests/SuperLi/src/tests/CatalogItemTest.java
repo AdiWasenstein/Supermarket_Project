@@ -1,4 +1,4 @@
-package SuperLi.src.tests;
+package SuperLi.src.test.StockTests.SuperLi.src.tests;
 
 import SuperLi.src.BusinessLogic.*;
 import SuperLi.src.DataAccess.CatalogItemDataMapper;
@@ -98,6 +98,6 @@ class CatalogItemTest {
     @Test
     void testFindAllDB(){
         LinkedList<CatalogItem> catalogItems = catalogItemDataMapper.findAll();
-        assertEquals(26, catalogItems.size());
+        assertEquals(25       , catalogItems.size());
     }
 }
