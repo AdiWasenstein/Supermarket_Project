@@ -151,7 +151,7 @@ public abstract class ADataMapper<ObjectType> {
         catch (SQLException e){
             System.out.println(this.getClass().toString() + e.getMessage());
         }
-        closeConnection();
+//        closeConnection();
         return objects;
     }
 }

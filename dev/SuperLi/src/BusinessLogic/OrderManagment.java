@@ -560,9 +560,9 @@ public class OrderManagment {
             orderItems.add(currItem);
         }
         LinkedList<Order> allOrders = OrderDataMapper.getInstance().findAll();
-        int orderNumber = 1;
-        if (!allOrders.isEmpty())
-            orderNumber = allOrders.size()+1;
+        int orderNumber = allOrders.size() + 1;
+//        if (!allOrders.isEmpty())
+//            orderNumber = allOrders.size()+1;
         Order order = new Order(orderNumber, supplier, orderItems, branchNumber);
         OrderDiscount bestOrderDiscount = supplier.getSupplierContract().getDiscountDocument().
                 bestOrderDiscount(amount, order.getCostOfOrder());

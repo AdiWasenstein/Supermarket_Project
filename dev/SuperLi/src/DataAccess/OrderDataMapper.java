@@ -117,7 +117,7 @@ public class OrderDataMapper extends ADataMapper<Order> {
         return "";
     }
 
-    public String findAllQuery(){
+    protected String findAllQuery(){
         return "SELECT * FROM `Orders`";
     }
 
