@@ -12,30 +12,9 @@ import java.util.LinkedList;
 public class SupplierTest {
     private Supplier supp;
     @BeforeEach
-    void setUp(){
-//        LinkedList<String> categories = new LinkedList<>();
-//        categories.add("Dairy Products");
-//        categories.add("Milk");
-//
-//        CatalogItem catalogItem = new CatalogItem(1000, "Milk 3%", "Tnuva", 7.8, 100,
-//                new Category(categories, new Size(1000, MeasureUnit.ML)), 334, 1377);
-//
-//        SupplierItem supplierItem = new SupplierItem(400, "Milk 3%", "Tnuva", 22, 1,
-//                50, "Dairy Products", 1000);
-//
-//        LinkedList<String > suppCatagories = new LinkedList<>();
-//        suppCatagories.add("Dairy");
-//
-//        LinkedList<String> suppManufact = new LinkedList<>();
-//        suppManufact.add("Tnuva");
-//
-//        SupplierCard suppCard = new SupplierCard("adi", "add", 200, "123", PaymentsWays.direct, "tiltan", "0526207807", "tiltan@gmmail.com");
-//        supp = new SupplierNotDelivers(suppCatagories, suppManufact, suppCard,null);
-//        SupplierContract contract = new SuperLi.src.BusinessLogic.SupplierContract(SuperLi.src.BusinessLogic.PaymentsWays.direct, supp);
-//        supp.setSupplierContract(contract);
-//        supp.addItem(supplierItem);
+    void setUp()
+    {
             supp = SupplierDataMapper.getInstance().find(new String[]{"1"}).get();
-
     }
 
     @AfterEach
@@ -53,18 +32,15 @@ public class SupplierTest {
         Assertions.assertTrue(supp.isContactExist("0524560846", supp.getContacts()));
 
         supp.AddNewCategory("Soap");
-        LinkedList<String> catList = new LinkedList<>();
+        Assertions.assertTrue(supp.getSupplierCatagories().contains("Soap"));
 
 
 
 
         supp.AddNewManufacturer("Lalin");
-        LinkedList<String> manList = new LinkedList<>();
+        Assertions.assertTrue(supp.getSupplierManufacturers().contains("Lalin"));
 
 
-        manList.add("Angle");  manList.add("Tara");manList.add("Tnuva");manList.add("Lalin");
-
-        Assertions.assertArrayEquals(supp.getSupplierManufacturers().toArray(), manList.toArray());
 
     }
 

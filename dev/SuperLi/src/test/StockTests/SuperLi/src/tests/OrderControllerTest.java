@@ -7,7 +7,6 @@ import SuperLi.src.DataAccess.PeriodicReportDataMapper;
 import SuperLi.src.DataAccess.SupplierDataMapper;
 import SuperLi.src.Presentation.ReportViewer;
 import org.junit.jupiter.api.*;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -34,21 +33,13 @@ public class OrderControllerTest {
             itemsForReport = new HashMap<>();
             itemsForReport.put(12, 10);
       }
-      @AfterEach
-      void afterEach(){
-
-//            CatalogItemDataMapper.getInstance().delete(catalogItem);
-      }
 
       @Test
       void createPeriodic()
       {
-            LocalDate date = LocalDate.now();
-            String dayOfWeekString = date.getDayOfWeek().toString();
             report = orderController.createNewPeriodicReport(27, 1, supp1, Day.valueOf("friday"), itemsForReport);
             Assertions.assertNotNull(PeriodicReportDataMapper.getInstance().findAll());
             Assertions.assertFalse(PeriodicReportDataMapper.getInstance().find(new String[]{"27"}).isEmpty());
-//            Assertions.assertEquals(orderController.getAllPeriodicReports().size(), PeriodicReport.howManyReports());
             Assertions.assertNotNull(OrderDataMapper.getInstance().findAll());
       }
 
@@ -56,9 +47,7 @@ public class OrderControllerTest {
       public void updateReport()
       {
             HashMap<Integer, Integer> updates = new HashMap<>();
-//            updates.put(1, 20);
             report = PeriodicReportDataMapper.getInstance().find(new String[]{"27"}).get();
-//            orderController.updateReport(report.getReportId(), updates);
             try {
                    Assertions.assertTrue(stockManagementFacade.updatePeriodReport(27, 1));
 
@@ -67,7 +56,6 @@ public class OrderControllerTest {
             {
                   Assertions.fail();
             }
-//            Assertions.assertEquals(550, report.getQuantityOfItem(supp1.getSupplierItemAccordingToCatalogNumber(1)));
             updates.put(1, 100);
             orderController.updateReport(report.getReportId(), updates);
             Assertions.assertNotEquals(100, report.getQuantityOfItem(supp1.getSupplierItemAccordingToCatalogNumber(1)));
@@ -78,6 +66,7 @@ public class OrderControllerTest {
             Assertions.assertTrue(stockManagementFacade.createShortageOrder(1));
             Assertions.assertFalse(stockManagementFacade.createShortageOrder(999));
       }
+
       @Test
       void testShortageReport(){
             OrderManagment orderManagment = OrderManagment.getInstance();
