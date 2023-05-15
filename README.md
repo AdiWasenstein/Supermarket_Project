@@ -13,3 +13,4 @@ Required Packages:
   java.sql
 Passwords:
   Admin password - 123
+Make sure that to download SuppliersStock.db with the jar file 
