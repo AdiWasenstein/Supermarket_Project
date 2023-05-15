@@ -18,7 +18,6 @@ public class MainMenu extends AMenu{
         System.out.println("3. I'm a stock-keeper.");
         System.out.println("4. I'm a supplier manager.");
         System.out.println("5. I'm the order manager.");
-        System.out.println("0. Actually, I would like to exit menu.");
     }
     public void communicate() {
         boolean run = true;
@@ -41,7 +40,6 @@ public class MainMenu extends AMenu{
                 case 3 -> StockKeeperMenu.getInstance(branchId).communicate();
                 case 4 -> SupplierMenu.getInstance().communicate();
                 case 5 -> OrderMenu.getInstance().communicate();
-                case 0 -> run = false;
                 default -> System.out.println("Invalid option");
             }
         }
