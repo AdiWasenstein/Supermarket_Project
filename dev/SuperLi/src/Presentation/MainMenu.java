@@ -20,9 +20,8 @@ public class MainMenu extends AMenu{
         System.out.println("5. I'm the order manager.");
     }
     public void communicate() {
-        boolean run = true;
         int branchId = -1;
-        while (run) {
+        while (true) {
             printMenu();
             System.out.print("Please enter your option: ");
             int choice = inputNumber();
@@ -36,13 +35,13 @@ public class MainMenu extends AMenu{
             }
             switch (choice) {
                 case 1 -> AdminMenu.getInstance().communicate();
-                case 2 -> BranchStockManagerMenu.getInstance(branchId).communicate();
+                // Skipping branch stock manager menu
                 case 3 -> StockKeeperMenu.getInstance(branchId).communicate();
                 case 4 -> SupplierMenu.getInstance().communicate();
                 case 5 -> OrderMenu.getInstance().communicate();
                 default -> System.out.println("Invalid option");
             }
         }
-        System.out.println("Thank you for using Super - li system, we hope to see you soon.");
+//        System.out.println("Thank you for using Super - li system, we hope to see you soon.");
     }
 }

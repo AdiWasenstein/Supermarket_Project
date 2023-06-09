@@ -25,6 +25,7 @@ public class StockKeeperMenu extends AMenu{
         System.out.println("2. Remove Stock Item.");
         System.out.println("3. Adding Damage to Item.");
         System.out.println("4. Move stock item.");
+        System.out.println("5. Create / Update order according to stock.");
         System.out.println("0. Actually, I would like to exit menu.");
     }
     public void communicate(){
@@ -38,6 +39,7 @@ public class StockKeeperMenu extends AMenu{
                 case 2 -> removeStockItem();
                 case 3 -> updateDamage();
                 case 4 -> moveStockItem();
+                case 5 -> manageOrder();
                 case 0 -> run = false;
                 default -> System.out.println("Invalid option");
             }
@@ -132,5 +134,50 @@ public class StockKeeperMenu extends AMenu{
         }
         System.out.format("Changing the item location to location %d completed successfully. Returning to main menu...\n",
                 stockManagementFacade.getLocationOfBarcode(barcode, branchId));
+    }
+    public void manageOrder() {
+        System.out.println("1. Create Shortage Order");
+        System.out.println("2. Update Periodic Report");
+        System.out.print("Please enter your option: ");
+        switch (inputNumber()) {
+            case 1 -> createShortageStockOrder();
+            case 2 -> updatePeriodicOrder();
+            default -> System.out.println("Invalid option");
+        }
+    }
+    public void createShortageStockOrder() {
+        if (!stockManagementFacade.createShortageOrder(branchId))
+            System.out.print("No items required for the branch. ");
+        else
+            System.out.print("Required stock ordered sent to the suppliers successfully. ");
+        System.out.println("Returning to menu...");
+    }
+    public void updatePeriodicOrder() {
+        System.out.println("Please choose a report to update:");
+        if(!ReportViewer.getInstance().generatePeriodicReportsAccordingToBrunch(branchId)) {
+            System.out.println("There are no periodic reports of branch with given number. Returning to menu...");
+            return;
+        }
+        System.out.print("Please insert the report's ID that you want ot update: "); int reportId = inputNumber();
+        if(reportId < 0) {
+            System.out.println("Invalid report ID. Returning to menu...");
+            return;
+        }
+        try{
+            if(!stockManagementFacade.updatePeriodReport(reportId, branchId)) {
+                System.out.println("Cannot update the requested reportId");
+                return;
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return;
+        }
+        System.out.format("Report %d was updated successfully. Returning to menu...\n", reportId);
+    }
+    public static void main(String[] args){
+        int branchId = getBranchID();
+        if(branchId >= 0)
+            StockKeeperMenu.getInstance(branchId).communicate();
     }
 }

@@ -12,7 +12,6 @@ public class AdminMenu extends AMenu {
     private static AdminMenu adminMenu = null;
     StockManagementFacade stockManagementFacade;
     AdminController adminController;
-    private static final int adminPassword = 123;
     private AdminMenu() {
         stockManagementFacade = StockManagementFacade.getInstance();
         adminController = AdminController.getInstance();
@@ -29,19 +28,12 @@ public class AdminMenu extends AMenu {
         System.out.println("3. Add new supplier to system.");
         System.out.println("4. Remove catalog item from the system.");
         System.out.println("5. Change catalog item's details.");
-        System.out.println("6. Print catalog items' reports");
+        System.out.println("6. Print report.");
         System.out.println("7. Print all suppliers in the system.");
         System.out.println("8. Print all orders were made.");
-        System.out.println("9. Print all orders were made for specific branch.");
         System.out.println("0. Actually, I would like to exit menu.");
     }
     public void communicate() {
-        System.out.print("Hello, to make sure you are the admin, please enter the admin password: ");
-        int password = inputNumber();
-        if (password != AdminMenu.adminPassword) {
-            System.out.println("Password incorrect, you are not allowed to have access to admin menu.");
-            return;
-        }
         boolean run = true;
         while (run) {
             printMenu();
@@ -55,7 +47,6 @@ public class AdminMenu extends AMenu {
                 case 6 -> generateReport();
                 case 7 -> printAllSuppliersInSystem();
                 case 8 -> printAllOrdersInSystem();
-                case 9 -> printAllBranchOrders();
                 case 0 -> run = false;
                 default -> System.out.println("Invalid option");
             }
@@ -161,7 +152,6 @@ public class AdminMenu extends AMenu {
                     return PaymentsWays.plus60;
                 } else {
                     System.out.println("please enter a number between 1-3");
-                    continue;
                 }
             } catch (InputMismatchException e) {
                 input.nextLine();
@@ -170,7 +160,7 @@ public class AdminMenu extends AMenu {
         }
     }
     public LinkedList<String> getSupplierCategory() {
-        LinkedList<String> categories = new LinkedList<String>();
+        LinkedList<String> categories = new LinkedList<>();
         while (true) {
             try {
                 System.out.println("Enter category");
@@ -191,7 +181,7 @@ public class AdminMenu extends AMenu {
         return categories;
     }
     public LinkedList<String> getSupplierManufacturers() {
-        LinkedList<String> manufacturers = new LinkedList<String>();
+        LinkedList<String> manufacturers = new LinkedList<>();
         while (true) {
             try {
                 System.out.println("Enter manufacturer");
@@ -285,7 +275,6 @@ public class AdminMenu extends AMenu {
             if (index == -1) {
                 if (daysOfTheWeek.size() > 0) {
                     System.out.println("Please enter valid day");
-                    continue;
                 } else {
                     System.out.println("There are no more possible days to enter.");
                     break;
@@ -324,20 +313,17 @@ public class AdminMenu extends AMenu {
     private String getSupplierContactName() {
         System.out.println("Please enter contact's details:");
         System.out.println("Enter contact's name");
-        String name = input.nextLine();
-        return name;
+        return input.nextLine();
     }
 
     private String getSupplierContactPhone() {
         System.out.println("Enter contact's phone number");
-        String phone = input.nextLine();
-        return phone;
+        return input.nextLine();
     }
 
     private String getSupplierContactEmail() {
         System.out.println("Enter contact's email address");
-        String email = input.nextLine();
-        return email;
+        return input.nextLine();
     }
 
     public void addNewSupplierToSystem() {
@@ -398,25 +384,7 @@ public class AdminMenu extends AMenu {
         for (Supplier supplier : allSuppliers)
             System.out.println(supplier.allDataOfSupplier());
     }
-    public void printAllBranchOrders() {
-        //NEED TO PRINT ALL BRANCHES
-        System.out.println("Please enter number of branch.");
-        int branchNumber;
-        try {
-            branchNumber = input.nextInt();
-            input.nextLine();
-//            if(branchNumber <= 0 || branchNumber > SuperLi.src.Presentation.MainMenu.allBranches.size())
-//                throw new InvalidParameterException("Business.Branch number must be in range of 1 - " + SuperLi.src.Presentation.MainMenu.allBranches.size());
-        } catch (InputMismatchException e) {
-            input.nextLine();
-            System.out.println("Business.Branch number must be only digits.");
-            return;
-        }
-//        catch(InvalidParameterException e)
-//        {
-//            System.out.println(e.getMessage());
-//            return;
-//        }
+    public void printAllBranchOrders(int branchNumber) {
         try {
             LinkedList<Order> allBranchOrders = adminController.getAllOrdersOfBranch(branchNumber);
             for (Order order : allBranchOrders)
@@ -588,15 +556,16 @@ public class AdminMenu extends AMenu {
         }
         return categories;
     }
-    public int getReport() {
+    public int getCatalogReport() {
         System.out.println("1. Category Report");
         System.out.println("2. Catalog Report");
+        System.out.println("3. Specific Branch Reports");
         System.out.print("Please enter your option: ");
         return inputNumber();
     }
     public void generateReport() {
         ReportViewer reportViewer = ReportViewer.getInstance();
-        switch (getReport()) {
+        switch (getCatalogReport()) {
             case 1 -> {
                 LinkedList<LinkedList<String>> categoriesList = new LinkedList<>();
                 while (true){
@@ -609,7 +578,30 @@ public class AdminMenu extends AMenu {
                 reportViewer.generateCategoryReport(categoriesList);
             }
             case 2 -> reportViewer.generateAllCatalogReport();
+            case 3 -> generateSpecificBranchReports(reportViewer);
             default -> System.out.println("Invalid option. Returning to main...");
         }
+    }
+    public int getBranchReport(){
+        System.out.println("1. Stock Item Report");
+        System.out.println("2. Required Stock Report");
+        System.out.println("3. Damaged Stock Report");
+        System.out.println("4. All orders were made for specific branch.");
+        System.out.print("Please enter your option: "); return inputNumber();
+    }
+    public void generateSpecificBranchReports(ReportViewer reportViewer){
+        int branchId = getBranchID();
+        if(branchId < 0)
+            return;
+        switch (getBranchReport()){
+            case 1 -> reportViewer.generateStockItemReport(branchId);
+            case 2 -> reportViewer.generateRequiredStockReport(branchId);
+            case 3 -> reportViewer.generateDamagedReport(branchId);
+            case 4 -> printAllBranchOrders(branchId);
+            default -> System.out.println("Invalid option. Returning to main...");
+        }
+    }
+    public static void main(String[] args){
+        AdminMenu.getInstance().communicate();
     }
 }
