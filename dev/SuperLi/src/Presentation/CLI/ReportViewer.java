@@ -1,4 +1,4 @@
-package SuperLi.src.Presentation;
+package SuperLi.src.Presentation.CLI;
 
 import SuperLi.src.BusinessLogic.AReport;
 import SuperLi.src.BusinessLogic.StockManagementFacade;

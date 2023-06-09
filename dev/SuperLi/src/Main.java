@@ -1,5 +1,5 @@
 package SuperLi.src;
-import SuperLi.src.Presentation.MainMenu;
+import SuperLi.src.Presentation.CLI.MainMenu;
 import SuperLi.src.BusinessLogic.*;
 
 public class Main {

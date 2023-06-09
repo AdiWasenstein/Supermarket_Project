@@ -4,7 +4,7 @@ import SuperLi.src.BusinessLogic.*;
 import SuperLi.src.DataAccess.OrderDataMapper;
 import SuperLi.src.DataAccess.PeriodicReportDataMapper;
 import SuperLi.src.DataAccess.SupplierDataMapper;
-import SuperLi.src.Presentation.ReportViewer;
+import SuperLi.src.Presentation.CLI.ReportViewer;
 import org.junit.jupiter.api.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;

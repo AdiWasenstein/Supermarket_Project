@@ -68,7 +68,7 @@ public class AdminController {
 //        Branch newB = new Branch(address, id);
 //        BranchDataMapper.getInstance().insert(newB);
 ////        Branch newB = new Branch(address);
-////        SuperLi.src.Presentation.MainMenu.allBranches.add(newB);
+////        SuperLi.src.Presentation.CLI.MainMenu.allBranches.add(newB);
 //        //MAYBE NEED TO THROW AN EXCEPTION.
 //    }
 

@@ -1,4 +1,4 @@
-package SuperLi.src.Presentation;
+package SuperLi.src.Presentation.CLI;
 
 import java.time.LocalDate;
 import SuperLi.src.BusinessLogic.StockManagementFacade;
