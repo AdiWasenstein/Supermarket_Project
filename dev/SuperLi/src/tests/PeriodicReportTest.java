@@ -1,4 +1,4 @@
-package SuperLi.src.test.StockTests.SuperLi.src.tests;
+package SuperLi.src.tests;
 
 import SuperLi.src.BusinessLogic.*;
 import SuperLi.src.DataAccess.PeriodicReportDataMapper;
