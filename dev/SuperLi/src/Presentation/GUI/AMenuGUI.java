@@ -2,6 +2,8 @@ package SuperLi.src.Presentation.GUI;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,13 +57,23 @@ public abstract class AMenuGUI{
         }
         return -1;
     }
-    private void changeScreen(LinkedList<JPanel> panels, int amountOfScreen){
+    public LocalDate generateDate(String date){
+        try{
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("d/M/yy"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private void changeScreen(LinkedList<JComponent> components, int amountOfScreen){
         JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(backgroundColor);
         mainPanel.setLayout(new GridLayout(1, amountOfScreen));
-        for(JPanel panel : panels)
-            mainPanel.add(panel);
-        for(int i = 0; i < amountOfScreen - panels.size(); i++){
+        for(JComponent component : components) {
+            component.setBackground(backgroundColor);
+            mainPanel.add(component);
+        }
+        for(int i = 0; i < amountOfScreen - components.size(); i++){
             JPanel emptyPanel = new JPanel();
             emptyPanel.setBackground(backgroundColor);
             mainPanel.add(emptyPanel);
@@ -92,7 +104,6 @@ public abstract class AMenuGUI{
     public void showOptionsMenu(LinkedList<String>optionsNames, LinkedList<Runnable> operations){
         int amountOfScreen = 3;
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBackground(backgroundColor);
         buttonsPanel.setLayout(new GridLayout(10, 1));  // Maximum amount of buttons
         for(int optionIndex = 0; optionIndex < optionsNames.size(); optionIndex++){
             String optionName = optionsNames.get(optionIndex);
@@ -103,39 +114,74 @@ public abstract class AMenuGUI{
         }
         changeScreen(new LinkedList<>(List.of(buttonsPanel)), amountOfScreen);
     }
-    public void showFillMenu(LinkedList<String> labelNames, Function<LinkedList<String>, Boolean> operation, String success, String failure, boolean returnAfterFinish) {
-        int amountOfScreen = 3;
+    public JPanel createFillMenu(LinkedList<String> labelNames, LinkedList<JComponent> fields, LinkedList<LinkedList<String>> optionForField) {
         JPanel fillPanel = new JPanel();
         fillPanel.setLayout(new GridLayout(10, 1));  // Maximum amount of buttons
-        LinkedList<JTextField> fields = new LinkedList<>();
-        for(String labelName : labelNames) {
-            JTextField field = new JTextField(labelName);
-            field.addFocusListener(new FocusAdapter() {
-                public void focusGained(FocusEvent e) {
-                    JTextField source = (JTextField)e.getComponent();
-                    source.setText("");
-                    source.removeFocusListener(this);
-                }
-            });
+        for(int i = 0; i < labelNames.size(); i++)
+        {
+            String labelName = labelNames.get(i);
+            LinkedList<String> currentOptions = optionForField.get(i);
+            JComponent field;
+            if(currentOptions.size() == 0){
+                field = new JTextField(labelName);
+                field.addFocusListener(new FocusAdapter() {
+                    public void focusGained(FocusEvent e) {
+                        JTextField source = (JTextField) e.getComponent();
+                        source.setText("");
+                        source.removeFocusListener(this);
+                    }
+                });
+            }
+            else {
+                currentOptions.add(0, labelName);
+                field = new JComboBox<>(currentOptions.toArray());
+            }
             fields.add(field);
             fillPanel.add(field);
         }
+//        for (String labelName : labelNames) {
+//            JTextField field = new JTextField(labelName);
+//            field.addFocusListener(new FocusAdapter() {
+//                public void focusGained(FocusEvent e) {
+//                    JTextField source = (JTextField) e.getComponent();
+//                    source.setText("");
+//                    source.removeFocusListener(this);
+//                }
+//            });
+//            fields.add(field);
+//            fillPanel.add(field);
+//        }
+        return fillPanel;
+    }
+    public void showFillMenu(LinkedList<String> labelNames, LinkedList<LinkedList<String>> optionsForButton, Function<LinkedList<String>, Boolean> operation, String success, String failure, boolean returnAfterFinish, int amountOfScreen) {
+        LinkedList<JComponent> fields = new LinkedList<>();
+        JPanel fillPanel = createFillMenu(labelNames, fields, optionsForButton);
         JButton clearButton = new JButton("Clear");
         clearButton.addActionListener(e -> {
             for(int i = 0; i < fields.size(); i++)
-                fields.get(i).setText(labelNames.get(i));
+            {
+                JComponent field = fields.get(i);
+                if(field instanceof JTextField)
+                    ((JTextField) field).setText(labelNames.get(i));
+                else
+                    ((JComboBox) field).setSelectedIndex(0);
+            }
         });
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             LinkedList<String> values = new LinkedList<>();
-            for(JTextField field : fields)
-                values.add(field.getText());
+            for(JComponent field : fields) {
+                if (field instanceof JTextField)
+                    values.add(((JTextField) field).getText());
+                else
+                    values.add(((JComboBox) field).getSelectedItem().toString());
+            }
             boolean status = operation.apply(values);
             String message = status ? success : failure;
             int logo = status ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
             JOptionPane.showMessageDialog(jFrame.getComponent(0), message,
                     "Operation Status", logo);
-            if(returnAfterFinish)
+            if(returnAfterFinish || !status)
                 showMainMenu();
         });
         JPanel buttonsPanel = new JPanel();

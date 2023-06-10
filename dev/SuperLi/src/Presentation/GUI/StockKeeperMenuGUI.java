@@ -1,4 +1,5 @@
 package SuperLi.src.Presentation.GUI;
+import SuperLi.src.BusinessLogic.DamageType;
 import SuperLi.src.BusinessLogic.StockManagementFacade;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
     StockManagementFacade stockManagementFacade;
     int branchId;
     static StockKeeperMenuGUI stockKeeperMenu = null;
+    static LinkedList<String> damageTypes = new LinkedList<>(Arrays.asList("COVER", "PHYSICAL", "ELECTRICAL", "ROTTEN", "NONE"));
     private StockKeeperMenuGUI(int branchId){
         stockManagementFacade = StockManagementFacade.getInstance();
         this.branchId = branchId;
@@ -23,6 +25,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             stockKeeperMenu.branchId = branchId;
         return stockKeeperMenu;
     }
+
     public void showMainMenu(){
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
