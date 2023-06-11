@@ -3,7 +3,6 @@ package SuperLi.src.BusinessLogic;
 
 import SuperLi.src.DataAccess.SupplierDataMapper;
 import SuperLi.src.DataAccess.SupplierItemDataMapper;
-import com.sun.source.tree.TryTree;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
@@ -35,6 +34,16 @@ public class SupplierController {
         return false;
     }
 
+    public LinkedList<String> findAllSuppliersID(){
+        LinkedList<Supplier> allSupp = supplierDataMapper.findAll();
+        if (allSupp == null)
+            return new LinkedList<>();
+        LinkedList<String> allSuppsID = new LinkedList<>();
+        for (Supplier supp : allSupp)
+            allSuppsID.add(Integer.toString(supp.getSupplierId()));
+        return allSuppsID;
+
+    }
     //the func throws Exception if contact with given phone number already exists for the supplier,
     //InvalidParameterException if can't create contact (details are not valid).
     //else, adds the contact to supplier.
