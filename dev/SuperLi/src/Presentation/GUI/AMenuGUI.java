@@ -1,5 +1,5 @@
 package SuperLi.src.Presentation.GUI;
-
+import SuperLi.src.BusinessLogic.AReport;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -66,16 +66,16 @@ public abstract class AMenuGUI{
         }
     }
     public void changeScreen(LinkedList<JComponent> components, int amountOfScreen){
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(1, amountOfScreen));
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(1, amountOfScreen));
         for(JComponent component : components) {
             component.setBackground(backgroundColor);
-            mainPanel.add(component);
+            contentPanel.add(component);
         }
         for(int i = 0; i < amountOfScreen - components.size(); i++){
             JPanel emptyPanel = new JPanel();
             emptyPanel.setBackground(backgroundColor);
-            mainPanel.add(emptyPanel);
+            contentPanel.add(emptyPanel);
         }
         JButton homeButton = new JButton("Home");
         homeButton.addActionListener(e -> showMainMenu());
@@ -93,7 +93,10 @@ public abstract class AMenuGUI{
         homePanel.setLayout(new GridLayout(2, 1));
         homePanel.add(homeButton);
         lastPanel.add(homePanel);
-        mainPanel.add(lastPanel);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        mainPanel.add(lastPanel, BorderLayout.EAST);
         jFrame.getContentPane().removeAll();
         jFrame.getContentPane().add(mainPanel);
         jFrame.revalidate();
@@ -130,8 +133,12 @@ public abstract class AMenuGUI{
     }
     public void showOptionsMenu(LinkedList<String>optionsNames, LinkedList<Runnable> operations){
         int amountOfScreen = 3;
+        JPanel buttonsPanel = getPanelOfButtons(optionsNames, operations, 10, 1);
+        changeScreen(new LinkedList<>(List.of(buttonsPanel)), amountOfScreen);
+    }
+    public JPanel getPanelOfButtons(LinkedList<String>optionsNames, LinkedList<Runnable> operations, int rows, int cols){
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(10, 1));  // Maximum amount of buttons
+        buttonsPanel.setLayout(new GridLayout(rows, cols));  // Maximum amount of buttons
         for(int optionIndex = 0; optionIndex < optionsNames.size(); optionIndex++){
             String optionName = optionsNames.get(optionIndex);
             Runnable operation = operations.get(optionIndex);
@@ -139,7 +146,7 @@ public abstract class AMenuGUI{
             button.addActionListener(e -> operation.run());
             buttonsPanel.add(button);
         }
-        changeScreen(new LinkedList<>(List.of(buttonsPanel)), amountOfScreen);
+        return buttonsPanel;
     }
     public JPanel createFillMenu(LinkedList<String> labelNames, LinkedList<JComponent> fields, LinkedList<LinkedList<String>> closeOptions) {
         JPanel fillPanel = new JPanel();
@@ -241,8 +248,58 @@ public abstract class AMenuGUI{
         int i = 0;
         for (LinkedList<String> record : records)
             recordsArray[i++] = record.toArray(new String[0]);
-        JTable reportTable = new JTable(recordsArray, columnsArray);
-        JScrollPane panel = new JScrollPane(reportTable);
+        showTable(columnsArray, recordsArray, amountFromScreen);
+    }
+    public void showTable(AReport report){
+
+        showTable(getTable(report), 2);
+    }
+    public void showTable(String[] columns, String[][] records, int amountFromScreen){
+        JScrollPane panel = getTable(columns, records);
         changeScreen(new LinkedList<>(List.of(panel)), amountFromScreen);
+    }
+    public void showTable(JScrollPane table, int amountFromScreen){
+        changeScreen(new LinkedList<>(List.of(table)), amountFromScreen);
+    }
+    public JScrollPane getTable(AReport report){
+        LinkedList<String[]> records = report.initializeRecords();
+        String[][] recordsArray = new String[records.size()][];
+        int i = 0;
+        for (String[] record : records)
+            recordsArray[i++] = record;
+        return getTable(report.getHeaders(), recordsArray);
+    }
+    public JScrollPane getTable(String[] columns, String[][] records) {
+        JTable reportTable = new JTable(records, columns);
+        JScrollPane panel = new JScrollPane(reportTable);
+        return panel;
+    }
+    public void reportSelector(LinkedList<String> labelNames, LinkedList<AReport> reports, Function<Integer, Boolean> submitOperation, String success, String failure){
+        LinkedList<JScrollPane> tables = new LinkedList<>();
+        for(AReport report : reports)
+            tables.add(getTable(report));
+        JPanel totalPanel = new JPanel();
+        totalPanel.setLayout(new BorderLayout());
+        LinkedList<Runnable> operations = new LinkedList<>();
+        JScrollPane[] currentSelectedTable = {tables.get(0)};
+        totalPanel.add(currentSelectedTable[0], BorderLayout.CENTER);
+        for(JScrollPane table : tables)
+            operations.add(() -> {
+                totalPanel.remove(currentSelectedTable[0]);
+                currentSelectedTable[0] = table;
+                totalPanel.add(table, BorderLayout.CENTER);
+                changeScreen(new LinkedList<>(Arrays.asList(totalPanel)), 1);
+            });
+        JPanel buttonsPanel = getPanelOfButtons(labelNames, operations, 10, 1);
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(e -> {
+            int selectedIndex = tables.indexOf(currentSelectedTable[0]);
+            boolean status = submitOperation.apply(selectedIndex);
+            showMessage(status, success, failure);
+            showMainMenu();
+        });
+        totalPanel.add(buttonsPanel, BorderLayout.WEST);
+        totalPanel.add(submitButton, BorderLayout.NORTH);
+        changeScreen(new LinkedList<>(Arrays.asList(totalPanel)), 1);
     }
 }

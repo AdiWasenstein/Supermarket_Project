@@ -1,4 +1,7 @@
 package SuperLi.src.Presentation.GUI;
+import SuperLi.src.BusinessLogic.AReport;
+import SuperLi.src.BusinessLogic.OrderController;
+import SuperLi.src.BusinessLogic.PeriodicReport;
 import SuperLi.src.BusinessLogic.StockManagementFacade;
 
 import javax.swing.*;
@@ -56,6 +59,12 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         operations.add(this::manageOrder);
         showOptionsMenu(optionsNames, operations);
     }
+    public void showBarcodePage(Function<LinkedList<String>, Boolean> operation, String successMessage, String failureMessage, boolean returnAfterFinish){
+        LinkedList<String> labelNames = new LinkedList<>();
+        LinkedList<LinkedList<String>> updateOptions = new LinkedList<>();
+        labelNames.add("Barcode"); updateOptions.add(new LinkedList<>());
+        showFillPage(labelNames, updateOptions, operation, successMessage, failureMessage, returnAfterFinish, 3);
+    }
     public void addStockItem(){
         LinkedList<String> labels = new LinkedList<>();
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
@@ -84,13 +93,10 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         return stockManagementFacade.addStockItem(id, branchId, barcode, costPrice, expirationDate, damageIndex, location.equals("Front"));
     }
     public void removeStockItem(){
-        LinkedList<String> labelNames = new LinkedList<>();
-        LinkedList<LinkedList<String>> closeOptions = new LinkedList<>();
-        labelNames.add("Barcode"); closeOptions.add(new LinkedList<>());
         Function<LinkedList<String>, Boolean> operation = this::removeStockItem;
         String successMessage = "Item removed successfully";
-        String failureMessage = "Cannot remove requested stock item";
-        showFillPage(labelNames, closeOptions, operation, successMessage, failureMessage, true, 3);
+        String failureMessage = "Cannot find requested item";
+        showBarcodePage(operation, successMessage, failureMessage, true);
     }
     public boolean removeStockItem(LinkedList<String> values){
         int barcode = generateInt(values.get(0));
