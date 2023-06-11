@@ -1,4 +1,5 @@
 package SuperLi.src.Presentation.GUI;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -39,23 +40,21 @@ public abstract class AMenuGUI{
     }
     public int generateInt(String str){
         try{
-            int number = Integer.parseInt(str);
-            return number;
+            return Integer.parseInt(str);
         }
         catch (NumberFormatException ex){
             ex.printStackTrace();
+            return -1;
         }
-        return -1;
     }
     public double generateDouble(String str){
         try{
-            double number = Double.parseDouble(str);
-            return number;
+            return Double.parseDouble(str);
         }
         catch (NumberFormatException ex){
             ex.printStackTrace();
+            return -1;
         }
-        return -1;
     }
     public LocalDate generateDate(String date){
         try{
@@ -66,7 +65,7 @@ public abstract class AMenuGUI{
             return null;
         }
     }
-    private void changeScreen(LinkedList<JComponent> components, int amountOfScreen){
+    public void changeScreen(LinkedList<JComponent> components, int amountOfScreen){
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(1, amountOfScreen));
         for(JComponent component : components) {
@@ -79,9 +78,7 @@ public abstract class AMenuGUI{
             mainPanel.add(emptyPanel);
         }
         JButton homeButton = new JButton("Home");
-        homeButton.addActionListener(e -> {
-            showMainMenu();
-        });
+        homeButton.addActionListener(e -> showMainMenu());
         JPanel lastPanel = new JPanel();
         int placeOfHomeButton = 8;
         lastPanel.setLayout(new GridLayout(placeOfHomeButton, 1));
@@ -101,6 +98,36 @@ public abstract class AMenuGUI{
         jFrame.getContentPane().add(mainPanel);
         jFrame.revalidate();
     }
+    public void resetFillOption(JComponent field){
+        if(field instanceof JTextField)
+            field.addFocusListener(new FocusAdapter() {
+                public void focusGained(FocusEvent e) {
+                    JTextField source = (JTextField) e.getComponent();
+                    source.setText("");
+                    source.removeFocusListener(this);
+                }
+            });
+        else if (field instanceof JComboBox<?>)
+            ((JComboBox<?>) field).setSelectedIndex(0);
+        else
+            System.out.println("Invalid type");
+    }
+    public String getInsertedValue(JComponent field){
+        if(field instanceof JTextField)
+            return ((JTextField) field).getText();
+        else if (field instanceof JComboBox<?>) {
+            Object value = ((JComboBox<?>) field).getSelectedItem();
+            if(value != null)
+                return value.toString();
+        }
+        return null;
+    }
+    public void showMessage(boolean status, String successMessage, String failureMessage){
+        String message = status ? successMessage : failureMessage;
+        int logo = status ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
+        JOptionPane.showMessageDialog(jFrame.getComponent(0), message,
+                "Operation Status", logo);
+    }
     public void showOptionsMenu(LinkedList<String>optionsNames, LinkedList<Runnable> operations){
         int amountOfScreen = 3;
         JPanel buttonsPanel = new JPanel();
@@ -114,23 +141,17 @@ public abstract class AMenuGUI{
         }
         changeScreen(new LinkedList<>(List.of(buttonsPanel)), amountOfScreen);
     }
-    public JPanel createFillMenu(LinkedList<String> labelNames, LinkedList<JComponent> fields, LinkedList<LinkedList<String>> optionForField) {
+    public JPanel createFillMenu(LinkedList<String> labelNames, LinkedList<JComponent> fields, LinkedList<LinkedList<String>> closeOptions) {
         JPanel fillPanel = new JPanel();
         fillPanel.setLayout(new GridLayout(10, 1));  // Maximum amount of buttons
         for(int i = 0; i < labelNames.size(); i++)
         {
             String labelName = labelNames.get(i);
-            LinkedList<String> currentOptions = optionForField.get(i);
+            LinkedList<String> currentOptions = new LinkedList<>(closeOptions.get(i));
             JComponent field;
             if(currentOptions.size() == 0){
                 field = new JTextField(labelName);
-                field.addFocusListener(new FocusAdapter() {
-                    public void focusGained(FocusEvent e) {
-                        JTextField source = (JTextField) e.getComponent();
-                        source.setText("");
-                        source.removeFocusListener(this);
-                    }
-                });
+                resetFillOption(field);
             }
             else {
                 currentOptions.add(0, labelName);
@@ -139,21 +160,9 @@ public abstract class AMenuGUI{
             fields.add(field);
             fillPanel.add(field);
         }
-//        for (String labelName : labelNames) {
-//            JTextField field = new JTextField(labelName);
-//            field.addFocusListener(new FocusAdapter() {
-//                public void focusGained(FocusEvent e) {
-//                    JTextField source = (JTextField) e.getComponent();
-//                    source.setText("");
-//                    source.removeFocusListener(this);
-//                }
-//            });
-//            fields.add(field);
-//            fillPanel.add(field);
-//        }
         return fillPanel;
     }
-    public void showFillMenu(LinkedList<String> labelNames, LinkedList<LinkedList<String>> optionsForButton, Function<LinkedList<String>, Boolean> operation, String success, String failure, boolean returnAfterFinish, int amountOfScreen) {
+    public void showFillPage(LinkedList<String> labelNames, LinkedList<LinkedList<String>> optionsForButton, Function<LinkedList<String>, Boolean> operation, String success, String failure, boolean returnAfterFinish, int amountOfScreen) {
         LinkedList<JComponent> fields = new LinkedList<>();
         JPanel fillPanel = createFillMenu(labelNames, fields, optionsForButton);
         JButton clearButton = new JButton("Clear");
@@ -163,24 +172,16 @@ public abstract class AMenuGUI{
                 JComponent field = fields.get(i);
                 if(field instanceof JTextField)
                     ((JTextField) field).setText(labelNames.get(i));
-                else
-                    ((JComboBox) field).setSelectedIndex(0);
+                resetFillOption(field);
             }
         });
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             LinkedList<String> values = new LinkedList<>();
-            for(JComponent field : fields) {
-                if (field instanceof JTextField)
-                    values.add(((JTextField) field).getText());
-                else
-                    values.add(((JComboBox) field).getSelectedItem().toString());
-            }
+            for(JComponent field : fields)
+                values.add(getInsertedValue(field));
             boolean status = operation.apply(values);
-            String message = status ? success : failure;
-            int logo = status ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
-            JOptionPane.showMessageDialog(jFrame.getComponent(0), message,
-                    "Operation Status", logo);
+            showMessage(status, success, failure);
             if(returnAfterFinish || !status)
                 showMainMenu();
         });
@@ -189,42 +190,26 @@ public abstract class AMenuGUI{
         buttonsPanel.add(clearButton);buttonsPanel.add(submitButton);
         changeScreen(new LinkedList<>(Arrays.asList(fillPanel, buttonsPanel)), amountOfScreen);
     }
-    public void showInfiniteFillMenu(LinkedList<String> labelNames, LinkedList<LinkedList<String>> optionsForField,Function<LinkedList<LinkedList<String>>, Boolean> operation, String success, String failure, boolean returnAfterFinish, int amountOfScreen){
+    public void showInfiniteFillPage(LinkedList<String> labelNames, LinkedList<LinkedList<String>> optionsForField, Function<LinkedList<LinkedList<String>>, Boolean> operation, String success, String failure, boolean returnAfterFinish, int amountOfScreen){
         LinkedList<JComponent> fields = new LinkedList<>();
         JPanel fillPanel = createFillMenu(labelNames, fields, optionsForField);
         LinkedList<LinkedList<String>> allValues = new LinkedList<>();
         Runnable clearContent = () -> {
             for(int i = 0; i < fields.size(); i++) {
                 JComponent field = fields.get(i);
-                if(field instanceof JTextField) {
+                if(field instanceof JTextField)
                     ((JTextField) field).setText(labelNames.get(i));
-                    field.addFocusListener(new FocusAdapter() {
-                        public void focusGained(FocusEvent e) {
-                            JTextField source = (JTextField) e.getComponent();
-                            source.setText("");
-                            source.removeFocusListener(this);
-                        }
-                    });
-                }
-                else
-                    ((JComboBox) field).setSelectedIndex(0); //TODO check if works
+                resetFillOption(field);
             }
         };
-        JButton clearButton = new JButton("Clear");
-        clearButton.addActionListener(e -> clearContent.run());
-        JButton addButton = new JButton("Add");
-        addButton.addActionListener(e -> {
+        Runnable collectContent = () -> {
             LinkedList<String> currentFill = new LinkedList<>();
             int emptyCellsCount = 0;
             for(int i = 0; i < fields.size(); i++) {
                 JComponent field = fields.get(i);
-                String currentCell;
-                if(field instanceof JTextField)
-                    currentCell = ((JTextField) field).getText();
-                else
-                    currentCell = ((JComboBox) field).getSelectedItem().toString();
                 String currentLabel = labelNames.get(i);
-                boolean emptyCell = currentLabel.equals(currentCell);
+                String currentCell = getInsertedValue(field);
+                boolean emptyCell = currentCell.equals(currentLabel);
                 currentFill.add(emptyCell ? "" : currentCell);
                 if(emptyCell)
                     emptyCellsCount++;
@@ -232,32 +217,17 @@ public abstract class AMenuGUI{
             if(emptyCellsCount < fields.size())
                 allValues.add(currentFill);
             clearContent.run();
-        });
+        };
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(e -> clearContent.run());
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(e -> collectContent.run());
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
-            LinkedList<String> currentFill = new LinkedList<>();
-            String currentCell;
-            int emptyCellsCount = 0;
-            for(int i = 0; i < fields.size(); i++) {
-                JComponent field = fields.get(i);
-                if (field instanceof JTextField)
-                    currentCell = ((JTextField) field).getText();
-                else
-                    currentCell = ((JComboBox) field).getSelectedItem().toString();
-                String currentLabel = labelNames.get(i);
-                boolean emptyCell = currentLabel.equals(currentCell);
-                currentFill.add(emptyCell ? "" : currentCell);
-                if(emptyCell)
-                    emptyCellsCount++;
-            }
-            if(emptyCellsCount < fields.size())
-                allValues.add(currentFill);
+            collectContent.run();
             boolean status = operation.apply(allValues);
-            String message = status ? success : failure;
-            int logo = status ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
-            JOptionPane.showMessageDialog(jFrame.getComponent(0), message,
-                    "Operation Status", logo);
-            if(returnAfterFinish)
+            showMessage(status, success, failure);
+            if(returnAfterFinish || !status)
                 showMainMenu();
         });
         JPanel buttonsPanel = new JPanel();
@@ -273,18 +243,6 @@ public abstract class AMenuGUI{
             recordsArray[i++] = record.toArray(new String[0]);
         JTable reportTable = new JTable(recordsArray, columnsArray);
         JScrollPane panel = new JScrollPane(reportTable);
-        changeScreen(new LinkedList<>(Arrays.asList(panel)), amountFromScreen);
+        changeScreen(new LinkedList<>(List.of(panel)), amountFromScreen);
     }
-//    public static void writeHello(int x){
-//        JOptionPane.showMessageDialog(jFrame.getComponent(0), "Please say hi to option " + x,
-//                "Swing Tester", JOptionPane.WARNING_MESSAGE);
-//    }
-//    public static void main(){
-//        LinkedList<String> columns = new LinkedList<String>(Arrays.asList("Name", "ID"));
-//        LinkedList<LinkedList<String>> records = new LinkedList<>();
-//        LinkedList<String> record1 = new LinkedList<String>(Arrays.asList("Milk", "1"));
-//        LinkedList<String> record2 = new LinkedList<String>(Arrays.asList("Chocolate", "2"));
-//        LinkedList<String> record3 = new LinkedList<String>(Arrays.asList("Toilet Paper", "3"));
-//        records.add(record1);records.add(record2);records.add(record3);
-//    }
 }

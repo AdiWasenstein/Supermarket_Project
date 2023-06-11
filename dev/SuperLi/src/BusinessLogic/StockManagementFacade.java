@@ -24,6 +24,12 @@ public class StockManagementFacade {
     public int getBranchCount(){
         return branchDataMapper.findAll().size();
     }
+    public LinkedList<Integer> getBranchesIds(){
+        LinkedList<Integer> branchesId = new LinkedList<>();
+        for(Branch branch : branchDataMapper.findAll())
+            branchesId.add(branch.getId());
+        return branchesId;
+    }
     public boolean addBranch(String address){
         branchDataMapper.insert(new Branch(address, branchDataMapper.findAll().size() + 1));
         return true;
