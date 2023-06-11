@@ -1,5 +1,8 @@
 package SuperLi.src.Presentation.GUI;
+
 import SuperLi.src.BusinessLogic.AReport;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -9,7 +12,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
-import javax.swing.*;
 
 
 public abstract class AMenuGUI{

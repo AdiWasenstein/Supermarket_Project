@@ -2,7 +2,6 @@ package SuperLi.src.DataAccess;
 
 import SuperLi.src.BusinessLogic.*;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -279,7 +278,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
                 return Optional.empty();
             }
         }
-        catch (SQLException e)
+        catch (Exception e)
         {
             return Optional.empty();
         }
