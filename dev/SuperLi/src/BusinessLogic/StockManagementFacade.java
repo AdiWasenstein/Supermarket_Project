@@ -31,6 +31,9 @@ public class StockManagementFacade {
         return branchesId;
     }
     public boolean addBranch(String address){
+        for(Branch branch : branchDataMapper.findAll())
+            if(branch.getAddress().equals(address))
+                return false;
         branchDataMapper.insert(new Branch(address, branchDataMapper.findAll().size() + 1));
         return true;
     }

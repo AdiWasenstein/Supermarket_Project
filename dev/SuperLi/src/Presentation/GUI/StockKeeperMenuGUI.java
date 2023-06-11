@@ -76,7 +76,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         labels.add("Location"); optionsForField.add(new LinkedList<>(Arrays.asList("Front", "Back", "Don't care")));
         Function<LinkedList<String>, Boolean> operation = this::addStockItem;
         String success = "Item added successfully";
-        String failure = "Item didn't added to the system";
+        String failure = "Item didn't add to the system";
         showFillPage(labels, optionsForField, operation, success, failure, true, 3);
     }
     public boolean addStockItem(LinkedList<String> values){

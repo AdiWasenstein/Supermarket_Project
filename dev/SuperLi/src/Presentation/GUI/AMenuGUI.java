@@ -251,7 +251,6 @@ public abstract class AMenuGUI{
         showTable(columnsArray, recordsArray, amountFromScreen);
     }
     public void showTable(AReport report){
-
         showTable(getTable(report), 2);
     }
     public void showTable(String[] columns, String[][] records, int amountFromScreen){
@@ -271,8 +270,7 @@ public abstract class AMenuGUI{
     }
     public JScrollPane getTable(String[] columns, String[][] records) {
         JTable reportTable = new JTable(records, columns);
-        JScrollPane panel = new JScrollPane(reportTable);
-        return panel;
+        return new JScrollPane(reportTable);
     }
     public void reportSelector(LinkedList<String> labelNames, LinkedList<AReport> reports, Function<Integer, Boolean> submitOperation, String success, String failure){
         LinkedList<JScrollPane> tables = new LinkedList<>();
@@ -288,7 +286,7 @@ public abstract class AMenuGUI{
                 totalPanel.remove(currentSelectedTable[0]);
                 currentSelectedTable[0] = table;
                 totalPanel.add(table, BorderLayout.CENTER);
-                changeScreen(new LinkedList<>(Arrays.asList(totalPanel)), 1);
+                changeScreen(new LinkedList<>(List.of(totalPanel)), 1);
             });
         JPanel buttonsPanel = getPanelOfButtons(labelNames, operations, 10, 1);
         JButton submitButton = new JButton("Submit");
@@ -300,6 +298,6 @@ public abstract class AMenuGUI{
         });
         totalPanel.add(buttonsPanel, BorderLayout.WEST);
         totalPanel.add(submitButton, BorderLayout.NORTH);
-        changeScreen(new LinkedList<>(Arrays.asList(totalPanel)), 1);
+        changeScreen(new LinkedList<>(List.of(totalPanel)), 1);
     }
 }
