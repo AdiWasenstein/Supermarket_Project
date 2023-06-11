@@ -276,7 +276,23 @@ public class AdminMenuGUI extends AMenuGUI{
         showOptionsMenu(optionsNames, operations);
     }
     public void generateCategoryReport(){
-        // TODO - Sartan in Pita
+        LinkedList<LinkedList<String>> allCategories = new LinkedList<>();
+        Function<LinkedList<LinkedList<String>>, Boolean> submitOperation;
+        submitOperation =
+                currentCategoryLst -> {
+            LinkedList<String> currentCategory = new LinkedList<>();
+            for(LinkedList<String> category : currentCategoryLst)
+                currentCategory.add(category.get(0));
+            if(currentCategory.size() == 0){
+                showTable(stockManagementFacade.generateCategoryReport(allCategories));
+                return true;
+            }
+            allCategories.add(currentCategory);
+            return true;
+        };
+        LinkedList<String> labels = new LinkedList<>(); LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        labels.add("Category Name (Leave blank and submit to end)"); optionsForField.add(new LinkedList<>());
+        showInfiniteFillPage(labels, optionsForField, submitOperation, "", "", false, 3);
     }
     public void generateCatalogReport(){
         showTable(stockManagementFacade.generateAllCatalogReport());
