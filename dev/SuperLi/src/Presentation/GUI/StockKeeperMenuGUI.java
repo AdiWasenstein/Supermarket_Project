@@ -99,7 +99,8 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         int catalogId = stockManagementFacade.barcodeToId(barcode, branchId);
         if(!stockManagementFacade.removeStockItem(barcode, branchId))
             return false;
-        System.out.println("GOT HERE");
+        String successMessage = "Item removed successfully";
+        showMessage(true, successMessage, "");
         String warningMessage = "";
         if(stockManagementFacade.isRequired(catalogId, branchId))
             warningMessage += "The Item Crossed The Minimum Gap, Consider Ordering More Units Immediately. ";
@@ -110,13 +111,84 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         return true;
     }
     public void updateDamage(){
+        Function<LinkedList<String>, Boolean> operation = this::updateDamage;
+        String successMessage = "Requested item found";
+        String failureMessage = "Cannot find requested item";
+        showBarcodePage(operation, successMessage, failureMessage, false);
+    }
+    public boolean updateDamage(LinkedList<String> values){
+        int barcode = generateInt(values.get(0));
+        String currentDamage = stockManagementFacade.getStockItemDamage(barcode, branchId);
+        if(barcode == -1 || currentDamage.equals(""))
+            return false;
+        LinkedList<String> labelNames = new LinkedList<>();
+        LinkedList<LinkedList<String>> updateOptions = new LinkedList<>();
+        labelNames.add(String.format("Damage Type (Current: %s)", currentDamage)); updateOptions.add(damageTypes);
 
+        String successMessage = "Item's damage updated successfully";
+        String failureMessage = "Couldn't change item's damage";
+        Function<LinkedList<String>, Boolean> operation = damageValue -> {
+            int damageIndex = damageTypes.indexOf(damageValue.get(0));
+            if (damageIndex == -1)
+                return false;
+            return stockManagementFacade.setDamage(barcode, damageIndex, branchId);
+        };
+        showFillPage(labelNames, updateOptions, operation, successMessage, failureMessage, true, 3);
+        return true;
     }
     public void moveStockItem(){
-
+        Function<LinkedList<String>, Boolean> operation = this::moveStockItem;
+        String successMessage = "Item's location changed successfully";
+        String failureMessage = "Cannot find requested item";
+        showBarcodePage(operation, successMessage, failureMessage, true);
+    }
+    public boolean moveStockItem(LinkedList<String> values){
+        int barcode = generateInt(values.get(0));
+        if (barcode == -1)
+            return false;
+        String changeLocation = "Changing item's location from " + stockManagementFacade.getLocationOfBarcode(barcode, branchId);
+        boolean status = stockManagementFacade.moveStockItem(barcode, branchId);
+        changeLocation += " to " + stockManagementFacade.getLocationOfBarcode(barcode, branchId);
+        if(status)
+            showMessage(true, changeLocation, "");
+        return status;
     }
     public void manageOrder(){
-
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Create Shortage Order");
+        optionsNames.add("2. Update Periodic Report");
+        operations.add(this::createShortageStockOrder);
+        operations.add(this::updatePeriodicOrder);
+        showOptionsMenu(optionsNames, operations);
+    }
+    public void createShortageStockOrder(){
+        String message = "Required stock ordered sent to the suppliers successfully";
+        if (!stockManagementFacade.createShortageOrder(branchId))
+            message = "No items required for the branch";
+        showMessage(true, message, "");
+        showMainMenu();
+    }
+    public void updatePeriodicOrder() {
+        LinkedList<String> labelNames = new LinkedList<>();
+        LinkedList<PeriodicReport> reportsOfBranch = OrderController.getInstance().findReportsOfBranch(branchId);
+        LinkedList<AReport> reportsToSend = new LinkedList<>();
+        for (PeriodicReport report : reportsOfBranch) {
+            reportsToSend.add(report);
+            labelNames.add("Report " + report.getReportId());
+        }
+        String successMessage = "Report was updated successfully";
+        String failureMessage = "Cannot update the requested reportId";
+        Function<Integer, Boolean> submitOperation = reportIndex -> {
+            int reportId = reportsOfBranch.get(reportIndex).getReportId();
+            try {
+                return stockManagementFacade.updatePeriodReport(reportId, branchId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        };
+        reportSelector(labelNames, reportsToSend, submitOperation, successMessage, failureMessage);
     }
     public static void main(String[] args){
         StockKeeperMenuGUI.getInstance();}
