@@ -30,6 +30,12 @@ public class StockManagementFacade {
             branchesId.add(branch.getId());
         return branchesId;
     }
+    public String getCostumerPrice(int id){
+        return String.format("%.1f", getCatalogItem(id).getSellPrice());
+    }
+    public String getCostumerMinCapacity(int id){
+        return String.format("%s", getCatalogItem(id).getMinCapacity());
+    }
     public boolean addBranch(String address){
         for(Branch branch : branchDataMapper.findAll())
             if(branch.getAddress().equals(address))

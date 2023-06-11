@@ -43,7 +43,6 @@ public abstract class AMenuGUI{
             return Integer.parseInt(str);
         }
         catch (NumberFormatException ex){
-            ex.printStackTrace();
             return -1;
         }
     }
@@ -52,7 +51,6 @@ public abstract class AMenuGUI{
             return Double.parseDouble(str);
         }
         catch (NumberFormatException ex){
-            ex.printStackTrace();
             return -1;
         }
     }
@@ -115,18 +113,23 @@ public abstract class AMenuGUI{
         else
             System.out.println("Invalid type");
     }
-    public String getInsertedValue(JComponent field){
+    public String getInsertedValue(JComponent field, String fieldLabel){
+        String str = null;
         if(field instanceof JTextField)
-            return ((JTextField) field).getText();
+            str = ((JTextField) field).getText();
         else if (field instanceof JComboBox<?>) {
             Object value = ((JComboBox<?>) field).getSelectedItem();
             if(value != null)
-                return value.toString();
+                str = value.toString();
         }
-        return null;
+        if(str == null)
+            return null;
+        return str.equals(fieldLabel) ? "" : str;
     }
     public void showMessage(boolean status, String successMessage, String failureMessage){
         String message = status ? successMessage : failureMessage;
+        if (message.equals(""))
+            return;
         int logo = status ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
         JOptionPane.showMessageDialog(jFrame.getComponent(0), message,
                 "Operation Status", logo);
@@ -185,8 +188,11 @@ public abstract class AMenuGUI{
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             LinkedList<String> values = new LinkedList<>();
-            for(JComponent field : fields)
-                values.add(getInsertedValue(field));
+            for(int i = 0; i < fields.size(); i++) {
+                JComponent field = fields.get(i);
+                String fieldLabel = labelNames.get(i);
+                values.add(getInsertedValue(field, fieldLabel));
+            }
             boolean status = operation.apply(values);
             showMessage(status, success, failure);
             if(returnAfterFinish || !status)
@@ -215,10 +221,9 @@ public abstract class AMenuGUI{
             for(int i = 0; i < fields.size(); i++) {
                 JComponent field = fields.get(i);
                 String currentLabel = labelNames.get(i);
-                String currentCell = getInsertedValue(field);
-                boolean emptyCell = currentCell.equals(currentLabel);
-                currentFill.add(emptyCell ? "" : currentCell);
-                if(emptyCell)
+                String currentCell = getInsertedValue(field, currentLabel);
+                currentFill.add(currentCell);
+                if(currentCell.equals(""))
                     emptyCellsCount++;
             }
             if(emptyCellsCount < fields.size())
@@ -251,7 +256,7 @@ public abstract class AMenuGUI{
         showTable(columnsArray, recordsArray, amountFromScreen);
     }
     public void showTable(AReport report){
-        showTable(getTable(report), 2);
+        showTable(getTable(report), 1);
     }
     public void showTable(String[] columns, String[][] records, int amountFromScreen){
         JScrollPane panel = getTable(columns, records);

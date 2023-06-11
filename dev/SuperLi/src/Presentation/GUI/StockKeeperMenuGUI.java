@@ -130,7 +130,6 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<LinkedList<String>> updateOptions = new LinkedList<>();
         labelNames.add(String.format("Damage Type (Current: %s)", currentDamage)); updateOptions.add(damageTypes);
-
         String successMessage = "Item's damage updated successfully";
         String failureMessage = "Couldn't change item's damage";
         Function<LinkedList<String>, Boolean> operation = damageValue -> {
