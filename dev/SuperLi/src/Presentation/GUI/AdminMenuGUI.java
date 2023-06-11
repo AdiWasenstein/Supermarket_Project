@@ -4,6 +4,7 @@ import SuperLi.src.BusinessLogic.AReport;
 import SuperLi.src.BusinessLogic.AdminController;
 import SuperLi.src.BusinessLogic.StockManagementFacade;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class AdminMenuGUI extends AMenuGUI{
         double price = generateDouble(values.get(3));
         int minCapacity = generateInt(values.get(4));
         int shelfLife = values.get(5).equals("") ? 0 : generateInt(values.get(5));
-        if(id == -1 || stockManagementFacade.getCatalogIdName(id) != null || price == -1 || minCapacity == -1 || shelfLife == -1)
+        if(id == -1 || stockManagementFacade.getCatalogIdName(id) != null || price == -1 || minCapacity == -1 || shelfLife == -1 || name.equals("") || manufacturer.equals(""))
             return false;
         Function<LinkedList<LinkedList<String>>, Boolean> categoryOperation = categoriesFilled -> {
             LinkedList<String> categories = new LinkedList<>();

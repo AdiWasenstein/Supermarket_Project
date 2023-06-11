@@ -59,7 +59,6 @@ public abstract class AMenuGUI{
             return LocalDate.parse(date, DateTimeFormatter.ofPattern("d/M/yy"));
         }
         catch(Exception e){
-            e.printStackTrace();
             return null;
         }
     }
