@@ -143,6 +143,7 @@ public abstract class AMenuGUI{
     public JPanel getPanelOfButtons(LinkedList<String>optionsNames, LinkedList<Runnable> operations, int rows, int cols){
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(rows, cols));  // Maximum amount of buttons
+        buttonsPanel.setBackground(backgroundColor);
         for(int optionIndex = 0; optionIndex < optionsNames.size(); optionIndex++){
             String optionName = optionsNames.get(optionIndex);
             Runnable operation = operations.get(optionIndex);
@@ -276,7 +277,9 @@ public abstract class AMenuGUI{
     }
     public JScrollPane getTable(String[] columns, String[][] records) {
         JTable reportTable = new JTable(records, columns);
-        return new JScrollPane(reportTable);
+        JScrollPane panel = new JScrollPane(reportTable);
+        panel.getViewport().setBackground(backgroundColor);
+        return panel;
     }
     public void reportSelector(LinkedList<String> labelNames, LinkedList<AReport> reports, Function<Integer, Boolean> submitOperation, String success, String failure){
         LinkedList<JScrollPane> tables = new LinkedList<>();
