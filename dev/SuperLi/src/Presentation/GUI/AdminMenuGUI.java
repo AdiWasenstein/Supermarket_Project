@@ -122,7 +122,8 @@ public class AdminMenuGUI extends AMenuGUI{
         return true;
     }
     public void addNewSupplierToSystem(){
-
+        showMessage(false, "", "Needs To Be Completed");
+        // TODO - Remove showMessage
     }
     public void removeCatalogItem(){
         Function<LinkedList<String>, Boolean> operation = this::removeCatalogItem;
@@ -313,10 +314,12 @@ public class AdminMenuGUI extends AMenuGUI{
         showBranchPage(operation);
     }
     public void printAllSuppliersInSystem(){
-
+        showMessage(false, "", "Needs To Be Completed");
+        // TODO - Remove showMessage
     }
     public void printAllOrdersInSystem(){
-
+        showMessage(false, "", "Needs To Be Completed");
+        // TODO - Remove showMessage
     }
     public static void main(String[] args){
         AdminMenuGUI.getInstance().showMainMenu();
