@@ -188,8 +188,10 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             Function<LinkedList<LinkedList<String>>, Boolean> commit = itemsDetails -> {
                 if (itemsDetails.size() == 0)
                     return false;
-                orderController.createNewPeriodicReport(generateInt(values.get(0)), branchId, orderController.getSuppByName(values.get(2)), Day.valueOf(String.valueOf(values.get(1))), convertLinkToHash(itemsDetails));
-                return true;
+                HashMap<Integer, Integer> items = (convertLinkToHash(itemsDetails));
+                if (items == null)
+                    return false;
+                return orderController.createNewPeriodicReport(generateInt(values.get(0)), branchId, orderController.getSuppByName(values.get(2)), Day.valueOf(String.valueOf(values.get(1))), items) != null;
             };
             String successMessage = "New periodic report sent successfully";
             String failureMessage = "Cannot create the periodic report";
@@ -228,9 +230,11 @@ public class StockKeeperMenuGUI extends AMenuGUI{
     }
     public HashMap<Integer, Integer> convertLinkToHash(LinkedList<LinkedList<String>> list){
         HashMap<Integer, Integer> map = new HashMap<>();
-        for (LinkedList<String> pair : list)
-            if (pair.size() == 2)
-                map.put(orderController.getItemByName(pair.get(0)), generateInt(pair.get(1)));
+        for (LinkedList<String> pair : list) {
+            if (pair.size() != 2 || pair.get(0).equals("") || pair.get(1).equals(""))
+                return null;
+            map.put(orderController.getItemByName(pair.get(0)), generateInt(pair.get(1)));
+        }
         return map;
     }
     public static void main(String[] args){
