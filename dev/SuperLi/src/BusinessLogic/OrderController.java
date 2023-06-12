@@ -248,15 +248,25 @@ public class OrderController {
             return null;
         return res.get();
     }
+    public Supplier getSuppByName(String suppName)
+    {
+        LinkedList<Supplier> res = this.supplierDataMapper.findAll();
+        if (res.isEmpty())
+            return null;
+        for (Supplier sup : res)
+            if (sup.getSupplierCard().supplierName.equals(suppName))
+                return sup;
+        return  null;
+    }
 
     public LinkedList<Supplier> getAllSuppliers()
     {
         return this.supplierDataMapper.findAll();
     }
-    public LinkedList<String> getAllSuppliersId(){
+    public LinkedList<String> getAllSuppliersName(){
         LinkedList<String> suppliers = new LinkedList<>();
         for(Supplier sup : getAllSuppliers())
-            suppliers.add(String.valueOf(sup.getSupplierId()));
+            suppliers.add(String.valueOf(sup.getSupplierCard().supplierName));
         return suppliers;
     }
 
@@ -267,12 +277,18 @@ public class OrderController {
             return supp.getAllSuppItem();
         return null;
     }
-    public LinkedList<String> getAllItemsOfSupplierStr(int suppID) //returning list of all the supplier's items by name
+    public int getSupplierId(String name){
+        for (Supplier sup : getAllSuppliers())
+            if (name.equals(sup.supplierCard.getSupplierName()))
+                return sup.getSupplierId();
+        return -1;
+    }
+    public LinkedList<String> getAllItemsOfSupplierStr(String suppName) //returning list of all the supplier's items by name
     {
-        Supplier supp = getSuppByID(suppID);
+        Supplier supp = getSuppByName(suppName);
         LinkedList<String> items = new LinkedList<>();
         if (supp != null)
-            for (SupplierItem item : getAllItemsOfSupplier(suppID))
+            for (SupplierItem item : getAllItemsOfSupplier(getSupplierId(suppName)))
                 items.add(item.getItemName());
         return items;
     }

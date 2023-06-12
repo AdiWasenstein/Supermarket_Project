@@ -183,12 +183,12 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         Function<LinkedList<String>, Boolean> operation = values -> {
             if (generateInt(values.get(0)) == -1 || values.get(1).equals("") || values.get(2).equals(""))
                 return false;
-            labelNames.add("Supplier's items"); periodicOrder.add(orderController.getAllItemsOfSupplierStr(generateInt(values.get(2))));
+            labelNames.add("Supplier's items"); periodicOrder.add(orderController.getAllItemsOfSupplierStr(values.get(2)));
             labelNames.add("Item Amount"); periodicOrder.add(new LinkedList<>());
             Function<LinkedList<LinkedList<String>>, Boolean> commit = itemsDetails -> {
                 if (itemsDetails.size() == 0)
                     return false;
-                orderController.createNewPeriodicReport(generateInt(values.get(0)), branchId, orderController.getSuppByID(generateInt(values.get(2))), Day.valueOf(String.valueOf(values.get(1))), convertLinkToHash(itemsDetails));
+                orderController.createNewPeriodicReport(generateInt(values.get(0)), branchId, orderController.getSuppByName(values.get(2)), Day.valueOf(String.valueOf(values.get(1))), convertLinkToHash(itemsDetails));
                 return true;
             };
             String successMessage = "New periodic report sent successfully";
@@ -200,7 +200,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         LinkedList<LinkedList<String>> periodicOrderDetails = new LinkedList<>();
         labelName.add("Report Id"); periodicOrderDetails.add(new LinkedList<>());
         labelName.add("Day"); periodicOrderDetails.add(days);
-        labelName.add("Suppliers Id"); periodicOrderDetails.add(orderController.getAllSuppliersId());
+        labelName.add("Supplier's Name"); periodicOrderDetails.add(orderController.getAllSuppliersName());
         String success = "Here is a list of all suppliers in the system";
         String failure = "We couldn't find any suppliers";
         showFillPage(labelName, periodicOrderDetails, operation, success, failure, false, 3);
