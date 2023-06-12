@@ -3,6 +3,7 @@ package SuperLi.src.Presentation.GUI;
 import SuperLi.src.BusinessLogic.PaymentsWays;
 import SuperLi.src.BusinessLogic.Supplier;
 import SuperLi.src.BusinessLogic.SupplierController;
+import SuperLi.src.BusinessLogic.SupplierItem;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,9 +13,11 @@ public class SupplierMenuGUI extends AMenuGUI {
     private SupplierController supplierController;
     private static SupplierMenuGUI instance = null;
 
+//    private Supplier curr_supplier;
     public SupplierMenuGUI() {
         supplierController = SupplierController.getInstance();
         showMainMenu();
+//        chooseSupplierPage();
     }
 
     public static SupplierMenuGUI getInstance() {
@@ -23,22 +26,48 @@ public class SupplierMenuGUI extends AMenuGUI {
         return instance;
     }
 
+//    public void chooseSupplierPage()
+//    {
+//        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+//        LinkedList<String> labels = new LinkedList<>();
+//
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        Function<LinkedList<String>, Boolean> operation = this::chooseSupplierOperation;
+//        String success = "Supplier found.";
+//        String failure = "Contact was not added to supplier.";
+//        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+//
+//    }
 
+//    public boolean chooseSupplierOperation(LinkedList<String> values)
+//    {
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
+//        curr_supplier = supplier;
+//        showMainMenu();
+//        return true;
+//    }
     public void showMainMenu() {
+//        chooseSupplierPage();
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
 
-        optionsNames.add("1.Add new contact.");
-        optionsNames.add("2.Remove contact.");
+        optionsNames.add("1.Add new contact."); //V
+        optionsNames.add("2.Remove contact."); //V
         optionsNames.add("3.Add new category.");
         optionsNames.add("4.Add new manufacturer.");
         optionsNames.add("5.Show order history.");
-        optionsNames.add("6.Update details.");
-        optionsNames.add("7.Add new item to contract.");
-        optionsNames.add("8.Remove item from contract.");
-        optionsNames.add("9.Add new discount.");
-        optionsNames.add("10.Remove discount.");
-        optionsNames.add("11.Update item's details.");
+        optionsNames.add("6.Update details."); //V
+        optionsNames.add("7.Add new supplier item."); //V
+        optionsNames.add("8.Remove supplier item."); //V
+        optionsNames.add("9.Add new discount."); //V
+        optionsNames.add("10.Remove discount."); //V
+        optionsNames.add("11.Update item's details."); //V
 
         operations.add(this::addNewContactPage);
         operations.add(this::removeContactPage);
@@ -690,14 +719,100 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public void updateItemDetailsPage()
     {
-
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Update unit's price.");
+        optionsNames.add("2. Update number of units.");
+        operations.add(this::updateItemPricePage);
+        operations.add(this::updateItemUnitsPage);
+        showOptionsMenu(optionsNames, operations);
     }
 
-    public boolean updateItemDetailsOperation(LinkedList<String> values)
+    public void updateItemPricePage()
     {
-        return true;
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Catalog number");
+        optionsForField.add(new LinkedList<>());
+        labels.add("New price");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::updateItemPriceOperation;
+        String success = "Item's price was updated successfully.";
+        String failure = "Update failed.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+    public boolean updateItemPriceOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        int catNum = generateInt(values.get(1));
+        SupplierItem item = supplier.getSupplierItemAccordingToCatalogNumber(catNum);
+        if (item == null)
+            return false;
+        double price = generateDouble(values.get(2));
+        try
+        {
+            boolean updated = supplierController.updatePriceOfItem(supplier, item, price);
+            return updated;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
+    public void updateItemUnitsPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Catalog number");
+        optionsForField.add(new LinkedList<>());
+        labels.add("New amount");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::updateItemUnitsOperation;
+        String success = "Item's amount was updated successfully.";
+        String failure = "Update failed.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+    public boolean updateItemUnitsOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        int catNum = generateInt(values.get(1));
+        SupplierItem item = supplier.getSupplierItemAccordingToCatalogNumber(catNum);
+        if (item == null)
+            return false;
+        int amount = generateInt(values.get(1));
+        try
+        {
+            boolean updated = supplierController.updateUnitsofItem(supplier, item, amount);
+            return updated;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
     public static void main(String[] args){
         SupplierMenuGUI.getInstance();}
 
