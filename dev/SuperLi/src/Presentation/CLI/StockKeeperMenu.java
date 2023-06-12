@@ -295,7 +295,7 @@ public class StockKeeperMenu extends AMenu{
             {
                 System.out.println(sItem.toString());
             }
-            int marketID = 0, amount = 0;
+            int marketID = 0; int amount = 0;
             HashMap<Integer,Integer> items = new HashMap<>();
 
             while (marketID != -1)
