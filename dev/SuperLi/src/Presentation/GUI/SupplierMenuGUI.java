@@ -54,7 +54,6 @@ public class SupplierMenuGUI extends AMenuGUI {
     }
 
     public void addNewContactPage() {
-        LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
@@ -96,7 +95,6 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public void removeContactPage()
     {
-        LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
@@ -159,7 +157,6 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public void addNewItemPage()
     {
-        LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
@@ -169,7 +166,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         optionsForField.add(new LinkedList<>());
         labels.add("Item's name");
         optionsForField.add(new LinkedList<>());
-        labels.add("Catagory");
+        labels.add("Category");
         optionsForField.add(new LinkedList<>());
         labels.add("Manufacturer");
         optionsForField.add(new LinkedList<>());
@@ -179,15 +176,81 @@ public class SupplierMenuGUI extends AMenuGUI {
         optionsForField.add(new LinkedList<>());
         labels.add("Unit's weight");
         optionsForField.add(new LinkedList<>());
-        labels.add("Unit's price");
-        optionsForField.add(new LinkedList<>());
 
+
+        Function<LinkedList<String>, Boolean> operation = this::addItemOperation;
+        String success = "Item was added successfully.";
+        String failure = "Couldn't add this item.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
 
+    private Boolean addItemOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        int catNum = generateInt(values.get(1));
+        String name = values.get(2);
+        String category = values.get(3);
+        String manufacturer = values.get(4);
+        int numberOfUnits = generateInt(values.get(5));
+        double priceOfUnit = generateDouble(values.get(6));
+        double weightOfUnit = generateDouble(values.get(7));
+        if (!supplierController.checkIfItemDetailsValid(supplier, catNum, manufacturer, category))
+            return false;
+        try
+        {
+            supplierController.addSupplierItemToSupplier(supplier, catNum, name, manufacturer, priceOfUnit, weightOfUnit, numberOfUnits, category);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+
+
     public void removItemPage()
     {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
 
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Catalog number");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::removeItemOperation;
+        String success = "Item was removed successfully.";
+        String failure = "Couldn't remove this item.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+
+    public boolean removeItemOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        int catNum = generateInt(values.get(1));
+        try
+        {
+            boolean removed = supplierController.removeItem(supplier, catNum);
+            return removed;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
     public void addDiscountPage()
