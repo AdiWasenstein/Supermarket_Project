@@ -253,6 +253,12 @@ public class OrderController {
     {
         return this.supplierDataMapper.findAll();
     }
+    public LinkedList<String> getAllSuppliersId(){
+        LinkedList<String> suppliers = new LinkedList<>();
+        for(Supplier sup : getAllSuppliers())
+            suppliers.add(String.valueOf(sup.getSupplierId()));
+        return suppliers;
+    }
 
     public LinkedList<SupplierItem> getAllItemsOfSupplier(int suppID)
     {
@@ -260,5 +266,20 @@ public class OrderController {
         if (supp != null)
             return supp.getAllSuppItem();
         return null;
+    }
+    public LinkedList<String> getAllItemsOfSupplierStr(int suppID) //returning list of all the supplier's items by name
+    {
+        Supplier supp = getSuppByID(suppID);
+        LinkedList<String> items = new LinkedList<>();
+        if (supp != null)
+            for (SupplierItem item : getAllItemsOfSupplier(suppID))
+                items.add(item.getItemName());
+        return items;
+    }
+    public int getItemByName(String item){
+        for (SupplierItem supItem : supplierItemDataMapper.findAll())
+            if (item.equals(supItem.getItemName()))
+                return supItem.GetMarketId();
+        return -1;
     }
 }

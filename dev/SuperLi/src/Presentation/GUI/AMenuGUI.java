@@ -309,4 +309,5 @@ public abstract class AMenuGUI{
         totalPanel.add(submitButton, BorderLayout.NORTH);
         changeScreen(new LinkedList<>(List.of(totalPanel)), 1);
     }
+
 }

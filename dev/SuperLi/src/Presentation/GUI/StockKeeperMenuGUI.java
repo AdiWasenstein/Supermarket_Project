@@ -1,23 +1,24 @@
 package SuperLi.src.Presentation.GUI;
-import SuperLi.src.BusinessLogic.AReport;
-import SuperLi.src.BusinessLogic.OrderController;
-import SuperLi.src.BusinessLogic.PeriodicReport;
-import SuperLi.src.BusinessLogic.StockManagementFacade;
+import SuperLi.src.BusinessLogic.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.function.Function;
 
 public class StockKeeperMenuGUI extends AMenuGUI{
     StockManagementFacade stockManagementFacade;
+    OrderController orderController;
     int branchId;
     static StockKeeperMenuGUI stockKeeperMenu = null;
     static LinkedList<String> damageTypes = new LinkedList<>(Arrays.asList("COVER", "PHYSICAL", "ELECTRICAL", "ROTTEN", "NONE"));
+    static LinkedList<String> days = new LinkedList<>(Arrays.asList("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"));
     private StockKeeperMenuGUI(){
         stockManagementFacade = StockManagementFacade.getInstance();
+        orderController = OrderController.getInstance();
         showChooseBranchPage();
     }
     public static StockKeeperMenuGUI getInstance(){
@@ -162,8 +163,10 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
         optionsNames.add("1. Create Shortage Order");
-        optionsNames.add("2. Update Periodic Report");
+        optionsNames.add("2. Create New Periodic Report");
+        optionsNames.add("3. Update Periodic Report");
         operations.add(this::createShortageStockOrder);
+        operations.add(this::createPeriodicOrder);
         operations.add(this::updatePeriodicOrder);
         showOptionsMenu(optionsNames, operations);
     }
@@ -173,6 +176,34 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             message = "No items required for the branch";
         showMessage(true, message, "");
         showMainMenu();
+    }
+    public void createPeriodicOrder(){
+        LinkedList<String> labelNames = new LinkedList<>();
+        LinkedList<LinkedList<String>> periodicOrder = new LinkedList<>();
+        Function<LinkedList<String>, Boolean> operation = values -> {
+            if (generateInt(values.get(0)) == -1 || values.get(1).equals("") || values.get(2).equals(""))
+                return false;
+            labelNames.add("Supplier's items"); periodicOrder.add(orderController.getAllItemsOfSupplierStr(generateInt(values.get(2))));
+            labelNames.add("Item Amount"); periodicOrder.add(new LinkedList<>());
+            Function<LinkedList<LinkedList<String>>, Boolean> commit = itemsDetails -> {
+                if (itemsDetails.size() == 0)
+                    return false;
+                orderController.createNewPeriodicReport(generateInt(values.get(0)), branchId, orderController.getSuppByID(generateInt(values.get(2))), Day.valueOf(String.valueOf(values.get(1))), convertLinkToHash(itemsDetails));
+                return true;
+            };
+            String successMessage = "New periodic report sent successfully";
+            String failureMessage = "Cannot create the periodic report";
+            showInfiniteFillPage(labelNames, periodicOrder, commit, successMessage, failureMessage, true, 3);
+            return true;
+        };
+        LinkedList<String> labelName = new LinkedList<>();
+        LinkedList<LinkedList<String>> periodicOrderDetails = new LinkedList<>();
+        labelName.add("Report Id"); periodicOrderDetails.add(new LinkedList<>());
+        labelName.add("Day"); periodicOrderDetails.add(days);
+        labelName.add("Suppliers Id"); periodicOrderDetails.add(orderController.getAllSuppliersId());
+        String success = "Here is a list of all suppliers in the system";
+        String failure = "We couldn't find any suppliers";
+        showFillPage(labelName, periodicOrderDetails, operation, success, failure, false, 3);
     }
     public void updatePeriodicOrder() {
         LinkedList<String> labelNames = new LinkedList<>();
@@ -194,6 +225,13 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             }
         };
         reportSelector(labelNames, reportsToSend, submitOperation, successMessage, failureMessage);
+    }
+    public HashMap<Integer, Integer> convertLinkToHash(LinkedList<LinkedList<String>> list){
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (LinkedList<String> pair : list)
+            if (pair.size() == 2)
+                map.put(orderController.getItemByName(pair.get(0)), generateInt(pair.get(1)));
+        return map;
     }
     public static void main(String[] args){
         StockKeeperMenuGUI.getInstance();}
