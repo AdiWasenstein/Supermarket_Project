@@ -276,23 +276,24 @@ public class AdminMenuGUI extends AMenuGUI{
         showOptionsMenu(optionsNames, operations);
     }
     public void generateCategoryReport(){
+        LinkedList<String> choicesLabels = new LinkedList<>(); LinkedList<Runnable> choicesOperations = new LinkedList<>();
         LinkedList<LinkedList<String>> allCategories = new LinkedList<>();
-        Function<LinkedList<LinkedList<String>>, Boolean> submitOperation;
-        submitOperation =
+        LinkedList<String> insertCategoryLabel = new LinkedList<>(); LinkedList<LinkedList<String>> insertCategoryOptions = new LinkedList<>();
+        insertCategoryLabel.add("Category Name (Leave blank and submit to end)"); insertCategoryOptions.add(new LinkedList<>());
+        Function<LinkedList<LinkedList<String>>, Boolean> submitCategoryOperation =
                 currentCategoryLst -> {
-            LinkedList<String> currentCategory = new LinkedList<>();
-            for(LinkedList<String> category : currentCategoryLst)
-                currentCategory.add(category.get(0));
-            if(currentCategory.size() == 0){
-                showTable(stockManagementFacade.generateCategoryReport(allCategories));
-                return true;
-            }
-            allCategories.add(currentCategory);
-            return true;
-        };
-        LinkedList<String> labels = new LinkedList<>(); LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
-        labels.add("Category Name (Leave blank and submit to end)"); optionsForField.add(new LinkedList<>());
-        showInfiniteFillPage(labels, optionsForField, submitOperation, "", "", false, 3);
+                    LinkedList<String> currentCategory = new LinkedList<>();
+                    for (LinkedList<String> category : currentCategoryLst)
+                        currentCategory.add(category.get(0));
+                    allCategories.add(currentCategory);
+                    showOptionsMenu(choicesLabels, choicesOperations);
+                    return true;
+                };
+        choicesLabels.add("Continue adding categories");
+        choicesOperations.add(() -> showInfiniteFillPage(insertCategoryLabel, insertCategoryOptions, submitCategoryOperation, "", "", false, 3));
+        choicesLabels.add("Show me the resulted report");
+        choicesOperations.add(() -> showTable(stockManagementFacade.generateCategoryReport(allCategories)));
+        showInfiniteFillPage(insertCategoryLabel, insertCategoryOptions, submitCategoryOperation, "", "", false, 3);
     }
     public void generateCatalogReport(){
         showTable(stockManagementFacade.generateAllCatalogReport());
