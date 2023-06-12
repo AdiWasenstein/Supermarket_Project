@@ -168,8 +168,9 @@ public class SupplierMenuGUI extends AMenuGUI {
         optionsNames.add("1. Update payment way.");
         optionsNames.add("2. Update bank account number.");
         optionsNames.add("3. Update address.");
-        operations.add(this::addOrderUnitsDiscountPage);
-        operations.add(this::addOrderPriceDiscountPage);
+        operations.add(this::updatePaymentPage);
+        operations.add(this::updateBankPage);
+        operations.add(this::updateAddressPage);
         showOptionsMenu(optionsNames, operations);
     }
     
@@ -184,7 +185,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         optionsForField.add(new LinkedList<>(Arrays.asList("direct", "plus30", "plus60")));
 
 
-        Function<LinkedList<String>, Boolean> operation = this::addItemOperation;
+        Function<LinkedList<String>, Boolean> operation = this::updatePaymentOperation;
         String success = "Payment was updated successfully.";
         String failure = "Supplier was not found.";
         showFillPage(labels, optionsForField, operation, success, failure, true, 3);
@@ -208,21 +209,65 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public void updateBankPage()
     {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("New bank account");
+        optionsForField.add(new LinkedList<>());
+
+
+        Function<LinkedList<String>, Boolean> operation = this::updateBankOperation;
+        String success = "Bank account was updated successfully.";
+        String failure = "Bank account was not updated.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
 
     public boolean updateBankOperation(LinkedList<String> values)
     {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        String newBank = values.get(1);
+        supplierController.updateSupplierBankAccount(supplier, newBank);
         return true;
     }
 
     public void updateAddressPage()
     {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("New address");
+        optionsForField.add(new LinkedList<>());
+
+
+        Function<LinkedList<String>, Boolean> operation = this::updateAddressOperation;
+        String success = "Address was updated successfully.";
+        String failure = "Address was not updated.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
 
     public boolean updateAddressOperation(LinkedList<String> values)
     {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        String newAdd = values.get(1);
+        supplierController.updateSupplierAddress(supplier, newAdd);
         return true;
     }
 
