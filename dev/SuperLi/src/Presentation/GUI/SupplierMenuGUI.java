@@ -1,5 +1,6 @@
 package SuperLi.src.Presentation.GUI;
 
+import SuperLi.src.BusinessLogic.PaymentsWays;
 import SuperLi.src.BusinessLogic.Supplier;
 import SuperLi.src.BusinessLogic.SupplierController;
 
@@ -174,11 +175,33 @@ public class SupplierMenuGUI extends AMenuGUI {
     
     public void updatePaymentPage()
     {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("New Payment way");
+        optionsForField.add(new LinkedList<>(Arrays.asList("direct", "plus30", "plus60")));
+
+
+        Function<LinkedList<String>, Boolean> operation = this::addItemOperation;
+        String success = "Payment was updated successfully.";
+        String failure = "Supplier was not found.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
 
     public boolean updatePaymentOperation(LinkedList<String> values)
     {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        PaymentsWays newPay = PaymentsWays.valueOf(values.get(1));
+        supplierController.updateSupplierPaymentWay(supplier, newPay);
         return true;
     }
 
