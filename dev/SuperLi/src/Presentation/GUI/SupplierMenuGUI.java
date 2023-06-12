@@ -3,6 +3,7 @@ package SuperLi.src.Presentation.GUI;
 import SuperLi.src.BusinessLogic.Supplier;
 import SuperLi.src.BusinessLogic.SupplierController;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.function.Function;
 
@@ -45,7 +46,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         operations.add(this::showOrderHistoryPage);
         operations.add(this::updateDetailsPage);
         operations.add(this::addNewItemPage);
-        operations.add(this::removItemPage);
+        operations.add(this::removeItemPage);
         operations.add(this::addDiscountPage);
         operations.add(this::removeDiscountPage);
         operations.add(this::updateItemDetailsPage);
@@ -91,7 +92,6 @@ public class SupplierMenuGUI extends AMenuGUI {
             return false;
         }
     }
-
 
     public void removeContactPage()
     {
@@ -145,14 +145,62 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     }
 
+    public boolean addNewManufacturerOperation(LinkedList<String> values)
+    {
+        return true;
+    }
+
     public void showOrderHistoryPage()
     {
 
     }
 
+    public boolean showOrderHistoryOperation(LinkedList<String> values)
+    {
+        return true;
+    }
+
     public void updateDetailsPage()
     {
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Update payment way.");
+        optionsNames.add("2. Update bank account number.");
+        optionsNames.add("3. Update address.");
+        operations.add(this::addOrderUnitsDiscountPage);
+        operations.add(this::addOrderPriceDiscountPage);
+        showOptionsMenu(optionsNames, operations);
+    }
+    
+    public void updatePaymentPage()
+    {
 
+    }
+
+    public boolean updatePaymentOperation(LinkedList<String> values)
+    {
+        return true;
+    }
+
+
+    public void updateBankPage()
+    {
+
+    }
+
+    public boolean updateBankOperation(LinkedList<String> values)
+    {
+        return true;
+    }
+
+    public void updateAddressPage()
+    {
+
+    }
+
+    public boolean updateAddressOperation(LinkedList<String> values)
+    {
+        return true;
     }
 
     public void addNewItemPage()
@@ -216,7 +264,7 @@ public class SupplierMenuGUI extends AMenuGUI {
     }
 
 
-    public void removItemPage()
+    public void removeItemPage()
     {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
@@ -255,18 +303,333 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public void addDiscountPage()
     {
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Add item discount");
+        optionsNames.add("2. Add order discount");
+        operations.add(this::addItemDiscountPage);
+        operations.add(this::addOrderDiscountPage);
+        showOptionsMenu(optionsNames, operations);
+    }
 
+    public void addItemDiscountPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Catalog number");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount kind");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Item Units Discount")));
+        labels.add("Discount type");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
+        labels.add("Minimal amounts for discount");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount size");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::addItemDiscountOperation;
+        String success = "Item's discount was added successfully.";
+        String failure = "Couldn't add this item discount.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+
+    public boolean addItemDiscountOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        int catNum = generateInt(values.get(1));
+        String kind = values.get(2);
+        String type = values.get(3);
+        int minimalAmount = generateInt(values.get(4));
+        double size = generateDouble(values.get(5));
+        try
+        {
+            supplierController.addItemUnitsDiscount(supplier, catNum, kind, type, size, minimalAmount);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public void addOrderDiscountPage()
+    {
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Add order units discount");
+        optionsNames.add("2. Add order cost discount");
+        operations.add(this::addOrderUnitsDiscountPage);
+        operations.add(this::addOrderPriceDiscountPage);
+        showOptionsMenu(optionsNames, operations);
+    }
+
+    public void addOrderUnitsDiscountPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Discount type");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
+        labels.add("Minimal amounts for discount");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount size");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::addOrderUnitsDiscountOperation;
+        String success = "Order discount was added successfully.";
+        String failure = "Couldn't add this order discount.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+    }
+
+    public boolean addOrderUnitsDiscountOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        String type = values.get(1);
+        int minimalAmount = generateInt(values.get(2));
+        double size = generateDouble(values.get(3));
+        try
+        {
+            supplierController.AddOrderDiscount(supplier, "OrderUnitsDiscount",type, size, minimalAmount);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public void addOrderPriceDiscountPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Discount type");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
+        labels.add("Minimal cost for discount");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount size");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::addOrderPriceDiscountOperation;
+        String success = "Order discount was added successfully.";
+        String failure = "Couldn't add this order discount.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+
+    public boolean addOrderPriceDiscountOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        String type = values.get(1);
+        double minimalCost = generateDouble(values.get(2));
+        double size = generateDouble(values.get(3));
+        try
+        {
+            supplierController.AddOrderDiscount(supplier, "OrderCostDiscount",type, size, minimalCost);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public void removeDiscountPage()
     {
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Remove item discount");
+        optionsNames.add("2. Remove order discount");
+        operations.add(this::removeItemDiscountPage);
+        operations.add(this::removeOrderDiscountPage);
+        showOptionsMenu(optionsNames, operations);
+    }
 
+    public void removeItemDiscountPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Catalog number");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount kind");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Item Units Discount")));
+        labels.add("Discount type");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
+        labels.add("Minimal amounts for discount");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount size");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::removeItemDiscountOperation;
+        String success = "Item's discount was removed successfully.";
+        String failure = "Couldn't remove this item discount- discount doesn't exits.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+
+    public boolean removeItemDiscountOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        int catNum = generateInt(values.get(1));
+        String kind = values.get(2);
+        String type = values.get(3);
+        int minimalAmount = generateInt(values.get(4));
+        double size = generateDouble(values.get(5));
+        try
+        {
+            supplierController.removeItemDiscount(supplier, catNum, kind, type, size, minimalAmount);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public void removeOrderDiscountPage()
+    {
+        LinkedList<String> optionsNames = new LinkedList<>();
+        LinkedList<Runnable> operations = new LinkedList<>();
+        optionsNames.add("1. Remove order units discount");
+        optionsNames.add("2. Remove order cost discount");
+        operations.add(this::removeOrderUnitsDiscountPage);
+        operations.add(this::removeOrderCostDiscountPage);
+        showOptionsMenu(optionsNames, operations);
+    }
+
+    public void removeOrderUnitsDiscountPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Discount type");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
+        labels.add("Minimal amounts for discount");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount size");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::removeOrderUnitsDiscountOperation;
+        String success = "Order discount was removed successfully.";
+        String failure = "Couldn't remove this order discount.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+
+    public boolean removeOrderUnitsDiscountOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        String type = values.get(1);
+        int minimalAmount = generateInt(values.get(2));
+        double size = generateDouble(values.get(3));
+        try
+        {
+            supplierController.removeOrderDiscount(supplier, "OrderUnitsDiscount",type, size, minimalAmount);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public void removeOrderCostDiscountPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Discount type");
+        optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
+        labels.add("Minimal cost for discount");
+        optionsForField.add(new LinkedList<>());
+        labels.add("Discount size");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<String>, Boolean> operation = this::removeOrderCostDiscountOperation;
+        String success = "Order discount was removed successfully.";
+        String failure = "Couldn't remove this order discount.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
+
+    }
+
+    public boolean removeOrderCostDiscountOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+
+        String type = values.get(1);
+        double minimalCost = generateDouble(values.get(2));
+        double size = generateDouble(values.get(3));
+        try
+        {
+            supplierController.removeOrderDiscount(supplier, "OrderCostDiscount",type, size, minimalCost);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public void updateItemDetailsPage()
     {
 
     }
+
+    public boolean updateItemDetailsOperation(LinkedList<String> values)
+    {
+        return true;
+    }
+
     public static void main(String[] args){
         SupplierMenuGUI.getInstance();}
 
