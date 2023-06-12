@@ -14,10 +14,10 @@ public class MainMenu extends AMenu{
     public void printMenu(){
         System.out.println("Welcome to Super-Li market!\nPlease tell us who you are.");
         System.out.println("1. I'm the admin.");
-        System.out.println("2. I'm a branch stock manager.");
-        System.out.println("3. I'm a stock-keeper.");
-        System.out.println("4. I'm a supplier manager.");
-        System.out.println("5. I'm the order manager.");
+//      System.out.println("2. I'm a branch stock manager.");
+        System.out.println("2. I'm a stock-keeper.");
+        System.out.println("3. I'm a supplier manager.");
+//        System.out.println("5. I'm the order manager.");
     }
     public void communicate() {
         int branchId = -1;
@@ -25,7 +25,7 @@ public class MainMenu extends AMenu{
             printMenu();
             System.out.print("Please enter your option: ");
             int choice = inputNumber();
-            if (2 <= choice && choice <= 3) {
+            if (2 == choice) {
                 System.out.print("Please enter your branch id: ");
                 branchId = inputNumber();
                 if (!(0 < branchId && branchId <= StockManagementFacade.getInstance().getBranchCount())) {
@@ -36,9 +36,9 @@ public class MainMenu extends AMenu{
             switch (choice) {
                 case 1 -> AdminMenu.getInstance().communicate();
                 // Skipping branch stock manager menu
-                case 3 -> StockKeeperMenu.getInstance(branchId).communicate();
-                case 4 -> SupplierMenu.getInstance().communicate();
-                case 5 -> OrderMenu.getInstance().communicate();
+                case 2 -> StockKeeperMenu.getInstance(branchId).communicate();
+                case 3 -> SupplierMenu.getInstance().communicate();
+//                case 5 -> OrderMenu.getInstance().communicate();
                 default -> System.out.println("Invalid option");
             }
         }
