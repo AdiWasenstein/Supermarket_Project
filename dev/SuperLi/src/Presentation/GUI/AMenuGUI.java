@@ -100,6 +100,7 @@ public abstract class AMenuGUI{
         jFrame.getContentPane().add(mainPanel);
         jFrame.revalidate();
     }
+
     public void resetFillOption(JComponent field){
         if(field instanceof JTextField)
             field.addFocusListener(new FocusAdapter() {
@@ -190,7 +191,8 @@ public abstract class AMenuGUI{
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             LinkedList<String> values = new LinkedList<>();
-            for(int i = 0; i < fields.size(); i++) {
+            for(int i = 0; i < fields.size(); i++)
+            {
                 JComponent field = fields.get(i);
                 String fieldLabel = labelNames.get(i);
                 values.add(getInsertedValue(field, fieldLabel));
