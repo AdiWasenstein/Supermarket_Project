@@ -44,7 +44,10 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             });
             panel.add(currentBranchButton);
         }
+        panel.revalidate();
         jFrame.getContentPane().add(panel);
+        jFrame.getContentPane().revalidate();
+        jFrame.getContentPane().repaint();
         jFrame.revalidate();
     }
     public void showMainMenu(){
