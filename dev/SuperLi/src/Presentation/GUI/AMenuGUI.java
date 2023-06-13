@@ -22,39 +22,46 @@ public abstract class AMenuGUI {
     int screenHeight;
     int screenWidth;
     Color backgroundColor;
-    JPanel backgroundImagePanel = new JPanel() {
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            URL resource = getClass().getClassLoader().getResource("Logo.png");
-            try {
-                assert resource != null;
-                Image image = ImageIO.read(new File(resource.toURI()));
-                // Draw the background image.
-                g.drawImage(image, 0, 0, this);
-            }
-            catch (Exception ignored){}
-        }
-    };
+    JPanel backgroundImagePanel;
     public abstract void showMainMenu();
-    public AMenuGUI()
-    {
-        setPage();
-        this.screenHeight = jFrame.getHeight();
-        this.screenWidth = jFrame.getWidth();
-        backgroundColor = new Color(100,200,200, 100);
-    }
+
     public void communicate(){
         showMainMenu();
+    }
+    public AMenuGUI()
+    {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.screenHeight = screenSize.height;
+        this.screenWidth = screenSize.width;
+        backgroundColor = new Color(100,200,200, 100);
+        backgroundImagePanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                URL resource = getClass().getClassLoader().getResource("Logo.png");
+                try {
+                    assert resource != null;
+                    Image image = ImageIO.read(new File(resource.toURI()));
+                    int imageWidth = ImageIO.read(new File(resource.toURI())).getWidth();
+                    int imageHeight = ImageIO.read(new File(resource.toURI())).getHeight();
+                    int x = screenWidth / 2 - imageWidth / 2;
+                    int y = (int) (screenHeight / 2.5 - imageHeight / 2);
+                    // Draw the background image.
+                    g.drawImage(image, x, y, this);
+                }
+                catch (Exception ignored){}
+            }
+        };
+        setPage();
     }
     private void setPage()
     {
         jFrame.setTitle("Super-Li");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //TODO : need to add a check that everything was saved
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        jFrame.setSize(screenSize.width, screenSize.height);
+        jFrame.setSize(screenWidth, screenHeight);
         jFrame.setResizable(false);
         jFrame.setVisible((true));
         //TODO: add icon
+        jFrame.setBackground(Color.CYAN);
         jFrame.add(backgroundImagePanel);
         jFrame.revalidate();
     }
