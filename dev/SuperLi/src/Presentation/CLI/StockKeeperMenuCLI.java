@@ -188,7 +188,7 @@ public class StockKeeperMenuCLI extends AMenuCLI {
         System.out.format("Report %d was updated successfully. Returning to menu...\n", reportId);
     }
 
-    public boolean makeNewPeriodicOrder() {
+    public void makeNewPeriodicOrder() {
         System.out.println("\nCreating new periodic report. Please enter details.");
         Scanner scan = new Scanner(System.in);
         while (true) {
@@ -199,7 +199,7 @@ public class StockKeeperMenuCLI extends AMenuCLI {
                 reportId = scan.nextInt();
                 scan.nextLine();
                 if (reportId == -1)
-                    return false;
+                    return;
                 if (reportId < 0)
                     throw new InvalidParameterException("Report id must be a positive number, please try again.\n");
                 if(this.orderController.isReportIdAlreadyExist(reportId))
@@ -212,28 +212,6 @@ public class StockKeeperMenuCLI extends AMenuCLI {
                 System.out.println(e.getMessage());
                 continue;
             }
-            // receive branch number from user and find the branch
-            System.out.println("Please enter branch number or -1 to cancel.");
-            int branchNumber;
-            try {
-                branchNumber = scan.nextInt();
-                scan.nextLine();
-                if (branchNumber == -1)
-                    return false;
-                if (branchNumber < 0)
-                    throw new InvalidParameterException("Branch number must be a positive number, please try again.\n");
-                Branch branch = this.orderController.getBranchByID(branchNumber);
-                if (branch == null)
-                    throw new InvalidParameterException("Branch number must be number of existing branch.");
-            } catch (InputMismatchException e) {
-                scan.nextLine();
-                System.out.println("Branch number must be a positive number, please try again.\n");
-                continue;
-            } catch (InvalidParameterException e) {
-                System.out.println(e.getMessage());
-                continue;
-            }
-
             // receive day of the periodic order from the user
             System.out.println("Please enter the day you want the order will be sent each week (number between 1-7) " +
                     "or -1 to cancel.");
@@ -242,7 +220,7 @@ public class StockKeeperMenuCLI extends AMenuCLI {
                 dayInt = scan.nextInt();
                 scan.nextLine();
                 if (dayInt == -1)
-                    return false;
+                    return;
                 if (dayInt < 0 || dayInt > 7)
                     throw new InvalidParameterException("Day number must be positive number in range of 1-7, please try again.\n");
             } catch (InputMismatchException e) {
@@ -270,7 +248,7 @@ public class StockKeeperMenuCLI extends AMenuCLI {
                 id = scan.nextInt();
                 scan.nextLine();
                 if (id == -1)
-                    return false;
+                    return;
                 if (id < 0)
                     throw new InvalidParameterException("id must be a positive number, please try again.\n");
                 supp = this.orderController.getSuppByID(id);
@@ -297,7 +275,7 @@ public class StockKeeperMenuCLI extends AMenuCLI {
             {
                 System.out.println(sItem.toString());
             }
-            int marketID = 0; int amount = 0;
+            int marketID = 0; int amount;
             HashMap<Integer,Integer> items = new HashMap<>();
 
             while (marketID != -1)
@@ -351,12 +329,12 @@ public class StockKeeperMenuCLI extends AMenuCLI {
                 items.put(marketID, amount);
 
             }
-            if (this.orderController.createNewPeriodicReport(reportId,branchNumber, supp, day, items) != null)
+            if (this.orderController.createNewPeriodicReport(reportId,branchId, supp, day, items) != null)
             {
                 System.out.println("Periodic report was added successfully.");
-                return true;
+                return;
             }
-            return false;
+            return;
         }
     }
     public static void main(String[] args){StockKeeperMenuCLI.getInstance().communicate();}
