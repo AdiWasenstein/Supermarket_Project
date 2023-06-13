@@ -18,9 +18,7 @@ import java.util.function.Function;
 
 
 public abstract class AMenuGUI {
-    static JFrame jFrame =  new JFrame();
-    int screenHeight;
-    int screenWidth;
+    static JFrame jFrame;
     Color backgroundColor;
     JPanel backgroundImagePanel;
     public abstract void showMainMenu();
@@ -31,38 +29,38 @@ public abstract class AMenuGUI {
     public AMenuGUI()
     {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.screenHeight = screenSize.height;
-        this.screenWidth = screenSize.width;
-        backgroundColor = new Color(100,200,200, 100);
-        backgroundImagePanel = new JPanel() {
+        int screenHeight = screenSize.height;
+        int screenWidth = screenSize.width;
+        jFrame = new JFrame();
+        jFrame.setTitle("Super-Li");
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setSize(screenWidth, screenHeight);
+        jFrame.setResizable(false);
+        jFrame.setVisible((true));
+        backgroundColor = new Color(0,100,200, 30);
+        backgroundImagePanel = new JPanel(new BorderLayout()) {
             public void paintComponent(Graphics g) {
-                super.paintComponent(g);
+                    super.paintComponent(g);
+                    g.setColor(backgroundColor);
                 URL resource = getClass().getClassLoader().getResource("Logo.png");
                 try {
                     assert resource != null;
                     Image image = ImageIO.read(new File(resource.toURI()));
                     int imageWidth = ImageIO.read(new File(resource.toURI())).getWidth();
                     int imageHeight = ImageIO.read(new File(resource.toURI())).getHeight();
+                    imageWidth = (int) (imageWidth * 1.5);
+                    imageHeight = (int) (imageHeight * 1.5);
                     int x = screenWidth / 2 - imageWidth / 2;
                     int y = (int) (screenHeight / 2.5 - imageHeight / 2);
                     // Draw the background image.
-                    g.drawImage(image, x, y, this);
+                    g.drawImage(image, x, y,imageWidth, imageHeight, backgroundColor, this);
                 }
                 catch (Exception ignored){}
             }
         };
-        setPage();
-    }
-    private void setPage()
-    {
-        jFrame.setTitle("Super-Li");
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //TODO : need to add a check that everything was saved
-        jFrame.setSize(screenWidth, screenHeight);
-        jFrame.setResizable(false);
-        jFrame.setVisible((true));
-        //TODO: add icon
-        jFrame.setBackground(Color.CYAN);
-        jFrame.add(backgroundImagePanel);
+        jFrame.setContentPane(backgroundImagePanel);
+        jFrame.getContentPane().revalidate();
+        jFrame.getContentPane().repaint();
         jFrame.revalidate();
     }
     public int generateInt(String str){
@@ -92,6 +90,7 @@ public abstract class AMenuGUI {
     public void changeScreen(LinkedList<JComponent> components, int amountOfScreen){
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(1, amountOfScreen));
+        contentPanel.setBackground(backgroundColor);
         for(JComponent component : components) {
             component.setBackground(backgroundColor);
             contentPanel.add(component);
@@ -119,11 +118,12 @@ public abstract class AMenuGUI {
         lastPanel.add(homePanel);
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(backgroundColor);
-        mainPanel.setBackground(backgroundColor);
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         mainPanel.add(lastPanel, BorderLayout.EAST);
         jFrame.getContentPane().removeAll();
+        jFrame.getContentPane().revalidate();
+        jFrame.getContentPane().repaint();
         jFrame.getContentPane().add(mainPanel);
         jFrame.revalidate();
     }
@@ -306,6 +306,7 @@ public abstract class AMenuGUI {
         JTable reportTable = new JTable(records, columns);
         JScrollPane panel = new JScrollPane(reportTable);
         panel.getViewport().setBackground(backgroundColor);
+        panel.setOpaque(false);
         return panel;
     }
     public void reportSelector(LinkedList<String> labelNames, LinkedList<AReport> reports, Function<Integer, Boolean> submitOperation, String success, String failure){
