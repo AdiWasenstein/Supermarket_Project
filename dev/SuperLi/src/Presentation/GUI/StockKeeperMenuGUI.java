@@ -19,12 +19,14 @@ public class StockKeeperMenuGUI extends AMenuGUI{
     private StockKeeperMenuGUI(){
         stockManagementFacade = StockManagementFacade.getInstance();
         orderController = OrderController.getInstance();
-        showChooseBranchPage();
     }
     public static StockKeeperMenuGUI getInstance(){
         if(stockKeeperMenu == null)
             stockKeeperMenu = new StockKeeperMenuGUI();
         return stockKeeperMenu;
+    }
+    public void communicate(){
+        showChooseBranchPage();
     }
     public void showChooseBranchPage(){
         JPanel panel = new JPanel(); panel.setBackground(backgroundColor);
@@ -238,5 +240,6 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         return map;
     }
     public static void main(String[] args){
-        StockKeeperMenuGUI.getInstance();}
+        StockKeeperMenuGUI.getInstance().communicate();
+    }
 }

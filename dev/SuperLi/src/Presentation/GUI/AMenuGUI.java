@@ -1,6 +1,7 @@
 package SuperLi.src.Presentation.GUI;
 
 import SuperLi.src.BusinessLogic.AReport;
+import SuperLi.src.Presentation.IMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 
 
-public abstract class AMenuGUI{
+public abstract class AMenuGUI implements IMenu {
     static JFrame jFrame =  new JFrame();
     int screenHeight;
     int screenWidth;
@@ -25,7 +26,10 @@ public abstract class AMenuGUI{
         setPage();
         this.screenHeight = jFrame.getHeight();
         this.screenWidth = jFrame.getWidth();
-        backgroundColor = new Color(100,200,200);
+        backgroundColor = new Color(100,200,200, 100);
+    }
+    public void communicate(){
+        showMainMenu();
     }
     private void setPage()
     {
@@ -37,8 +41,8 @@ public abstract class AMenuGUI{
         jFrame.setVisible((true));
         jFrame.revalidate();
         //TODO: add icon
-//        ImageIcon marketIcon = new ImageIcon("marketIcon.png");
-//        this.setIconImage(marketIcon.getImage());
+        ImageIcon marketIcon = new ImageIcon("Logo.png");
+        jFrame.setIconImage(marketIcon.getImage());
     }
     public int generateInt(String str){
         try{
@@ -93,6 +97,8 @@ public abstract class AMenuGUI{
         homePanel.add(homeButton);
         lastPanel.add(homePanel);
         JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(backgroundColor);
+        mainPanel.setBackground(backgroundColor);
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(contentPanel, BorderLayout.CENTER);
         mainPanel.add(lastPanel, BorderLayout.EAST);
@@ -251,14 +257,14 @@ public abstract class AMenuGUI{
         buttonsPanel.add(clearButton); buttonsPanel.add(addButton); buttonsPanel.add(submitButton);
         changeScreen(new LinkedList<>(Arrays.asList(fillPanel, buttonsPanel)), amountOfScreen);
     }
-    public void showTable(LinkedList<String> columns, LinkedList<LinkedList<String>> records, int amountFromScreen) {
-        String[] columnsArray = columns.toArray(new String[0]);
-        String[][] recordsArray = new String[records.size()][];
-        int i = 0;
-        for (LinkedList<String> record : records)
-            recordsArray[i++] = record.toArray(new String[0]);
-        showTable(columnsArray, recordsArray, amountFromScreen);
-    }
+//    public void showTable(LinkedList<String> columns, LinkedList<LinkedList<String>> records, int amountFromScreen) {
+//        String[] columnsArray = columns.toArray(new String[0]);
+//        String[][] recordsArray = new String[records.size()][];
+//        int i = 0;
+//        for (LinkedList<String> record : records)
+//            recordsArray[i++] = record.toArray(new String[0]);
+//        showTable(columnsArray, recordsArray, amountFromScreen);
+//    }
     public void showTable(AReport report){
         showTable(getTable(report), 1);
     }
