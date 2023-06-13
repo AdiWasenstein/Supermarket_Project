@@ -7,9 +7,6 @@ import SuperLi.src.Presentation.GUI.AdminMenuGUI;
 import SuperLi.src.Presentation.GUI.StockKeeperMenuGUI;
 import SuperLi.src.Presentation.GUI.SupplierMenuGUI;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 public class Main {
     public static void main(String[] args) {
         OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main, so it will run every day automatically.
@@ -22,6 +19,7 @@ public class Main {
             case "StockKeeperGUI" -> StockKeeperMenuGUI.getInstance().communicate();
             case "StoreManagerGUI" -> AdminMenuGUI.getInstance().communicate();
             case "SupplierManagerGUI" -> SupplierMenuGUI.getInstance().communicate();
+            default -> System.out.println("Invalid Running Arguments");
         }
     }
 }
