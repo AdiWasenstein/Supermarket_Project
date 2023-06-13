@@ -2,10 +2,13 @@ package SuperLi.src.Presentation.GUI;
 
 import SuperLi.src.BusinessLogic.AReport;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -19,6 +22,19 @@ public abstract class AMenuGUI {
     int screenHeight;
     int screenWidth;
     Color backgroundColor;
+    JPanel backgroundImagePanel = new JPanel() {
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            URL resource = getClass().getClassLoader().getResource("Logo.png");
+            try {
+                assert resource != null;
+                Image image = ImageIO.read(new File(resource.toURI()));
+                // Draw the background image.
+                g.drawImage(image, 0, 0, this);
+            }
+            catch (Exception ignored){}
+        }
+    };
     public abstract void showMainMenu();
     public AMenuGUI()
     {
@@ -38,10 +54,9 @@ public abstract class AMenuGUI {
         jFrame.setSize(screenSize.width, screenSize.height);
         jFrame.setResizable(false);
         jFrame.setVisible((true));
-        jFrame.revalidate();
         //TODO: add icon
-        ImageIcon marketIcon = new ImageIcon("Logo.png");
-        jFrame.setIconImage(marketIcon.getImage());
+        jFrame.add(backgroundImagePanel);
+        jFrame.revalidate();
     }
     public int generateInt(String str){
         try{
