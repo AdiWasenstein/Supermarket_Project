@@ -7,18 +7,18 @@ import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.time.LocalDate;
 
-public class AdminMenu extends AMenu {
+public class AdminMenuCLI extends AMenuCLI {
 
-    private static AdminMenu adminMenu = null;
+    private static AdminMenuCLI adminMenu = null;
     StockManagementFacade stockManagementFacade;
     AdminController adminController;
-    private AdminMenu() {
+    private AdminMenuCLI() {
         stockManagementFacade = StockManagementFacade.getInstance();
         adminController = AdminController.getInstance();
     }
-    public static AdminMenu getInstance() {
+    public static AdminMenuCLI getInstance() {
         if (adminMenu == null)
-            adminMenu = new AdminMenu();
+            adminMenu = new AdminMenuCLI();
         return adminMenu;
     }
     public void printMenu() {
@@ -602,6 +602,6 @@ public class AdminMenu extends AMenu {
         }
     }
     public static void main(String[] args){
-        AdminMenu.getInstance().communicate();
+        AdminMenuCLI.getInstance().communicate();
     }
 }

@@ -1,7 +1,6 @@
 package SuperLi.src.Presentation.GUI;
 
 import SuperLi.src.BusinessLogic.AReport;
-import SuperLi.src.Presentation.IMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.function.Function;
 
 
-public abstract class AMenuGUI implements IMenu {
+public abstract class AMenuGUI {
     static JFrame jFrame =  new JFrame();
     int screenHeight;
     int screenWidth;
@@ -265,13 +264,11 @@ public abstract class AMenuGUI implements IMenu {
 //            recordsArray[i++] = record.toArray(new String[0]);
 //        showTable(columnsArray, recordsArray, amountFromScreen);
 //    }
-    public void showTable(AReport report){
-        showTable(getTable(report), 1);
-    }
-    public void showTable(String[] columns, String[][] records, int amountFromScreen){
-        JScrollPane panel = getTable(columns, records);
-        changeScreen(new LinkedList<>(List.of(panel)), amountFromScreen);
-    }
+//    public void showTable(String[] columns, String[][] records, int amountFromScreen){
+//        JScrollPane panel = getTable(columns, records);
+//        changeScreen(new LinkedList<>(List.of(panel)), amountFromScreen);
+//    }
+    public void showTable(AReport report){showTable(getTable(report), 1);}
     public void showTable(JScrollPane table, int amountFromScreen){
         changeScreen(new LinkedList<>(List.of(table)), amountFromScreen);
     }

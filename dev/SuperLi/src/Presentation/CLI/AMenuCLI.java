@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.time.LocalDate;
 
-public abstract class AMenu {
+public abstract class AMenuCLI {
     static Scanner input = new Scanner(System.in);
     public abstract void printMenu();
     public abstract void communicate();
@@ -40,7 +40,7 @@ public abstract class AMenu {
             return null;
         }
     }
-    public static int getBranchID() {
+    protected static int getBranchID() {
         System.out.print("Please enter your branch id: ");
         int branchId = inputNumber();
         if (!(0 < branchId && branchId <= StockManagementFacade.getInstance().getBranchCount())) {

@@ -9,21 +9,18 @@ import java.util.Scanner;
 
 import SuperLi.src.BusinessLogic.*;
 
-public class StockKeeperMenu extends AMenu{
+public class StockKeeperMenuCLI extends AMenuCLI {
     StockManagementFacade stockManagementFacade;
     OrderController orderController;
     int branchId;
-    static StockKeeperMenu stockKeeperMenu = null;
-    private StockKeeperMenu(int branchId){
+    static StockKeeperMenuCLI stockKeeperMenu = null;
+    private StockKeeperMenuCLI(){
         stockManagementFacade = StockManagementFacade.getInstance();
         orderController = OrderController.getInstance();
-        this.branchId = branchId;
     }
-    public static StockKeeperMenu getInstance(int branchId){
+    public static StockKeeperMenuCLI getInstance(){
         if(stockKeeperMenu == null)
-            stockKeeperMenu = new StockKeeperMenu(branchId);
-        else
-            stockKeeperMenu.branchId = branchId;
+            stockKeeperMenu = new StockKeeperMenuCLI();
         return stockKeeperMenu;
     }
     public void printMenu(){
@@ -37,7 +34,7 @@ public class StockKeeperMenu extends AMenu{
         System.out.println("0. Actually, I would like to exit menu.");
     }
     public void communicate(){
-        boolean run = true;
+        boolean run = setBranchId();
         while (run){
             printMenu();
             System.out.print("Please enter your option: ");
@@ -52,6 +49,11 @@ public class StockKeeperMenu extends AMenu{
                 default -> System.out.println("Invalid option");
             }
         }
+    }
+    public boolean setBranchId() {
+        int branchId = getBranchID();
+        this.branchId = branchId;
+        return branchId != -1;
     }
     public void addStockItem() {
         System.out.println("Enter the item's details:");
@@ -357,9 +359,5 @@ public class StockKeeperMenu extends AMenu{
             return false;
         }
     }
-    public static void main(String[] args){
-        int branchId = getBranchID();
-        if(branchId >= 0)
-            StockKeeperMenu.getInstance(branchId).communicate();
-    }
+    public static void main(String[] args){StockKeeperMenuCLI.getInstance().communicate();}
 }

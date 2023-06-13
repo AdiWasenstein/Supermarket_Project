@@ -5,17 +5,17 @@ import SuperLi.src.BusinessLogic.*;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-public class SupplierMenu extends AMenu {
+public class SupplierMenuCLI extends AMenuCLI {
 
     private SupplierController supplierCon;
-    private static SupplierMenu instance = new SupplierMenu();
+    private static SupplierMenuCLI instance = new SupplierMenuCLI();
 
-    private SupplierMenu()
+    private SupplierMenuCLI()
     {
         this.supplierCon = SupplierController.getInstance();
     }
 
-    public static SupplierMenu getInstance()
+    public static SupplierMenuCLI getInstance()
     {
         return instance;
     }
@@ -130,7 +130,7 @@ public class SupplierMenu extends AMenu {
        Supplier supplier = findSupplierUser(scan);
        if (supplier == null)
            return;
-       LinkedList<String> addedCategories = AdminMenu.getInstance().getSupplierCategory();
+       LinkedList<String> addedCategories = AdminMenuCLI.getInstance().getSupplierCategory();
        if (addedCategories.isEmpty())
            System.out.println("No catagories added.");
        else
@@ -145,7 +145,7 @@ public class SupplierMenu extends AMenu {
         Supplier supplier = findSupplierUser(scan);
         if (supplier == null)
             return;
-        LinkedList<String> addedManufacturers = AdminMenu.getInstance().getSupplierManufacturers();
+        LinkedList<String> addedManufacturers = AdminMenuCLI.getInstance().getSupplierManufacturers();
         if (addedManufacturers.isEmpty())
             System.out.println("No manufacturers added.");
         else
@@ -167,7 +167,7 @@ public class SupplierMenu extends AMenu {
 
     public void updatePaymentWay(Scanner scan, Supplier sup)
     {
-        PaymentsWays newPayment = AdminMenu.getInstance().getSupplierPaymentWays();//NEED TO CHANGE!
+        PaymentsWays newPayment = AdminMenuCLI.getInstance().getSupplierPaymentWays();//NEED TO CHANGE!
         if (newPayment == null)
         {
             System.out.println("No update was made.");
@@ -181,7 +181,7 @@ public class SupplierMenu extends AMenu {
 
     public void updateBankAccount(Scanner scan, Supplier sup)
     {
-        String newBank = AdminMenu.getInstance().getSupplierBankAccount();//NEED TO CHANGE!
+        String newBank = AdminMenuCLI.getInstance().getSupplierBankAccount();//NEED TO CHANGE!
         if (newBank.equals(""))
             System.out.println("No update was made.");
         else {
@@ -192,7 +192,7 @@ public class SupplierMenu extends AMenu {
 
     public void updateAddress(Scanner scan, Supplier sup)
     {
-        String newAddress = AdminMenu.getInstance().getSupplierAddress();//NEED TO CHANGE!
+        String newAddress = AdminMenuCLI.getInstance().getSupplierAddress();//NEED TO CHANGE!
         if (newAddress.equals(""))
             System.out.println("No update was made.");
         else {
