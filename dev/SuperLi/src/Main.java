@@ -10,8 +10,10 @@ import SuperLi.src.Presentation.GUI.SupplierMenuGUI;
 public class Main {
     public static void main(String[] args) {
         OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main, so it will run every day automatically.
-        if (args.length != 2)
+        if (args.length != 2){
+            System.out.println("Invalid number of arguments");
             return;
+        }
         switch (args[1] + args[0]){
             case "StockKeeperCLI" -> StockKeeperMenuCLI.getInstance().communicate();
             case "StoreManagerCLI" -> AdminMenuCLI.getInstance().communicate();
@@ -19,7 +21,7 @@ public class Main {
             case "StockKeeperGUI" -> StockKeeperMenuGUI.getInstance().communicate();
             case "StoreManagerGUI" -> AdminMenuGUI.getInstance().communicate();
             case "SupplierManagerGUI" -> SupplierMenuGUI.getInstance().communicate();
-            default -> System.out.println("Invalid Running Arguments");
+            default -> System.out.println("Invalid Running Arguments: " + args[0] + ", " + args[1]);
         }
     }
 }

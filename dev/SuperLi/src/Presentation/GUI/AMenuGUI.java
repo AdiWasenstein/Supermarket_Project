@@ -43,11 +43,15 @@ public abstract class AMenuGUI {
                     super.paintComponent(g);
                     g.setColor(backgroundColor);
                 URL resource = getClass().getClassLoader().getResource("Logo.png");
+                Image image; int imageWidth; int imageHeight;
                 try {
                     assert resource != null;
-                    Image image = ImageIO.read(new File(resource.toURI()));
-                    int imageWidth = ImageIO.read(new File(resource.toURI())).getWidth();
-                    int imageHeight = ImageIO.read(new File(resource.toURI())).getHeight();
+//                    image = ImageIO.read(new File(resource.toURI()));
+//                    imageWidth = ImageIO.read(new File(resource.toURI())).getWidth();
+//                    imageHeight = ImageIO.read(new File(resource.toURI())).getHeight();
+                    image = ImageIO.read(new File("Logo.png"));
+                    imageWidth = ImageIO.read(new File("Logo.png")).getWidth();
+                    imageHeight = ImageIO.read(new File("Logo.png")).getHeight();
                     imageWidth = (int) (imageWidth * 1.5);
                     imageHeight = (int) (imageHeight * 1.5);
                     int x = screenWidth / 2 - imageWidth / 2;
