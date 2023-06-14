@@ -1,9 +1,9 @@
-package SuperLi.src.Presentation.CLI;
+package Presentation.CLI;
 
-import SuperLi.src.BusinessLogic.AReport;
-import SuperLi.src.BusinessLogic.StockManagementFacade;
-import SuperLi.src.BusinessLogic.PeriodicReport;
-import SuperLi.src.BusinessLogic.OrderController;
+import BusinessLogic.AReport;
+import BusinessLogic.StockManagementFacade;
+import BusinessLogic.PeriodicReport;
+import BusinessLogic.OrderController;
 
 import java.util.LinkedList;
 import java.util.Arrays;

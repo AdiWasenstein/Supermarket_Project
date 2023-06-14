@@ -1,4 +1,4 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 public class AllCatalogReport extends ACatalogReport{
     public String[] getRecordData(CatalogItem catalogItem){

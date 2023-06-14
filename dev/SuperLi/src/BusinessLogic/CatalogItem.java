@@ -1,6 +1,6 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.DataAccess.StockItemDataMapper;
+import DataAccess.StockItemDataMapper;
 
 import java.util.*;
 public class CatalogItem {

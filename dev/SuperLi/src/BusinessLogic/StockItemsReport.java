@@ -1,4 +1,4 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 public class StockItemsReport extends AStockItemReport {
     public String[] getRecordData(StockItem stockItem){

@@ -1,4 +1,4 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 public class ItemDiscountFactory {
     // kind = subClasses : cost/units

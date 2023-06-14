@@ -1,7 +1,7 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.DataAccess.BranchDataMapper;
-import SuperLi.src.DataAccess.OrderDataMapper;
+import DataAccess.BranchDataMapper;
+import DataAccess.OrderDataMapper;
 import java.security.InvalidParameterException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;

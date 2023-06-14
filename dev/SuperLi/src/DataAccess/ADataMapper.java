@@ -1,4 +1,4 @@
-package SuperLi.src.DataAccess;
+package DataAccess;
 
 import java.sql.*;
 import java.util.LinkedList;

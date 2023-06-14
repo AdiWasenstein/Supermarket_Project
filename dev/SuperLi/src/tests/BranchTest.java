@@ -1,8 +1,8 @@
-package SuperLi.src.tests;
+package tests;
 
 
-import SuperLi.src.BusinessLogic.Branch;
-import SuperLi.src.DataAccess.BranchDataMapper;
+import BusinessLogic.Branch;
+import DataAccess.BranchDataMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

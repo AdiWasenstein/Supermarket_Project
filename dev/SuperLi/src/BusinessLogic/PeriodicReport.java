@@ -1,4 +1,4 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;

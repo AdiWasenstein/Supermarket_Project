@@ -1,4 +1,4 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 public class PercentageDiscount implements DiscountType {
     public double CalculatePriceAfterDiscount(double initialPrice ,double discount)

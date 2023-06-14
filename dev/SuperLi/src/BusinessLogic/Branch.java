@@ -1,5 +1,5 @@
-package SuperLi.src.BusinessLogic;
-import SuperLi.src.DataAccess.StockItemDataMapper;
+package BusinessLogic;
+import DataAccess.StockItemDataMapper;
 
 import java.time.LocalDate;
 import java.util.*;

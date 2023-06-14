@@ -1,6 +1,6 @@
-package SuperLi.src.DataAccess;
-import SuperLi.src.BusinessLogic.OrderItem;
-import SuperLi.src.BusinessLogic.SupplierItem;
+package DataAccess;
+import BusinessLogic.OrderItem;
+import BusinessLogic.SupplierItem;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 public abstract class OrderDiscount extends Discount {
     public OrderDiscount(double discountSize, DiscountType type)

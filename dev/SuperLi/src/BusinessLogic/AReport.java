@@ -1,8 +1,6 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 import java.util.LinkedList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public abstract class AReport {
     public abstract LinkedList<String[]> initializeRecords();

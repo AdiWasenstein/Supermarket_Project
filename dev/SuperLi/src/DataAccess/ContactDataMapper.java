@@ -1,5 +1,5 @@
-package SuperLi.src.DataAccess;
-import SuperLi.src.BusinessLogic.Contact;
+package DataAccess;
+import BusinessLogic.Contact;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

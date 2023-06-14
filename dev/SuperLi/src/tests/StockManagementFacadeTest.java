@@ -1,6 +1,6 @@
-package SuperLi.src.tests;
-import SuperLi.src.BusinessLogic.CatalogItem;
-import SuperLi.src.BusinessLogic.StockManagementFacade;
+package tests;
+import BusinessLogic.CatalogItem;
+import BusinessLogic.StockManagementFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;

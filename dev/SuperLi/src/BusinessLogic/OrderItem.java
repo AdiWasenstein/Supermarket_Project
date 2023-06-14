@@ -1,6 +1,6 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.BusinessLogic.Supplier;
+import BusinessLogic.Supplier;
 
 import java.security.InvalidParameterException;
 

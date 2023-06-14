@@ -1,6 +1,6 @@
-package SuperLi.src.DataAccess;
+package DataAccess;
 
-import SuperLi.src.BusinessLogic.*;
+import BusinessLogic.*;
 
 import javax.swing.*;
 import java.sql.ResultSet;

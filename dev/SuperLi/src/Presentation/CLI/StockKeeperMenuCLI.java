@@ -1,4 +1,4 @@
-package SuperLi.src.Presentation.CLI;
+package Presentation.CLI;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-import SuperLi.src.BusinessLogic.*;
+import BusinessLogic.*;
 
 public class StockKeeperMenuCLI extends AMenuCLI {
     StockManagementFacade stockManagementFacade;

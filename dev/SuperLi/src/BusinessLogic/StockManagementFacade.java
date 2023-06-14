@@ -1,7 +1,7 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.DataAccess.BranchDataMapper;
-import SuperLi.src.DataAccess.CatalogItemDataMapper;
+import DataAccess.BranchDataMapper;
+import DataAccess.CatalogItemDataMapper;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;

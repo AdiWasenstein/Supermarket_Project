@@ -1,5 +1,5 @@
-package SuperLi.src.Presentation.CLI;
-import SuperLi.src.BusinessLogic.*;
+package Presentation.CLI;
+import BusinessLogic.*;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;

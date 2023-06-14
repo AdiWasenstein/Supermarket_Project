@@ -1,9 +1,9 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.BusinessLogic.OrderCostDiscount;
-import SuperLi.src.BusinessLogic.OrderDiscount;
-import SuperLi.src.BusinessLogic.OrderDiscountFactory;
-import SuperLi.src.BusinessLogic.OrderUnitsDiscount;
+import BusinessLogic.OrderCostDiscount;
+import BusinessLogic.OrderDiscount;
+import BusinessLogic.OrderDiscountFactory;
+import BusinessLogic.OrderUnitsDiscount;
 
 import java.util.HashMap;
 import java.util.LinkedList;

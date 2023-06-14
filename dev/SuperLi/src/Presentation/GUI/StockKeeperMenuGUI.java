@@ -1,5 +1,6 @@
-package SuperLi.src.Presentation.GUI;
-import SuperLi.src.BusinessLogic.*;
+package Presentation.GUI;
+import BusinessLogic.AReport;
+import BusinessLogic.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

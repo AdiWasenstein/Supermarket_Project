@@ -1,7 +1,7 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 //import org.graalvm.collections.Pair;
-import SuperLi.src.BusinessLogic.Pair;
+import BusinessLogic.Pair;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;

@@ -1,5 +1,5 @@
-package SuperLi.src.Presentation.CLI;
-import SuperLi.src.BusinessLogic.StockManagementFacade;
+package Presentation.CLI;
+import BusinessLogic.StockManagementFacade;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;

@@ -1,11 +1,11 @@
-package SuperLi.src;
-import SuperLi.src.BusinessLogic.*;
-import SuperLi.src.Presentation.CLI.AdminMenuCLI;
-import SuperLi.src.Presentation.CLI.StockKeeperMenuCLI;
-import SuperLi.src.Presentation.CLI.SupplierMenuCLI;
-import SuperLi.src.Presentation.GUI.AdminMenuGUI;
-import SuperLi.src.Presentation.GUI.StockKeeperMenuGUI;
-import SuperLi.src.Presentation.GUI.SupplierMenuGUI;
+
+import BusinessLogic.*;
+import Presentation.CLI.AdminMenuCLI;
+import Presentation.CLI.StockKeeperMenuCLI;
+import Presentation.CLI.SupplierMenuCLI;
+import Presentation.GUI.AdminMenuGUI;
+import Presentation.GUI.StockKeeperMenuGUI;
+import Presentation.GUI.SupplierMenuGUI;
 
 public class Main {
     public static void main(String[] args) {

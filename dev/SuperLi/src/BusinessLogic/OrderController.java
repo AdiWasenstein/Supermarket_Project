@@ -1,10 +1,10 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.DataAccess.OrderDataMapper;
-import SuperLi.src.DataAccess.PeriodicReportDataMapper;
-import SuperLi.src.DataAccess.SupplierItemDataMapper;
-import SuperLi.src.DataAccess.BranchDataMapper;
-import SuperLi.src.DataAccess.SupplierDataMapper;
+import DataAccess.OrderDataMapper;
+import DataAccess.PeriodicReportDataMapper;
+import DataAccess.SupplierItemDataMapper;
+import DataAccess.BranchDataMapper;
+import DataAccess.SupplierDataMapper;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;

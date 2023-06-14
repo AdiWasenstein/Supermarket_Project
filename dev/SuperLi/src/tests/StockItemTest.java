@@ -1,8 +1,8 @@
-package SuperLi.src.tests;
+package tests;
 
 
-import SuperLi.src.BusinessLogic.*;
-import SuperLi.src.DataAccess.StockItemDataMapper;
+import BusinessLogic.*;
+import DataAccess.StockItemDataMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

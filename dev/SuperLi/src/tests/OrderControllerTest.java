@@ -1,10 +1,10 @@
-package SuperLi.src.tests;
+package tests;
 
-import SuperLi.src.BusinessLogic.*;
-import SuperLi.src.DataAccess.OrderDataMapper;
-import SuperLi.src.DataAccess.PeriodicReportDataMapper;
-import SuperLi.src.DataAccess.SupplierDataMapper;
-import SuperLi.src.Presentation.CLI.ReportViewer;
+import BusinessLogic.*;
+import DataAccess.OrderDataMapper;
+import DataAccess.PeriodicReportDataMapper;
+import DataAccess.SupplierDataMapper;
+import Presentation.CLI.ReportViewer;
 import org.junit.jupiter.api.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;

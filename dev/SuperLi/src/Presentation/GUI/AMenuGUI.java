@@ -1,6 +1,6 @@
-package SuperLi.src.Presentation.GUI;
+package Presentation.GUI;
 
-import SuperLi.src.BusinessLogic.AReport;
+import BusinessLogic.AReport;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

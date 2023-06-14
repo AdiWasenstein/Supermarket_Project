@@ -1,8 +1,8 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
 
-import SuperLi.src.DataAccess.SupplierDataMapper;
-import SuperLi.src.DataAccess.SupplierItemDataMapper;
+import DataAccess.SupplierDataMapper;
+import DataAccess.SupplierItemDataMapper;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
