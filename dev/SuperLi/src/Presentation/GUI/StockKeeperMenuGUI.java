@@ -172,8 +172,8 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         optionsNames.add("2. Create New Periodic Report");
         optionsNames.add("3. Update Periodic Report");
         operations.add(this::createShortageStockOrder);
-        operations.add(this::createPeriodicOrder);
-        operations.add(this::updatePeriodicOrder);
+        operations.add(this::createPeriodicReport);
+        operations.add(this::updatePeriodicReport);
         showOptionsMenu(optionsNames, operations);
     }
     public void createShortageStockOrder(){
@@ -183,7 +183,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         showMessage(true, message, "");
         showMainMenu();
     }
-    public void createPeriodicOrder(){
+    public void createPeriodicReport(){
         LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<LinkedList<String>> periodicOrder = new LinkedList<>();
         Function<LinkedList<String>, Boolean> operation = values -> {
@@ -213,9 +213,14 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         String failure = "We couldn't find any suppliers";
         showFillPage(labelName, periodicOrderDetails, operation, success, failure, false, 3);
     }
-    public void updatePeriodicOrder() {
-        LinkedList<String> labelNames = new LinkedList<>();
+    public void updatePeriodicReport() {
         LinkedList<PeriodicReport> reportsOfBranch = OrderController.getInstance().findReportsOfBranch(branchId);
+//        if(reportsOfBranch.size() == 0){
+//            showMessage(false, "", String.format("%s branch has no periodic reports to update", stockManagementFacade.getBranchAddress(branchId)));
+//            showMainMenu();
+//            return;
+//        }
+        LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<AReport> reportsToSend = new LinkedList<>();
         for (PeriodicReport report : reportsOfBranch) {
             reportsToSend.add(report);

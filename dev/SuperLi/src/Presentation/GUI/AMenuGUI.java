@@ -320,8 +320,9 @@ public abstract class AMenuGUI {
         JPanel totalPanel = new JPanel();
         totalPanel.setLayout(new BorderLayout());
         LinkedList<Runnable> operations = new LinkedList<>();
-        JScrollPane[] currentSelectedTable = {tables.get(0)};
-        totalPanel.add(currentSelectedTable[0], BorderLayout.CENTER);
+        JScrollPane[] currentSelectedTable = {tables.size() == 0 ? null : tables.get(0)};
+        if(currentSelectedTable[0] != null)
+            totalPanel.add(currentSelectedTable[0], BorderLayout.CENTER);
         for(JScrollPane table : tables)
             operations.add(() -> {
                 totalPanel.remove(currentSelectedTable[0]);
@@ -333,7 +334,7 @@ public abstract class AMenuGUI {
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             int selectedIndex = tables.indexOf(currentSelectedTable[0]);
-            boolean status = submitOperation.apply(selectedIndex);
+            boolean status = selectedIndex != -1 && submitOperation.apply(selectedIndex);
             showMessage(status, success, failure);
             showMainMenu();
         });
