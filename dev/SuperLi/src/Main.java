@@ -1,5 +1,4 @@
 
-import BusinessLogic.*;
 import Presentation.CLI.AdminMenuCLI;
 import Presentation.CLI.StockKeeperMenuCLI;
 import Presentation.CLI.SupplierMenuCLI;
@@ -9,7 +8,6 @@ import Presentation.GUI.SupplierMenuGUI;
 
 public class Main {
     public static void main(String[] args) {
-        OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main, so it will run every day automatically.
         if (args.length != 2){
             System.out.println("Invalid number of arguments");
             return;

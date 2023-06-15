@@ -1,6 +1,7 @@
 package Presentation.GUI;
 
 import BusinessLogic.AReport;
+import BusinessLogic.OrderController;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -57,6 +58,7 @@ public abstract class AMenuGUI {
     {
         exitFunction = () -> System.exit(0);
         if(firstMenu) {
+            OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main, so it will run every day automatically.
             jFrame.setTitle("Super-Li");
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             jFrame.setSize(screenWidth, screenHeight);

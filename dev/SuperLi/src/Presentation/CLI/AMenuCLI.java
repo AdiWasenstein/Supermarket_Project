@@ -1,4 +1,5 @@
 package Presentation.CLI;
+import BusinessLogic.OrderController;
 import BusinessLogic.StockManagementFacade;
 
 import java.time.format.DateTimeFormatter;
@@ -7,8 +8,15 @@ import java.time.LocalDate;
 
 public abstract class AMenuCLI {
     static Scanner input = new Scanner(System.in);
+    static boolean firstMenu = true;
     public abstract void printMenu();
     public abstract void communicate();
+    public AMenuCLI(){
+        if (firstMenu) {
+            OrderController.getInstance().runEveryDayToMakeOrders();//this func has to be executed in main, so it will run every day automatically.
+            firstMenu = false;
+        }
+    }
     public static int inputNumber(){
         int num;
         try{
