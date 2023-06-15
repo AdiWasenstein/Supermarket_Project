@@ -26,6 +26,11 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             stockKeeperMenu = new StockKeeperMenuGUI();
         return stockKeeperMenu;
     }
+    public static StockKeeperMenuGUI getInstance(Runnable exitFunction){
+        stockKeeperMenu = getInstance();
+        stockKeeperMenu.exitFunction = exitFunction;
+        return stockKeeperMenu;
+    }
     public void communicate(){
         showChooseBranchPage();
     }
@@ -46,6 +51,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             panel.add(currentBranchButton);
         }
         panel.revalidate();
+        jFrame.getContentPane().removeAll();
         jFrame.getContentPane().add(panel);
         jFrame.getContentPane().revalidate();
         jFrame.getContentPane().repaint();

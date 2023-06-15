@@ -18,9 +18,36 @@ import java.util.function.Function;
 
 
 public abstract class AMenuGUI {
-    static JFrame jFrame;
-    Color backgroundColor;
-    JPanel backgroundImagePanel;
+    static JFrame jFrame = new JFrame();
+    static int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+    static int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+    static Color backgroundColor = new Color(0,100,200, 30);
+    static JPanel backgroundImagePanel = new JPanel(new BorderLayout()) {
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.setColor(backgroundColor);
+            URL resource = getClass().getClassLoader().getResource("Logo.png");
+            Image image; int imageWidth; int imageHeight;
+            try {
+                assert resource != null;
+//                    image = ImageIO.read(new File(resource.toURI()));
+//                    imageWidth = ImageIO.read(new File(resource.toURI())).getWidth();
+//                    imageHeight = ImageIO.read(new File(resource.toURI())).getHeight();
+                image = ImageIO.read(new File("Logo.png"));
+                imageWidth = ImageIO.read(new File("Logo.png")).getWidth();
+                imageHeight = ImageIO.read(new File("Logo.png")).getHeight();
+                imageWidth = (int) (imageWidth * 1.5);
+                imageHeight = (int) (imageHeight * 1.5);
+                int x = screenWidth / 2 - imageWidth / 2;
+                int y = (int) (screenHeight / 2.5 - imageHeight / 2);
+                // Draw the background image.
+                g.drawImage(image, x, y,imageWidth, imageHeight, backgroundColor, this);
+            }
+            catch (Exception ignored){}
+        }
+    };
+    static boolean firstMenu = true;
+    Runnable exitFunction;
     public abstract void showMainMenu();
 
     public void communicate(){
@@ -28,44 +55,20 @@ public abstract class AMenuGUI {
     }
     public AMenuGUI()
     {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenHeight = screenSize.height;
-        int screenWidth = screenSize.width;
-        jFrame = new JFrame();
-        jFrame.setTitle("Super-Li");
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setSize(screenWidth, screenHeight);
-        jFrame.setResizable(false);
-        jFrame.setVisible((true));
-        backgroundColor = new Color(0,100,200, 30);
-        backgroundImagePanel = new JPanel(new BorderLayout()) {
-            public void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    g.setColor(backgroundColor);
-                URL resource = getClass().getClassLoader().getResource("Logo.png");
-                Image image; int imageWidth; int imageHeight;
-                try {
-                    assert resource != null;
-//                    image = ImageIO.read(new File(resource.toURI()));
-//                    imageWidth = ImageIO.read(new File(resource.toURI())).getWidth();
-//                    imageHeight = ImageIO.read(new File(resource.toURI())).getHeight();
-                    image = ImageIO.read(new File("Logo.png"));
-                    imageWidth = ImageIO.read(new File("Logo.png")).getWidth();
-                    imageHeight = ImageIO.read(new File("Logo.png")).getHeight();
-                    imageWidth = (int) (imageWidth * 1.5);
-                    imageHeight = (int) (imageHeight * 1.5);
-                    int x = screenWidth / 2 - imageWidth / 2;
-                    int y = (int) (screenHeight / 2.5 - imageHeight / 2);
-                    // Draw the background image.
-                    g.drawImage(image, x, y,imageWidth, imageHeight, backgroundColor, this);
-                }
-                catch (Exception ignored){}
-            }
-        };
-        jFrame.setContentPane(backgroundImagePanel);
-        jFrame.getContentPane().revalidate();
-        jFrame.getContentPane().repaint();
-        jFrame.revalidate();
+        exitFunction = () -> System.exit(0);
+        if(firstMenu) {
+            jFrame.setTitle("Super-Li");
+            jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            jFrame.setSize(screenWidth, screenHeight);
+            jFrame.setResizable(false);
+            jFrame.setVisible((true));
+            jFrame.setContentPane(backgroundImagePanel);
+            firstMenu = false;
+        }
+            jFrame.getContentPane().removeAll();
+            jFrame.getContentPane().revalidate();
+            jFrame.getContentPane().repaint();
+            jFrame.revalidate();
     }
     public int generateInt(String str){
         try{
@@ -106,6 +109,11 @@ public abstract class AMenuGUI {
         }
         JButton homeButton = new JButton("Home");
         homeButton.addActionListener(e -> showMainMenu());
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(e -> {
+            if(JOptionPane.showConfirmDialog(null, "Are you sure?", "Exit prompt", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0)
+                exitFunction.run();
+        });
         JPanel lastPanel = new JPanel();
         int placeOfHomeButton = 8;
         lastPanel.setLayout(new GridLayout(placeOfHomeButton, 1));
@@ -115,11 +123,12 @@ public abstract class AMenuGUI {
             emptyPanel.setBackground(backgroundColor);
             lastPanel.add(emptyPanel);
         }
-        JPanel homePanel = new JPanel();
-        homePanel.setBackground(backgroundColor);
-        homePanel.setLayout(new GridLayout(2, 1));
-        homePanel.add(homeButton);
-        lastPanel.add(homePanel);
+        JPanel systemPanel = new JPanel();
+        systemPanel.setBackground(backgroundColor);
+        systemPanel.setLayout(new GridLayout(2, 1));
+        systemPanel.add(homeButton);
+        systemPanel.add(exitButton);
+        lastPanel.add(systemPanel);
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(backgroundColor);
         mainPanel.setLayout(new BorderLayout());
