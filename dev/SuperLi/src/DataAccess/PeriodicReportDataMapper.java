@@ -35,7 +35,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
                 }
                 catch (Exception e)
                 {
-                    continue;
                 }
             }
         }
@@ -108,12 +107,6 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
             e.printStackTrace();
         }
         return items;
-    }
-    public PeriodicReport getFromIdentity(Pair<Integer, Integer> pair){
-        for(Pair<Pair<Integer, Integer>, PeriodicReport> item : newIdentitiyMap)
-            if(item.getLeft().equals(pair))
-                return item.getRight();
-        return null;
     }
     public PeriodicReport insertIdentityMap(ResultSet match) throws SQLException {
         if (match == null)
