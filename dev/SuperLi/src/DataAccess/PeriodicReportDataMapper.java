@@ -133,6 +133,31 @@ public class PeriodicReportDataMapper extends ADataMapper<PeriodicReport>{
         periodicReportIdentityMap.put(report.getReportId(), report);
         return report;
     }
+
+    public LinkedList<PeriodicReport> findAll(){
+        LinkedList<PeriodicReport> objects = new LinkedList<>();
+        openConnection();
+        if(connection == null) {
+            return objects;
+        }
+        ResultSet matches = executeSelectQuery(findAllQuery());
+        if(matches == null) {
+            closeConnection();
+            return objects;
+        }
+        try{
+            while (matches.next()) {
+                PeriodicReport report = insertIdentityMap(matches);
+                if(report != null && !objects.contains(report))
+                    objects.add(report);
+            }
+        }
+        catch (SQLException e){
+            System.out.println(this.getClass().toString() + e.getMessage());
+        }
+        closeConnection();
+        return objects;
+    }
     public LinkedList<PeriodicReport> findByBranch(int branchNum)
     {
         LinkedList<PeriodicReport> all = findAll();
