@@ -181,8 +181,8 @@ public abstract class AMenuGUI {
                 "Operation Status", logo);
     }
     public void showOptionsMenu(LinkedList<String>optionsNames, LinkedList<Runnable> operations){
-        int amountOfScreen = 3;
-        JComponent buttonsPanel = getPanelOfButtons(optionsNames, operations, 10, 1);
+        int amountOfScreen = 4;
+        JComponent buttonsPanel = getPanelOfButtons(optionsNames, operations, 12, 1);
         changeScreen(new LinkedList<>(List.of(buttonsPanel)), amountOfScreen);
     }
     public JComponent getPanelOfButtons(LinkedList<String>optionsNames, LinkedList<Runnable> operations, int rows, int cols){
@@ -207,7 +207,7 @@ public abstract class AMenuGUI {
     }
     public JPanel createFillMenu(LinkedList<String> labelNames, LinkedList<JComponent> fields, LinkedList<LinkedList<String>> closeOptions) {
         JPanel fillPanel = new JPanel();
-        fillPanel.setLayout(new GridLayout(10, 1));  // Maximum amount of buttons
+        fillPanel.setLayout(new GridLayout(10, 1, 10, 10));  // Maximum amount of buttons
         for(int i = 0; i < labelNames.size(); i++)
         {
             String labelName = labelNames.get(i);
@@ -229,6 +229,7 @@ public abstract class AMenuGUI {
     public void showFillPage(LinkedList<String> labelNames, LinkedList<LinkedList<String>> optionsForButton, Function<LinkedList<String>, Boolean> operation, String success, String failure, boolean returnAfterFinish, int amountOfScreen) {
         LinkedList<JComponent> fields = new LinkedList<>();
         JPanel fillPanel = createFillMenu(labelNames, fields, optionsForButton);
+        fillPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JButton clearButton = new JButton("Clear");
         clearButton.addActionListener(e -> {
             for(int i = 0; i < fields.size(); i++)
@@ -254,7 +255,8 @@ public abstract class AMenuGUI {
                 showMainMenu();
         });
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(10, 1));
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        buttonsPanel.setLayout(new GridLayout(10, 1, 10 ,10));
         buttonsPanel.add(clearButton);buttonsPanel.add(submitButton);
         changeScreen(new LinkedList<>(Arrays.asList(fillPanel, buttonsPanel)), amountOfScreen);
     }
@@ -345,8 +347,8 @@ public abstract class AMenuGUI {
                 totalPanel.add(table, BorderLayout.CENTER);
                 changeScreen(new LinkedList<>(List.of(totalPanel)), 1);
             });
-        JComponent buttonsPanel = getPanelOfButtons(labelNames, operations, 50, 1);
-        JButton submitButton = new JButton("Submit");
+        JComponent buttonsPanel = getPanelOfButtons(labelNames, operations, 132, 1);
+        JButton submitButton = new JButton((success + failure).equals("") ? "Finish" : "Submit");
         submitButton.addActionListener(e -> {
             int selectedIndex = tables.indexOf(currentSelectedTable[0]);
             boolean status = selectedIndex != -1 && submitOperation.apply(selectedIndex);

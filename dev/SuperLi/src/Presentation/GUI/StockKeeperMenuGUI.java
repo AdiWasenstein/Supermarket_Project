@@ -2,12 +2,11 @@ package Presentation.GUI;
 import BusinessLogic.AReport;
 import BusinessLogic.*;
 
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 
 public class StockKeeperMenuGUI extends AMenuGUI{
@@ -20,6 +19,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
     private StockKeeperMenuGUI(){
         stockManagementFacade = StockManagementFacade.getInstance();
         orderController = OrderController.getInstance();
+        branchId = -1;
     }
     public static StockKeeperMenuGUI getInstance(){
         if(stockKeeperMenu == null)
@@ -35,29 +35,35 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         showChooseBranchPage();
     }
     public void showChooseBranchPage(){
-        JPanel panel = new JPanel(); panel.setBackground(backgroundColor);
-        TitledBorder title = BorderFactory.createTitledBorder("Select Branch");
-        title.setTitleJustification(TitledBorder.CENTER);
-        panel.setBorder(title);
-        for(Integer currentBranchId : stockManagementFacade.getBranchesIds()){
-            String currentBranchAddress = stockManagementFacade.getBranchAddress(currentBranchId);
-            JButton currentBranchButton = new JButton(currentBranchAddress);
-            currentBranchButton.addActionListener(e -> {
-                branchId = currentBranchId;
-                String successMessage = String.format("Welcome to %s branch", currentBranchAddress);
-                showMessage(true, successMessage, "");
-                showMainMenu();
-            });
-            panel.add(currentBranchButton);
+        HashMap<Integer, String> branchMap = new HashMap<>();
+        LinkedList<String> branchesAddresses = new LinkedList<>();
+        for(Integer currentBranchId : stockManagementFacade.getBranchesIds()) {
+            String branchAddress = stockManagementFacade.getBranchAddress(currentBranchId);
+            branchMap.put(currentBranchId, branchAddress);
+            branchesAddresses.add(branchAddress);
         }
-        panel.revalidate();
-        jFrame.getContentPane().removeAll();
-        jFrame.getContentPane().add(panel);
-        jFrame.getContentPane().revalidate();
-        jFrame.getContentPane().repaint();
-        jFrame.revalidate();
+        LinkedList<String> labels = new LinkedList<>(List.of("Branch Address"));
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>(List.of(branchesAddresses));
+        Function<LinkedList<String>, Boolean> operation = values -> {
+            String branchAddress = values.get(0);
+            for(Integer branchId : branchMap.keySet())
+                if(branchAddress.equals(branchMap.get(branchId))){
+                    this.branchId = branchId;
+                    showMessage(true, String.format("Welcome to branch %s!", stockManagementFacade.getBranchAddress(branchId)), "");
+                    showMainMenu();
+                    return true;
+                }
+            return false;
+        };
+        String success = "";
+        String failure = "Couldn't access requested branch";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
     }
     public void showMainMenu(){
+        if(branchId == -1){
+            communicate();
+            return;
+        }
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
         optionsNames.add("1. Add Stock Item");
@@ -65,11 +71,13 @@ public class StockKeeperMenuGUI extends AMenuGUI{
         optionsNames.add("3. Adding Damage to Item");
         optionsNames.add("4. Move stock item");
         optionsNames.add("5. Create / Update order according to stock.");
+        optionsNames.add("6. Switch branch");
         operations.add(this::addStockItem);
         operations.add(this::removeStockItem);
         operations.add(this::updateDamage);
         operations.add(this::moveStockItem);
         operations.add(this::manageOrder);
+        operations.add(this::showChooseBranchPage);
         showOptionsMenu(optionsNames, operations);
     }
     public void showBarcodePage(Function<LinkedList<String>, Boolean> operation, String successMessage, String failureMessage, boolean returnAfterFinish){
@@ -221,11 +229,6 @@ public class StockKeeperMenuGUI extends AMenuGUI{
     }
     public void updatePeriodicReport() {
         LinkedList<PeriodicReport> reportsOfBranch = OrderController.getInstance().findReportsOfBranch(branchId);
-//        if(reportsOfBranch.size() == 0){
-//            showMessage(false, "", String.format("%s branch has no periodic reports to update", stockManagementFacade.getBranchAddress(branchId)));
-//            showMainMenu();
-//            return;
-//        }
         LinkedList<String> labelNames = new LinkedList<>();
         LinkedList<AReport> reportsToSend = new LinkedList<>();
         for (PeriodicReport report : reportsOfBranch) {
@@ -239,7 +242,7 @@ public class StockKeeperMenuGUI extends AMenuGUI{
             try {
                 return stockManagementFacade.updatePeriodReport(reportId, branchId);
             } catch (Exception e) {
-                e.printStackTrace();
+                showMessage(false, "", e.getMessage());
                 return false;
             }
         };

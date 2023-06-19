@@ -14,6 +14,7 @@ public class SupplierMenuGUI extends AMenuGUI {
     private Supplier curr_supplier;
     public SupplierMenuGUI() {
         supplierController = SupplierController.getInstance();
+        curr_supplier = null;
     }
 
     public static SupplierMenuGUI getInstance() {
@@ -65,18 +66,18 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
 
-        optionsNames.add("1.Add new contact."); //V
-        optionsNames.add("2.Remove contact."); //V
-        optionsNames.add("3.Add new category."); //V
-        optionsNames.add("4.Add new manufacturer."); //V
-        optionsNames.add("5.Show order history."); //V
-        optionsNames.add("6.Update details."); //V
-        optionsNames.add("7.Add new supplier item."); //V
-        optionsNames.add("8.Remove supplier item."); //V
-        optionsNames.add("9.Add new discount."); //V
-        optionsNames.add("10.Remove discount."); //V
-        optionsNames.add("11.Update item's details."); //V
-        optionsNames.add("12.Change supplier."); //V
+        optionsNames.add("1. Add new contact."); //V
+        optionsNames.add("2. Remove contact."); //V
+        optionsNames.add("3. Add new category."); //V
+        optionsNames.add("4. Add new manufacturer."); //V
+        optionsNames.add("5. Show order history."); //V
+        optionsNames.add("6. Update details."); //V
+        optionsNames.add("7. Add new supplier item."); //V
+        optionsNames.add("8. Remove supplier item."); //V
+        optionsNames.add("9. Add new discount."); //V
+        optionsNames.add("10. Remove discount."); //V
+        optionsNames.add("11. Update item's details."); //V
+        optionsNames.add("12. Change supplier."); //V
 
         operations.add(this::addNewContactPage);
         operations.add(this::removeContactPage);
