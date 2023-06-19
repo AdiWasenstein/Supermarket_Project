@@ -88,7 +88,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
     }
 
     protected String updateQuery(OrderItem item) {
-       return "";
+        return "";
     }
 
     protected String findQuery(int orderNumber, int catalogNumber)
@@ -137,7 +137,7 @@ public class OrderItemDataMapper extends ADataMapper<OrderItem>{
     //find all order items of given order number
     protected String findAllQueryByKey(String ... key)
     {
-        return String.format("SELECT * FROM `OrdersItems` WHERE orderId = '%s'", key[0]);
+        return String.format("SELECT * FROM `OrdersItems` WHERE orderId = '%d'", Integer.parseInt(key[0]));
     }
 
 

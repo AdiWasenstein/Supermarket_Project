@@ -31,6 +31,8 @@ public class AdminMenuCLI extends AMenuCLI {
         System.out.println("6. Print report.");
         System.out.println("7. Print all suppliers in the system.");
         System.out.println("8. Print all orders were made.");
+        System.out.println("9. Do Stock-keeper operations.");
+        System.out.println("10. Do Supplier operations.");
         System.out.println("0. Actually, I would like to exit menu.");
     }
     public void communicate() {
@@ -47,6 +49,8 @@ public class AdminMenuCLI extends AMenuCLI {
                 case 6 -> generateReport();
                 case 7 -> printAllSuppliersInSystem();
                 case 8 -> printAllOrdersInSystem();
+                case 9 -> StockKeeperMenuCLI.getInstance().communicate();
+                case 10 -> SupplierMenuCLI.getInstance().communicate();
                 case 0 -> run = false;
                 default -> System.out.println("Invalid option");
             }

@@ -274,12 +274,12 @@ public class SupplierController {
         return this.supplierDataMapper.getOrders(supplierId);
     }
 
-//    public LinkedList<Integer> getAllSupplierItemsID(Supplier supp)
-//    {
-//        LinkedList<Integer> res = new LinkedList<>();
-//        for (SupplierItem item : supp.getAllSuppItem())
-//            res.add(item.getCatalogNumber());
-//        return res;
-//    }
+    public LinkedList<String> getAllSupplierItemsID(Supplier supp)
+    {
+        LinkedList<String> res = new LinkedList<>();
+        for (SupplierItem item : supp.getAllSuppItem())
+            res.add(String.valueOf(item.getCatalogNumber()));
+        return res;
+    }
 
 }

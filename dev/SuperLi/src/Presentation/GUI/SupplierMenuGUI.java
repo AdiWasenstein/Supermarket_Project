@@ -1,9 +1,6 @@
-package SuperLi.src.Presentation.GUI;
+package Presentation.GUI;
 
-import SuperLi.src.BusinessLogic.PaymentsWays;
-import SuperLi.src.BusinessLogic.Supplier;
-import SuperLi.src.BusinessLogic.SupplierController;
-import SuperLi.src.BusinessLogic.SupplierItem;
+import BusinessLogic.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,11 +10,11 @@ public class SupplierMenuGUI extends AMenuGUI {
     private SupplierController supplierController;
     private static SupplierMenuGUI instance = null;
 
-//    private Supplier curr_supplier;
+    private Supplier curr_supplier;
     public SupplierMenuGUI() {
         supplierController = SupplierController.getInstance();
         showMainMenu();
-//        chooseSupplierPage();
+        chooseSupplierPage();
     }
 
     public static SupplierMenuGUI getInstance() {
@@ -25,53 +22,60 @@ public class SupplierMenuGUI extends AMenuGUI {
             instance = new SupplierMenuGUI();
         return instance;
     }
+    public static Presentation.GUI.SupplierMenuGUI getInstance(Runnable exitFunction){
+        instance = getInstance();
+        instance.exitFunction = exitFunction;
+        return instance;
+    }
+    public void chooseSupplierPage()
+    {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
 
-//    public void chooseSupplierPage()
-//    {
-//        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
-//        LinkedList<String> labels = new LinkedList<>();
-//
-//        labels.add("Supplier's ID");
-//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
-//        Function<LinkedList<String>, Boolean> operation = this::chooseSupplierOperation;
-//        String success = "Supplier found.";
-//        String failure = "Contact was not added to supplier.";
-//        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
-//
-//    }
+        labels.add("Supplier's ID");
+        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        Function<LinkedList<String>, Boolean> operation = this::chooseSupplierOperation;
+        String success = "Supplier found.";
+        String failure = "Contact was not added to supplier.";
+        showFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
-//    public boolean chooseSupplierOperation(LinkedList<String> values)
-//    {
-//        int id = generateInt(values.get(0));
-//        Supplier supplier = supplierController.findSupplierById(id);
-//        if(supplier == null)
-//        {
-//            return false;
-//        }
-//        curr_supplier = supplier;
-//        showMainMenu();
-//        return true;
-//    }
+    }
+
+    public boolean chooseSupplierOperation(LinkedList<String> values)
+    {
+        int id = generateInt(values.get(0));
+        if (id == -1)
+            return false;
+        Supplier supplier = supplierController.findSupplierById(id);
+        if(supplier == null)
+        {
+            return false;
+        }
+        curr_supplier = supplier;
+        showMainMenu();
+        return true;
+    }
     public void showMainMenu() {
-//        chooseSupplierPage();
+        chooseSupplierPage();
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
 
         optionsNames.add("1.Add new contact."); //V
         optionsNames.add("2.Remove contact."); //V
-        optionsNames.add("3.Add new category.");
-        optionsNames.add("4.Add new manufacturer.");
-        optionsNames.add("5.Show order history.");
+        optionsNames.add("3.Add new category."); //V
+        optionsNames.add("4.Add new manufacturer."); //V
+        optionsNames.add("5.Show order history."); //V
         optionsNames.add("6.Update details."); //V
         optionsNames.add("7.Add new supplier item."); //V
         optionsNames.add("8.Remove supplier item."); //V
         optionsNames.add("9.Add new discount."); //V
         optionsNames.add("10.Remove discount."); //V
         optionsNames.add("11.Update item's details."); //V
+        optionsNames.add("12.Change supplier."); //V
 
         operations.add(this::addNewContactPage);
         operations.add(this::removeContactPage);
-        operations.add(this::addNewCatagoryPage);
+        operations.add(this::addNewCategoryPage);
         operations.add(this::addNewManufacturerPage);
         operations.add(this::showOrderHistoryPage);
         operations.add(this::updateDetailsPage);
@@ -80,6 +84,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         operations.add(this::addDiscountPage);
         operations.add(this::removeDiscountPage);
         operations.add(this::updateItemDetailsPage);
+        operations.add(this::chooseSupplierPage);
 
         showOptionsMenu(optionsNames, operations);
     }
@@ -88,9 +93,9 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
-        labels.add("Name");
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+        labels.add("Name of contact");
         optionsForField.add(new LinkedList<>());
         labels.add("Phone number");
         optionsForField.add(new LinkedList<>());
@@ -106,17 +111,17 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean addNewContactOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
-        String name = values.get(1);
-        String phone = values.get(2);
-        String email = values.get(3);
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier != null)
+//        {
+//            return false;
+//        }
+        String name = values.get(0);
+        String phone = values.get(1);
+        String email = values.get(2);
         try {
-            supplierController.addContactToSupplier(supplier, name, phone, email);
+            supplierController.addContactToSupplier(curr_supplier, name, phone, email);
             return true;
         } catch (Exception e) {
             return false;
@@ -128,8 +133,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
 
         labels.add("Phone number");
         optionsForField.add(new LinkedList<>());
@@ -138,21 +143,21 @@ public class SupplierMenuGUI extends AMenuGUI {
         String success = "Contact was removed successfully.";
         String failure = "Contact was not removed from supplier.";
         showFillPage(labels, optionsForField, operation, success, failure, true, 3);
-   }
+    }
 
     public boolean removeContactOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String phone = values.get(1);
+        String phone = values.get(0);
 
         try {
-            supplierController.removeContactFromSupplier(supplier, phone);
+            supplierController.removeContactFromSupplier(curr_supplier, phone);
             return true;
         }
         catch (Exception e) {
@@ -160,35 +165,81 @@ public class SupplierMenuGUI extends AMenuGUI {
         }
     }
 
-    public void addNewCatagoryPage()
+    public void addNewCategoryPage()
     {
+//        chooseSupplierPage();
+
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Category");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<LinkedList<String>>, Boolean> operation = this::addNewCategoryOperation;
+        String success = "Added all possible categories.";
+        String failure = "Failed to add- categories already exists.";
+        showInfiniteFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
 
-    public boolean addNewCatagoryOperation()
+    public boolean addNewCategoryOperation(LinkedList<LinkedList<String>> values)
     {
-        return true;
+        LinkedList<String> categories = new LinkedList<>();
+        for (LinkedList<String> list : values)
+            categories.add(list.get(0));
+        try
+        {
+            supplierController.addCategoriesToSupplier(curr_supplier, categories);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public void addNewManufacturerPage()
     {
+        LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
+        LinkedList<String> labels = new LinkedList<>();
+
+        labels.add("Manufacturer");
+        optionsForField.add(new LinkedList<>());
+
+        Function<LinkedList<LinkedList<String>>, Boolean> operation = this::addNewManufacturerOperation;
+        String success = "Added all possible manufacturers.";
+        String failure = "Failed to add- manufacturers already exists.";
+        showInfiniteFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
 
-    public boolean addNewManufacturerOperation(LinkedList<String> values)
+    public boolean addNewManufacturerOperation(LinkedList<LinkedList<String>> values)
     {
-        return true;
+        LinkedList<String> manufacturers = new LinkedList<>();
+        for (LinkedList<String> list : values)
+            manufacturers.add(list.get(0));
+        try
+        {
+            supplierController.addManufacturersToSupplier(curr_supplier, manufacturers);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public void showOrderHistoryPage()
     {
+        LinkedList<String> labelNames = new LinkedList<>();
+        LinkedList<Order> ordersOfSupplier = supplierController.getAllOrdersOfSupplier(curr_supplier.getSupplierId());
+        for (Order curr : ordersOfSupplier ) {
+            labelNames.add("Order " + curr.getOrderNumber());
+        }
+        orderSelector(labelNames, ordersOfSupplier);
 
     }
 
-    public boolean showOrderHistoryOperation(LinkedList<String> values)
-    {
-        return true;
-    }
 
     public void updateDetailsPage()
     {
@@ -202,14 +253,14 @@ public class SupplierMenuGUI extends AMenuGUI {
         operations.add(this::updateAddressPage);
         showOptionsMenu(optionsNames, operations);
     }
-    
+
     public void updatePaymentPage()
     {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("New Payment way");
         optionsForField.add(new LinkedList<>(Arrays.asList("direct", "plus30", "plus60")));
 
@@ -223,15 +274,16 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean updatePaymentOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
+        if (generateInt(values.get(0)) == -1)
             return false;
-        }
-
-        PaymentsWays newPay = PaymentsWays.valueOf(values.get(1));
-        supplierController.updateSupplierPaymentWay(supplier, newPay);
+        PaymentsWays newPay = PaymentsWays.valueOf(values.get(0));
+        supplierController.updateSupplierPaymentWay(curr_supplier, newPay);
         return true;
     }
 
@@ -241,8 +293,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("New bank account");
         optionsForField.add(new LinkedList<>());
 
@@ -256,15 +308,15 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean updateBankOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String newBank = values.get(1);
-        supplierController.updateSupplierBankAccount(supplier, newBank);
+        String newBank = values.get(0);
+        supplierController.updateSupplierBankAccount(curr_supplier, newBank);
         return true;
     }
 
@@ -273,8 +325,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("New address");
         optionsForField.add(new LinkedList<>());
 
@@ -288,15 +340,15 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean updateAddressOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String newAdd = values.get(1);
-        supplierController.updateSupplierAddress(supplier, newAdd);
+        String newAdd = values.get(0);
+        supplierController.updateSupplierAddress(curr_supplier, newAdd);
         return true;
     }
 
@@ -305,10 +357,10 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Catalog number");
-        optionsForField.add(new LinkedList<>());
+        optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("Item's name");
         optionsForField.add(new LinkedList<>());
         labels.add("Category");
@@ -332,25 +384,25 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     private Boolean addItemOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        int catNum = generateInt(values.get(1));
-        String name = values.get(2);
-        String category = values.get(3);
-        String manufacturer = values.get(4);
-        int numberOfUnits = generateInt(values.get(5));
-        double priceOfUnit = generateDouble(values.get(6));
-        double weightOfUnit = generateDouble(values.get(7));
-        if (!supplierController.checkIfItemDetailsValid(supplier, catNum, manufacturer, category))
+        int catNum = generateInt(values.get(0));
+        String name = values.get(1);
+        String category = values.get(2);
+        String manufacturer = values.get(3);
+        int numberOfUnits = generateInt(values.get(4));
+        double priceOfUnit = generateDouble(values.get(5));
+        double weightOfUnit = generateDouble(values.get(6));
+        if (!supplierController.checkIfItemDetailsValid(curr_supplier, catNum, manufacturer, category))
             return false;
         try
         {
-            supplierController.addSupplierItemToSupplier(supplier, catNum, name, manufacturer, priceOfUnit, weightOfUnit, numberOfUnits, category);
+            supplierController.addSupplierItemToSupplier(curr_supplier, catNum, name, manufacturer, priceOfUnit, weightOfUnit, numberOfUnits, category);
             return true;
         }
         catch (Exception e)
@@ -366,10 +418,10 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Catalog number");
-        optionsForField.add(new LinkedList<>());
+        optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
 
         Function<LinkedList<String>, Boolean> operation = this::removeItemOperation;
         String success = "Item was removed successfully.";
@@ -380,17 +432,19 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean removeItemOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        int catNum = generateInt(values.get(1));
+        int catNum = generateInt(values.get(0));
+        if (catNum == -1)
+            return false;
         try
         {
-            boolean removed = supplierController.removeItem(supplier, catNum);
+            boolean removed = supplierController.removeItem(curr_supplier, catNum);
             return removed;
         }
         catch (Exception e) {
@@ -414,10 +468,10 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Catalog number");
-        optionsForField.add(new LinkedList<>());
+        optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("Discount kind");
         optionsForField.add(new LinkedList<>(Arrays.asList("Item Units Discount")));
         labels.add("Discount type");
@@ -436,21 +490,23 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean addItemDiscountOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        int catNum = generateInt(values.get(1));
-        String kind = values.get(2);
-        String type = values.get(3);
-        int minimalAmount = generateInt(values.get(4));
-        double size = generateDouble(values.get(5));
+        int catNum = generateInt(values.get(0));
+        String kind = values.get(1);
+        String type = values.get(2);
+        int minimalAmount = generateInt(values.get(3));
+        double size = generateDouble(values.get(4));
+        if (minimalAmount == -1 || size == -1 || catNum == -1)
+            return false;
         try
         {
-            supplierController.addItemUnitsDiscount(supplier, catNum, kind, type, size, minimalAmount);
+            supplierController.addItemUnitsDiscount(curr_supplier, catNum, kind, type, size, minimalAmount);
             return true;
         }
         catch (Exception e)
@@ -475,8 +531,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Discount type");
         optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
         labels.add("Minimal amounts for discount");
@@ -492,19 +548,21 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean addOrderUnitsDiscountOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String type = values.get(1);
-        int minimalAmount = generateInt(values.get(2));
-        double size = generateDouble(values.get(3));
+        String type = values.get(0);
+        int minimalAmount = generateInt(values.get(1));
+        double size = generateDouble(values.get(2));
+        if (minimalAmount == -1 || size == -1)
+            return false;
         try
         {
-            supplierController.AddOrderDiscount(supplier, "OrderUnitsDiscount",type, size, minimalAmount);
+            supplierController.AddOrderDiscount(curr_supplier, "OrderUnitsDiscount",type, size, minimalAmount);
             return true;
         }
         catch (Exception e)
@@ -518,8 +576,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Discount type");
         optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
         labels.add("Minimal cost for discount");
@@ -536,19 +594,21 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean addOrderPriceDiscountOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String type = values.get(1);
-        double minimalCost = generateDouble(values.get(2));
-        double size = generateDouble(values.get(3));
+        String type = values.get(0);
+        double minimalCost = generateDouble(values.get(1));
+        double size = generateDouble(values.get(2));
+        if (minimalCost == -1 || size == -1)
+            return false;
         try
         {
-            supplierController.AddOrderDiscount(supplier, "OrderCostDiscount",type, size, minimalCost);
+            supplierController.AddOrderDiscount(curr_supplier, "OrderCostDiscount",type, size, minimalCost);
             return true;
         }
         catch (Exception e)
@@ -573,10 +633,10 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Catalog number");
-        optionsForField.add(new LinkedList<>());
+        optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("Discount kind");
         optionsForField.add(new LinkedList<>(Arrays.asList("Item Units Discount")));
         labels.add("Discount type");
@@ -595,21 +655,23 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean removeItemDiscountOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        int catNum = generateInt(values.get(1));
-        String kind = values.get(2);
-        String type = values.get(3);
-        int minimalAmount = generateInt(values.get(4));
-        double size = generateDouble(values.get(5));
+        int catNum = generateInt(values.get(0));
+        String kind = values.get(1);
+        String type = values.get(2);
+        int minimalAmount = generateInt(values.get(3));
+        double size = generateDouble(values.get(4));
+        if (minimalAmount == -1 || size == -1 || catNum == -1)
+            return false;
         try
         {
-            supplierController.removeItemDiscount(supplier, catNum, kind, type, size, minimalAmount);
+            supplierController.removeItemDiscount(curr_supplier, catNum, kind, type, size, minimalAmount);
             return true;
         }
         catch (Exception e)
@@ -634,8 +696,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Discount type");
         optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
         labels.add("Minimal amounts for discount");
@@ -652,19 +714,21 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean removeOrderUnitsDiscountOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String type = values.get(1);
-        int minimalAmount = generateInt(values.get(2));
-        double size = generateDouble(values.get(3));
+        String type = values.get(0);
+        int minimalAmount = generateInt(values.get(0));
+        double size = generateDouble(values.get(1));
+        if (minimalAmount == -1 || size == -1)
+            return false;
         try
         {
-            supplierController.removeOrderDiscount(supplier, "OrderUnitsDiscount",type, size, minimalAmount);
+            supplierController.removeOrderDiscount(curr_supplier, "OrderUnitsDiscount",type, size, minimalAmount);
             return true;
         }
         catch (Exception e)
@@ -678,8 +742,8 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Discount type");
         optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
         labels.add("Minimal cost for discount");
@@ -696,19 +760,21 @@ public class SupplierMenuGUI extends AMenuGUI {
 
     public boolean removeOrderCostDiscountOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        String type = values.get(1);
-        double minimalCost = generateDouble(values.get(2));
-        double size = generateDouble(values.get(3));
+        String type = values.get(0);
+        double minimalCost = generateDouble(values.get(1));
+        double size = generateDouble(values.get(2));
+        if (minimalCost == -1 || size == -1)
+            return false;
         try
         {
-            supplierController.removeOrderDiscount(supplier, "OrderCostDiscount",type, size, minimalCost);
+            supplierController.removeOrderDiscount(curr_supplier, "OrderCostDiscount",type, size, minimalCost);
             return true;
         }
         catch (Exception e)
@@ -732,11 +798,11 @@ public class SupplierMenuGUI extends AMenuGUI {
     {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
-
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Catalog number");
-        optionsForField.add(new LinkedList<>());
+        optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("New price");
         optionsForField.add(new LinkedList<>());
 
@@ -748,21 +814,25 @@ public class SupplierMenuGUI extends AMenuGUI {
     }
     public boolean updateItemPriceOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        int catNum = generateInt(values.get(1));
-        SupplierItem item = supplier.getSupplierItemAccordingToCatalogNumber(catNum);
+        int catNum = generateInt(values.get(0));
+        if (catNum == -1)
+            return false;
+        SupplierItem item = curr_supplier.getSupplierItemAccordingToCatalogNumber(catNum);
         if (item == null)
             return false;
-        double price = generateDouble(values.get(2));
+        double price = generateDouble(values.get(1));
+        if (price == -1)
+            return false;
         try
         {
-            boolean updated = supplierController.updatePriceOfItem(supplier, item, price);
+            boolean updated = supplierController.updatePriceOfItem(curr_supplier, item, price);
             return updated;
         }
         catch (Exception e)
@@ -776,10 +846,10 @@ public class SupplierMenuGUI extends AMenuGUI {
         LinkedList<LinkedList<String>> optionsForField = new LinkedList<>();
         LinkedList<String> labels = new LinkedList<>();
 
-        labels.add("Supplier's ID");
-        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
+//        labels.add("Supplier's ID");
+//        optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         labels.add("Catalog number");
-        optionsForField.add(new LinkedList<>());
+        optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("New amount");
         optionsForField.add(new LinkedList<>());
 
@@ -791,21 +861,25 @@ public class SupplierMenuGUI extends AMenuGUI {
     }
     public boolean updateItemUnitsOperation(LinkedList<String> values)
     {
-        int id = generateInt(values.get(0));
-        Supplier supplier = supplierController.findSupplierById(id);
-        if(supplier == null)
-        {
-            return false;
-        }
+//        int id = generateInt(values.get(0));
+//        Supplier supplier = supplierController.findSupplierById(id);
+//        if(supplier == null)
+//        {
+//            return false;
+//        }
 
-        int catNum = generateInt(values.get(1));
-        SupplierItem item = supplier.getSupplierItemAccordingToCatalogNumber(catNum);
+        int catNum = generateInt(values.get(0));
+        if (catNum == -1)
+            return false;
+        SupplierItem item = curr_supplier.getSupplierItemAccordingToCatalogNumber(catNum);
         if (item == null)
             return false;
         int amount = generateInt(values.get(1));
+        if (amount == -1)
+            return false;
         try
         {
-            boolean updated = supplierController.updateUnitsofItem(supplier, item, amount);
+            boolean updated = supplierController.updateUnitsofItem(curr_supplier, item, amount);
             return updated;
         }
         catch (Exception e)

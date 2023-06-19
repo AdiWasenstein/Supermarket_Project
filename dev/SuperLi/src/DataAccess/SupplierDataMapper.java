@@ -145,7 +145,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         catch (SQLException e){
             System.out.println(this.getClass().toString() + e.getMessage());
         }
-        closeConnection();
+//        closeConnection();
         return categories;
     }
 
@@ -169,7 +169,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         catch (SQLException e){
             System.out.println(this.getClass().toString() + e.getMessage());
         }
-        closeConnection();
+//        closeConnection();
         return manufacturers;
     }
 
@@ -177,11 +177,11 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
     {
         String query = String.format("SELECT * FROM SuppliersDeliverRegular WHERE supplierId = %d", supplierId);
         ResultSet results = executeSelectQuery(query);
-            if (results == null)//the supplierId doesn't represent a SupplierDeliversRegular
-            {
-                closeConnection();
-                return Optional.empty();
-            }
+        if (results == null)//the supplierId doesn't represent a SupplierDeliversRegular
+        {
+//                closeConnection();
+            return Optional.empty();
+        }
         LinkedList<String> daysStr = new LinkedList<>();
         try
         {
@@ -194,7 +194,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
             }
             if(!flag)
             {
-                closeConnection();
+//                closeConnection();
                 return Optional.empty();
             }
         }
@@ -204,7 +204,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
             closeConnection();
             return Optional.empty();
         }
-        closeConnection();
+//        closeConnection();
         //convert days from string to enum
         LinkedList<Day> days = new LinkedList<>();
         for(String s_day : daysStr)
@@ -235,7 +235,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         ResultSet results = executeSelectQuery(query);
         if (results == null)//the supplierId doesn't represent a SupplierDeliversERegular
         {
-            closeConnection();
+//            closeConnection();
             return Optional.empty();
         }
         int numberOfDays = 0;
@@ -249,10 +249,10 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         catch (SQLException e)
         {
             System.out.println(this.getClass().toString() + e.getMessage());
-            closeConnection();
+//            closeConnection();
             return Optional.empty();
         }
-        closeConnection();
+//        closeConnection();
         SupplierDeliversERegular sup = new SupplierDeliversERegular(categories,manufacturers,card,null,numberOfDays);
         return Optional.of(sup);
     }
@@ -282,7 +282,7 @@ public class SupplierDataMapper extends ADataMapper<Supplier> {
         {
             return Optional.empty();
         }
-        closeConnection();
+//        closeConnection();
         //search for supplier card
         Optional<SupplierCard> card = SupplierCardDataMapper.getInstance().find(key);
         if(card.isEmpty())//card wasn't found

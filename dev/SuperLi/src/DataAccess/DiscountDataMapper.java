@@ -2,7 +2,6 @@ package DataAccess;
 
 import BusinessLogic.*;
 
-import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -127,7 +126,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
         ResultSet matches = executeSelectQuery(query);
         if (matches == null)
         {
-            closeConnection();
+//            closeConnection();
             return itemUnitsDiscounts;
         }
         try {
@@ -151,11 +150,11 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
         }
         catch(SQLException e)
         {
-                System.out.println(this.getClass().toString() + e.getMessage());
+            System.out.println(this.getClass().toString() + e.getMessage());
         }
-            closeConnection();
-            return itemUnitsDiscounts;
-        }
+//            closeConnection();
+        return itemUnitsDiscounts;
+    }
 
     //this func returns all orderDiscounts of a specific supplier.
     public LinkedList<OrderDiscount> findAllOrderDiscountByKey(String ... key) {
@@ -181,7 +180,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
                 System.out.println(this.getClass().toString() + e.getMessage());
             }
         }
-        closeConnection();
+//        closeConnection();
         //orderUnitsDiscounts
         String query2 = String.format("SELECT * FROM OrderUnitsDiscounts WHERE supplierId='%s'", key[0]);
         ResultSet matches2 = executeSelectQuery(query2);
@@ -199,7 +198,7 @@ public class DiscountDataMapper extends ADataMapper<Discount>{
                 System.out.println(this.getClass().toString() + e.getMessage());
             }
         }
-        closeConnection();
+//        closeConnection();
         return orderDiscounts;
     }
 

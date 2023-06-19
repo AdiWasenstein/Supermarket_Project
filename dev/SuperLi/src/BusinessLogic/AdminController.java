@@ -1,8 +1,8 @@
-package SuperLi.src.BusinessLogic;
+package BusinessLogic;
 
-import SuperLi.src.DataAccess.BranchDataMapper;
-import SuperLi.src.DataAccess.OrderDataMapper;
-import SuperLi.src.DataAccess.SupplierDataMapper;
+import DataAccess.BranchDataMapper;
+import DataAccess.OrderDataMapper;
+import DataAccess.SupplierDataMapper;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
@@ -35,7 +35,17 @@ public class AdminController {
         return false;
     }
 
-
+    public boolean areContactDetailsValid(String name, String phone, String email){
+        try
+        {
+            Contact newContact = new Contact(name,phone,email);
+            return true;
+        }
+        catch (InvalidParameterException e)
+        {
+            return false;
+        }
+    }
     //this func creates and adds new supplier to system. if impossible, throws InvalidParameterException.
     public void addNewSupplier(String name, String address, int id, String bankAcc, PaymentsWays payment, String contactName, String contactPhone, String contactEmail, LinkedList<String> categories, LinkedList<String> manufacturers, LinkedList<Day> days,int numDaysToDeliver)throws InvalidParameterException
     {
@@ -75,7 +85,7 @@ public class AdminController {
     //this func returns all orders in system.
     public LinkedList<Order> getAllOrdersInSystem()
     {
-       return OrderDataMapper.getInstance().findAll();
+        return OrderDataMapper.getInstance().findAll();
     }
 
     //this func returns all suppliers in system.

@@ -139,14 +139,10 @@ public class OrderDataMapper extends ADataMapper<Order> {
         if (suppOpt.isEmpty())
             return null;
         Supplier supp = suppOpt.get();
-        LinkedList<OrderItem> items = OrderItemDataMapper.getInstance().findAllByKey((Integer.toString(orderNumber)), Integer.toString(orderNumber));
-
+        LinkedList<OrderItem> items = OrderItemDataMapper.getInstance().findAllByKey(Integer.toString(orderNumber));
         order = new Order(orderNumber, supp, items, branchNumber);
         ordersIdentityMap.put(orderNumber, order);
         return order;
     }
-
-
-
 
 }

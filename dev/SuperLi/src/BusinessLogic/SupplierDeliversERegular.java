@@ -19,14 +19,14 @@ public class SupplierDeliversERegular extends SupplierDelivers {
         return this.numberOfDaysToDeliver;
     }
 
-//    public Date arrivalTime(Date dateOfOrder)
+    //    public Date arrivalTime(Date dateOfOrder)
 //    {
 //        //TO CHANGE!
 //        return dateOfOrder;
 //    }
     public String printSupplyTimeData()
     {
-       return "Delivery in " + numberOfDaysToDeliver + "days from today.";
+        return "Delivery in " + numberOfDaysToDeliver + " days from today.";
     }
 
     public int daysTillArrives(Day dayOfOrder)
