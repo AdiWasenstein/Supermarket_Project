@@ -24,23 +24,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../שנה ב'/סמסטר ד/ניתוח ועיצוב מערכות תוכנה/עבודות/sqlite-jdbc-3.41.2.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Desktop/sqlite-jdbc-3.41.2.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="sqlite-jdbc-3.41.2.1" level="project" />
   </component>
 </module>
