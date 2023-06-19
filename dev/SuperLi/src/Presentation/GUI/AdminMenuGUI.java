@@ -752,6 +752,6 @@ public class AdminMenuGUI extends AMenuGUI{
     }
 
     public static void main(String[] args){
-        AdminMenuGUI.getInstance().showMainMenu();
+        AdminMenuGUI.getInstance().communicate();
     }
 }

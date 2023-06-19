@@ -13,8 +13,6 @@ public class SupplierMenuGUI extends AMenuGUI {
     private Supplier curr_supplier;
     public SupplierMenuGUI() {
         supplierController = SupplierController.getInstance();
-        showMainMenu();
-        chooseSupplierPage();
     }
 
     public static SupplierMenuGUI getInstance() {
@@ -22,10 +20,13 @@ public class SupplierMenuGUI extends AMenuGUI {
             instance = new SupplierMenuGUI();
         return instance;
     }
-    public static Presentation.GUI.SupplierMenuGUI getInstance(Runnable exitFunction){
+    public static SupplierMenuGUI getInstance(Runnable exitFunction){
         instance = getInstance();
         instance.exitFunction = exitFunction;
         return instance;
+    }
+    public void communicate(){
+        chooseSupplierPage();
     }
     public void chooseSupplierPage()
     {
@@ -888,6 +889,6 @@ public class SupplierMenuGUI extends AMenuGUI {
         }
     }
     public static void main(String[] args){
-        SupplierMenuGUI.getInstance();}
+        SupplierMenuGUI.getInstance().communicate();}
 
 }
