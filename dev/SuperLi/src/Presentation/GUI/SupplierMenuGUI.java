@@ -4,10 +4,11 @@ import BusinessLogic.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 
 public class SupplierMenuGUI extends AMenuGUI {
-    private SupplierController supplierController;
+    private final SupplierController supplierController;
     private static SupplierMenuGUI instance = null;
 
     private Supplier curr_supplier;
@@ -37,7 +38,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         optionsForField.add(new LinkedList<>(supplierController.findAllSuppliersID()));
         Function<LinkedList<String>, Boolean> operation = this::chooseSupplierOperation;
         String success = "Supplier found.";
-        String failure = "Contact was not added to supplier.";
+        String failure = "Supplier was not found.";
         showFillPage(labels, optionsForField, operation, success, failure, true, 3);
 
     }
@@ -57,7 +58,10 @@ public class SupplierMenuGUI extends AMenuGUI {
         return true;
     }
     public void showMainMenu() {
-        chooseSupplierPage();
+        if(curr_supplier == null){
+            communicate();
+            return;
+        }
         LinkedList<String> optionsNames = new LinkedList<>();
         LinkedList<Runnable> operations = new LinkedList<>();
 
@@ -445,8 +449,7 @@ public class SupplierMenuGUI extends AMenuGUI {
             return false;
         try
         {
-            boolean removed = supplierController.removeItem(curr_supplier, catNum);
-            return removed;
+            return supplierController.removeItem(curr_supplier, catNum);
         }
         catch (Exception e) {
             return false;
@@ -474,7 +477,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         labels.add("Catalog number");
         optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("Discount kind");
-        optionsForField.add(new LinkedList<>(Arrays.asList("Item Units Discount")));
+        optionsForField.add(new LinkedList<>(List.of("Item Units Discount")));
         labels.add("Discount type");
         optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
         labels.add("Minimal amounts for discount");
@@ -639,7 +642,7 @@ public class SupplierMenuGUI extends AMenuGUI {
         labels.add("Catalog number");
         optionsForField.add(supplierController.getAllSupplierItemsID(curr_supplier));
         labels.add("Discount kind");
-        optionsForField.add(new LinkedList<>(Arrays.asList("Item Units Discount")));
+        optionsForField.add(new LinkedList<>(List.of("Item Units Discount")));
         labels.add("Discount type");
         optionsForField.add(new LinkedList<>(Arrays.asList("Percentage", "Constant")));
         labels.add("Minimal amounts for discount");
@@ -833,8 +836,7 @@ public class SupplierMenuGUI extends AMenuGUI {
             return false;
         try
         {
-            boolean updated = supplierController.updatePriceOfItem(curr_supplier, item, price);
-            return updated;
+            return supplierController.updatePriceOfItem(curr_supplier, item, price);
         }
         catch (Exception e)
         {
@@ -880,8 +882,7 @@ public class SupplierMenuGUI extends AMenuGUI {
             return false;
         try
         {
-            boolean updated = supplierController.updateUnitsofItem(curr_supplier, item, amount);
-            return updated;
+            return supplierController.updateUnitsofItem(curr_supplier, item, amount);
         }
         catch (Exception e)
         {

@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 
@@ -183,12 +182,12 @@ public abstract class AMenuGUI {
     }
     public void showOptionsMenu(LinkedList<String>optionsNames, LinkedList<Runnable> operations){
         int amountOfScreen = 3;
-        JPanel buttonsPanel = getPanelOfButtons(optionsNames, operations, 10, 1);
+        JComponent buttonsPanel = getPanelOfButtons(optionsNames, operations, 10, 1);
         changeScreen(new LinkedList<>(List.of(buttonsPanel)), amountOfScreen);
     }
-    public JPanel getPanelOfButtons(LinkedList<String>optionsNames, LinkedList<Runnable> operations, int rows, int cols){
+    public JComponent getPanelOfButtons(LinkedList<String>optionsNames, LinkedList<Runnable> operations, int rows, int cols){
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(rows, cols));  // Maximum amount of buttons
+        buttonsPanel.setLayout(new GridLayout(rows, cols, 10, 10));  // Maximum amount of buttons
         buttonsPanel.setBackground(backgroundColor);
         for(int optionIndex = 0; optionIndex < optionsNames.size(); optionIndex++){
             String optionName = optionsNames.get(optionIndex);
@@ -197,7 +196,14 @@ public abstract class AMenuGUI {
             button.addActionListener(e -> operation.run());
             buttonsPanel.add(button);
         }
-        return buttonsPanel;
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JScrollPane buttonsScrollPane = new JScrollPane(buttonsPanel);
+        buttonsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        buttonsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        if(optionsNames.size() < rows)
+            buttonsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        buttonsScrollPane.setBackground(backgroundColor);
+        return buttonsScrollPane;
     }
     public JPanel createFillMenu(LinkedList<String> labelNames, LinkedList<JComponent> fields, LinkedList<LinkedList<String>> closeOptions) {
         JPanel fillPanel = new JPanel();
@@ -296,14 +302,6 @@ public abstract class AMenuGUI {
         buttonsPanel.add(clearButton); buttonsPanel.add(addButton); buttonsPanel.add(submitButton);
         changeScreen(new LinkedList<>(Arrays.asList(fillPanel, buttonsPanel)), amountOfScreen);
     }
-//    public void showTable(LinkedList<String> columns, LinkedList<LinkedList<String>> records, int amountFromScreen) {
-//        String[] columnsArray = columns.toArray(new String[0]);
-//        String[][] recordsArray = new String[records.size()][];
-//        int i = 0;
-//        for (LinkedList<String> record : records)
-//            recordsArray[i++] = record.toArray(new String[0]);
-//        showTable(columnsArray, recordsArray, amountFromScreen);
-//    }
     public void showTable(String[] columns, String[][] records, int amountFromScreen){
         JScrollPane panel = getTable(columns, records);
         changeScreen(new LinkedList<>(List.of(panel)), amountFromScreen);
@@ -331,6 +329,9 @@ public abstract class AMenuGUI {
         LinkedList<JScrollPane> tables = new LinkedList<>();
         for(AReport report : reports)
             tables.add(getTable(report));
+        showReportSelector(labelNames, tables, submitOperation, success, failure);
+    }
+    public void showReportSelector(LinkedList<String> labelNames, LinkedList<JScrollPane> tables, Function<Integer, Boolean> submitOperation, String success, String failure){
         JPanel totalPanel = new JPanel();
         totalPanel.setLayout(new BorderLayout());
         LinkedList<Runnable> operations = new LinkedList<>();
@@ -344,7 +345,7 @@ public abstract class AMenuGUI {
                 totalPanel.add(table, BorderLayout.CENTER);
                 changeScreen(new LinkedList<>(List.of(totalPanel)), 1);
             });
-        JPanel buttonsPanel = getPanelOfButtons(labelNames, operations, 10, 1);
+        JComponent buttonsPanel = getPanelOfButtons(labelNames, operations, 50, 1);
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             int selectedIndex = tables.indexOf(currentSelectedTable[0]);
@@ -376,187 +377,7 @@ public abstract class AMenuGUI {
             }
             tables.add(getTable(cols, records));
         }
-
-        JPanel totalPanel = new JPanel(new BorderLayout());
-        totalPanel.setPreferredSize(new Dimension(800, 600));
-
-        JPanel buttonsPanel = new JPanel(new GridLayout(0, 2, 10, 10));
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        for (int i = 0; i < labelNames.size(); i++) {
-            JButton button = new JButton(labelNames.get(i));
-            button.setPreferredSize(new Dimension(100, 50));
-            int index = i;
-            button.addActionListener(e -> {
-                JScrollPane selectedTable = tables.get(index);
-                JViewport viewport = selectedTable.getViewport();
-                viewport.setViewPosition(new Point(0, 0));
-                totalPanel.remove(1);
-                totalPanel.add(selectedTable, BorderLayout.CENTER);
-                totalPanel.revalidate();
-                totalPanel.repaint();
-            });
-            buttonsPanel.add(button);
-        }
-
-        JScrollPane buttonsScrollPane = new JScrollPane(buttonsPanel);
-        buttonsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        buttonsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-        JButton submitButton = new JButton("Finish");
-        submitButton.addActionListener(e -> showMainMenu());
-
-        totalPanel.add(buttonsScrollPane, BorderLayout.WEST);
-        totalPanel.add(submitButton, BorderLayout.NORTH);
-        totalPanel.add(tables.get(0), BorderLayout.CENTER);
-
-        changeScreen(new LinkedList<>(List.of(totalPanel)), 1);
-    }
-
-    //my addition
-//    public void continuousPages(LinkedList<String> labelNamesFirstPage, LinkedList<LinkedList<String>> optionsForButtonFirstPage, Function<LinkedList<String>, Boolean> operationFirstPage, String successFirstPage, String failureFirstPage, int amountOfScreen,
-//                                LinkedList<String> labelNamesSecondPage, LinkedList<LinkedList<String>> optionsForButtonSecondPage, Function<LinkedList<String>, Boolean> operationSecondPage, String successSecondPage, String failureSecondPage) {
-//        LinkedList<String> valuesFirstPage = new LinkedList<>();
-//        LinkedList<JComponent> fieldsFirstPage = new LinkedList<>();
-//        //first page - basic details
-//        JPanel fillPanel = createFillMenu(labelNamesFirstPage, fieldsFirstPage, optionsForButtonFirstPage);
-//        JButton clearButton = new JButton("Clear");
-//        clearButton.addActionListener(e -> {
-//            for(int i = 0; i < fieldsFirstPage.size(); i++)
-//            {
-//                JComponent field = fieldsFirstPage.get(i);
-//                if(field instanceof JTextField)
-//                    ((JTextField) field).setText(labelNamesFirstPage.get(i));
-//                resetFillOption(field);
-//            }
-//        });
-//        JButton continueFromFirstPageButton = new JButton("Continue");
-//        continueFromFirstPageButton.addActionListener(e -> {
-//            for(int i = 0; i < fieldsFirstPage.size(); i++)
-//            {
-//                JComponent field = fieldsFirstPage.get(i);
-//                String fieldLabel = labelNamesFirstPage.get(i);
-//                valuesFirstPage.add(getInsertedValue(field, fieldLabel));
-//            }
-//            boolean status = operationFirstPage.apply(valuesFirstPage);
-//            showMessage(status, successFirstPage, failureFirstPage);
-//            if(!status)
-//                showMainMenu();
-//        });
-//
-//        JPanel buttonsPanel = new JPanel();
-//        buttonsPanel.setLayout(new GridLayout(10, 1));
-//        buttonsPanel.add(clearButton);buttonsPanel.add(continueFromFirstPageButton);
-//        changeScreen(new LinkedList<>(Arrays.asList(fillPanel, buttonsPanel)), amountOfScreen);
-//
-//
-//
-//        //second page- contact page
-//        LinkedList<String> valuesSecondPage = new LinkedList<>();
-//        LinkedList<JComponent> fieldsSecondPage = new LinkedList<>();
-//        JPanel fillPanelSecondPage = createFillMenu(labelNamesSecondPage, fieldsSecondPage, optionsForButtonSecondPage);
-//        JButton clearButtonSecondPage = new JButton("Clear");
-//        clearButtonSecondPage.addActionListener(e -> {
-//            for(int i = 0; i < fieldsSecondPage.size(); i++)
-//            {
-//                JComponent field = fieldsSecondPage.get(i);
-//                if(field instanceof JTextField)
-//                    ((JTextField) field).setText(labelNamesSecondPage.get(i));
-//                resetFillOption(field);
-//            }
-//        });
-//        JButton continueFromSecondPageButton = new JButton("Continue");
-//        continueFromSecondPageButton.addActionListener(e -> {
-//            for(int i = 0; i < fieldsSecondPage.size(); i++)
-//            {
-//                JComponent field = fieldsSecondPage.get(i);
-//                String fieldLabel = labelNamesSecondPage.get(i);
-//                valuesSecondPage.add(getInsertedValue(field, fieldLabel));
-//            }
-//            boolean status = operationSecondPage.apply(valuesSecondPage);
-//            showMessage(status, successSecondPage, failureSecondPage);
-////            if(!status)
-//                showMainMenu();
-//        });
-//
-//
-//
-//
-//
-//        JPanel buttonsPanelSecondPage = new JPanel();
-//        buttonsPanelSecondPage.setLayout(new GridLayout(10, 1));
-//        buttonsPanelSecondPage.add(clearButtonSecondPage);buttonsPanelSecondPage.add(continueFromSecondPageButton);
-//        changeScreen(new LinkedList<>(Arrays.asList(fillPanelSecondPage, buttonsPanelSecondPage)), amountOfScreen);
-//    }
-
-
-    public void continuousPages(LinkedList<String> labelNamesFirstPage, LinkedList<LinkedList<String>> optionsForButtonFirstPage, Function<LinkedList<String>, Boolean> operationFirstPage, String successFirstPage, String failureFirstPage, int amountOfScreen,
-                                LinkedList<String> labelNamesSecondPage, LinkedList<LinkedList<String>> optionsForButtonSecondPage, Function<LinkedList<String>, Boolean> operationSecondPage, String successSecondPage, String failureSecondPage) {
-        LinkedList<String> valuesFirstPage = new LinkedList<>();
-        LinkedList<JComponent> fieldsFirstPage = new LinkedList<>();
-        AtomicBoolean isFirstPageCompleted = new AtomicBoolean(false);
-
-        // First page - basic details
-        JPanel fillPanel = createFillMenu(labelNamesFirstPage, fieldsFirstPage, optionsForButtonFirstPage);
-        JButton clearButton = new JButton("Clear");
-        clearButton.addActionListener(e -> {
-            for (int i = 0; i < fieldsFirstPage.size(); i++) {
-                JComponent field = fieldsFirstPage.get(i);
-                if (field instanceof JTextField)
-                    ((JTextField) field).setText(labelNamesFirstPage.get(i));
-                resetFillOption(field);
-            }
-        });
-        JButton continueFromFirstPageButton = new JButton("Continue");
-        continueFromFirstPageButton.addActionListener(e -> {
-            for (int i = 0; i < fieldsFirstPage.size(); i++) {
-                JComponent field = fieldsFirstPage.get(i);
-                String fieldLabel = labelNamesFirstPage.get(i);
-                valuesFirstPage.add(getInsertedValue(field, fieldLabel));
-            }
-            boolean status = operationFirstPage.apply(valuesFirstPage);
-            showMessage(status, successFirstPage, failureFirstPage);
-            if (status) {
-                isFirstPageCompleted.set(true);
-                // Display the second page here
-                LinkedList<String> valuesSecondPage = new LinkedList<>();
-                LinkedList<JComponent> fieldsSecondPage = new LinkedList<>();
-                JPanel fillPanelSecondPage = createFillMenu(labelNamesSecondPage, fieldsSecondPage, optionsForButtonSecondPage);
-                JButton clearButtonSecondPage = new JButton("Clear");
-                clearButtonSecondPage.addActionListener(e1 -> {
-                    for (int i = 0; i < fieldsSecondPage.size(); i++) {
-                        JComponent field = fieldsSecondPage.get(i);
-                        if (field instanceof JTextField)
-                            ((JTextField) field).setText(labelNamesSecondPage.get(i));
-                        resetFillOption(field);
-                    }
-                });
-                JButton continueFromSecondPageButton = new JButton("Continue");
-                continueFromSecondPageButton.addActionListener(e2 -> {
-                    for (int i = 0; i < fieldsSecondPage.size(); i++) {
-                        JComponent field = fieldsSecondPage.get(i);
-                        String fieldLabel = labelNamesSecondPage.get(i);
-                        valuesSecondPage.add(getInsertedValue(field, fieldLabel));
-                    }
-                    boolean secondPageStatus = operationSecondPage.apply(valuesSecondPage);
-                    showMessage(secondPageStatus, successSecondPage, failureSecondPage);
-                    showMainMenu();
-                });
-
-                JPanel buttonsPanelSecondPage = new JPanel();
-                buttonsPanelSecondPage.setLayout(new GridLayout(10, 1));
-                buttonsPanelSecondPage.add(clearButtonSecondPage);
-                buttonsPanelSecondPage.add(continueFromSecondPageButton);
-                changeScreen(new LinkedList<>(Arrays.asList(fillPanelSecondPage, buttonsPanelSecondPage)), amountOfScreen);
-            } else {
-                showMainMenu();
-            }
-        });
-
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(10, 1));
-        buttonsPanel.add(clearButton);
-        buttonsPanel.add(continueFromFirstPageButton);
-        changeScreen(new LinkedList<>(Arrays.asList(fillPanel, buttonsPanel)), amountOfScreen);
+        Function<Integer, Boolean> submitOperation = chosenOrder -> true;
+        showReportSelector(labelNames, tables, submitOperation, "", "");
     }
 }
