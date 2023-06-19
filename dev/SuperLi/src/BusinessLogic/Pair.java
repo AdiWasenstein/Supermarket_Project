@@ -16,4 +16,11 @@ public class Pair<T, U> {
     public U getRight() {
         return second;
     }
+
+    @Override
+    public boolean equals(Object pair) {
+        if(!(pair instanceof Pair other))
+            return false;
+        return first.equals(((Pair<?, ?>) pair).getLeft());
+    }
 }
