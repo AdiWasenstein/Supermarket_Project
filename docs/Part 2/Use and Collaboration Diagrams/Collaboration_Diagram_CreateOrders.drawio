@@ -1,0 +1,258 @@
+<mxfile host="app.diagrams.net" modified="2023-05-04T10:00:47.341Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="xTvsBhDoVh2UPiwaPn24" version="21.2.7" type="onedrive">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-41" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;1. SuppliersCombos := getSuppliersCombos(r)&lt;br&gt;: OrderManagment&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.073" y="9" width="80" relative="1" as="geometry">
+            <mxPoint x="171" y="65" as="sourcePoint" />
+            <mxPoint x="208" y="64" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-1" value="cd : createOrders" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=90;height=29;" vertex="1" parent="1">
+          <mxGeometry x="10" y="11" width="1500" height="269" as="geometry" />
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-34" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="vbn1vjWYSr6YsiNQEqlZ-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="10" y="80" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-33" value="OrderManagment" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="120" y="80" width="1300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-38" value="&lt;font color=&quot;#333333&quot;&gt;createOrders(r,branchId)&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=orthogonalEdgeStyle;elbow=vertical;strokeColor=default;curved=1;shadow=0;" edge="1" parent="1">
+          <mxGeometry x="0.2571" width="80" relative="1" as="geometry">
+            <mxPoint x="36" y="70" as="sourcePoint" />
+            <mxPoint x="106" y="70" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-40" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="80" as="sourcePoint" />
+            <mxPoint x="170" y="80" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="190" y="70" />
+              <mxPoint x="180" y="70" />
+              <mxPoint x="170" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-53" value="5.1.1. createOrder(supplier, items)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.248" y="-22" width="80" relative="1" as="geometry">
+            <mxPoint x="671" y="165.75" as="sourcePoint" />
+            <mxPoint x="708" y="165.25" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="692" y="165.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vbn1vjWYSr6YsiNQEqlZ-54" value="&lt;u&gt;o : Order&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="660" y="220" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-1" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="120" as="sourcePoint" />
+            <mxPoint x="160" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="200" y="139" />
+              <mxPoint x="160" y="139" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-2" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;2. FastestCombos := getFastestCombos(SuppliersCombos)&lt;br&gt;: OrderManagment&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.073" y="9" width="80" relative="1" as="geometry">
+            <mxPoint x="394" y="67" as="sourcePoint" />
+            <mxPoint x="431" y="66" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-3" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="472" y="120" as="sourcePoint" />
+            <mxPoint x="432" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="472" y="139" />
+              <mxPoint x="432" y="139" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-4" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;3. MinimalCombos := getMinimalCombos(FastestCombos)&lt;br&gt;: OrderManagment&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.073" y="9" width="80" relative="1" as="geometry">
+            <mxPoint x="642" y="68" as="sourcePoint" />
+            <mxPoint x="679" y="67" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-5" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="423" y="80" as="sourcePoint" />
+            <mxPoint x="403" y="80" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="423" y="70" />
+              <mxPoint x="413" y="70" />
+              <mxPoint x="403" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-6" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="664" y="81" as="sourcePoint" />
+            <mxPoint x="644" y="81" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="664" y="71" />
+              <mxPoint x="654" y="71" />
+              <mxPoint x="644" y="71" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-7" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;4. CheapestCombo := getCheapestCombo(MinimalCombos)&lt;br&gt;: OrderManagment&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.073" y="9" width="80" relative="1" as="geometry">
+            <mxPoint x="166" y="180" as="sourcePoint" />
+            <mxPoint x="203" y="179" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-T0FkvyXYJcLi5wVd7wv-8" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;5. *[(suppler, items) in CheapestCombo] &lt;br&gt;5.1. order = createOrder(supplier, items)&lt;br&gt;:OrderManagment&lt;br&gt;5.2. sendDelivery(supplier, order)&lt;br&gt;: OrderManagment&lt;br&gt;&lt;/font&gt;" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.073" y="9" width="80" relative="1" as="geometry">
+            <mxPoint x="431" y="219" as="sourcePoint" />
+            <mxPoint x="468" y="218" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-2" value="&lt;u&gt;supplier: Supplier&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="757" y="220" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-4" value="5.1.3. addOrder(o)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.248" y="-22" width="80" relative="1" as="geometry">
+            <mxPoint x="826" y="180.75" as="sourcePoint" />
+            <mxPoint x="863" y="180.25" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="847" y="180.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-5" value="&lt;u&gt;branch: Branch&lt;br&gt;&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="881" y="220" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-7" value="5.1.6. addOrder(o)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.2267" y="-22" width="80" relative="1" as="geometry">
+            <mxPoint x="951" y="182.75" as="sourcePoint" />
+            <mxPoint x="988" y="182.25" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="972" y="182.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-8" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.612;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="702.5600000000002" y="122" as="sourcePoint" />
+            <mxPoint x="704" y="221" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="704" y="201" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-9" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.612;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="797.5600000000002" y="121" as="sourcePoint" />
+            <mxPoint x="799" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="799" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gCptYWciR0tJk70ESmU4-10" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.612;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="920.5600000000002" y="121" as="sourcePoint" />
+            <mxPoint x="922" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="922" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-1" value="&lt;u&gt;orderMapper: OrderDataMapper&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="220" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-2" value="5.1.2 insert(o)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.5733" y="-25" width="80" relative="1" as="geometry">
+            <mxPoint x="1095" y="180.5" as="sourcePoint" />
+            <mxPoint x="1132" y="180" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1116" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-3" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.612;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1070.0000000000002" y="121" as="sourcePoint" />
+            <mxPoint x="1071.44" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1071.44" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-4" value="&lt;u&gt;suppMapper: SupplierDataMapper&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="220" width="115" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-6" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.612;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1220.0000000000002" y="121" as="sourcePoint" />
+            <mxPoint x="1221.44" y="220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1221.44" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-7" value="&lt;u&gt;branchMapper: BranchDataMapper&lt;/u&gt;" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="220" width="115" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-8" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.612;exitY=1.025;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1360.0000000000002" y="120" as="sourcePoint" />
+            <mxPoint x="1361.44" y="219" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1361.44" y="199" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-9" value="5.1.5 branch= find(branchId)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="1" y="-24" width="80" relative="1" as="geometry">
+            <mxPoint x="1381" y="159.5" as="sourcePoint" />
+            <mxPoint x="1418" y="159" as="targetPoint" />
+            <mxPoint x="12" y="-3" as="offset" />
+            <Array as="points">
+              <mxPoint x="1402" y="159" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-10" value="5.1.4 update(supplier)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="1" y="-23" width="80" relative="1" as="geometry">
+            <mxPoint x="1237" y="188.5" as="sourcePoint" />
+            <mxPoint x="1274" y="188" as="targetPoint" />
+            <mxPoint x="6" y="-1" as="offset" />
+            <Array as="points">
+              <mxPoint x="1258" y="188" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="-ANAp4eCsl0iXWdUJxH1-11" value="5.1.7 update(branch)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="0.7333" y="-20" width="80" relative="1" as="geometry">
+            <mxPoint x="1384" y="191.5" as="sourcePoint" />
+            <mxPoint x="1421" y="191" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1405" y="191" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
